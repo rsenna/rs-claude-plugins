@@ -1,0 +1,8 @@
+{
+  "name": "rsenna-workflow-skills",
+  "description": "GitHub issue → PR workflow: map an issue into a task breakdown, implement and ship each task through a safe branch/push/PR/review-reply process, then close the issue.",
+  "author": {
+    "name": "Rogério Senna",
+    "url": "https://github.com/rsenna"
+  }
+}
