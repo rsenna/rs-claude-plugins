@@ -6,7 +6,7 @@ Personal Claude Code plugin: a GitHub issue → PR workflow, factored into three
 
 ```
 /plugin marketplace add rsenna/rs-claude-plugins
-/plugin install workflow-skills@rs-claude-plugins
+/plugin install rs-workflow-skills@rs-claude-plugins
 ```
 
 ## Skills
