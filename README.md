@@ -1,4 +1,4 @@
-# rsenna-claude-plugins
+# rs-claude-plugins
 
 Personal Claude Code plugin: a GitHub issue → PR workflow, factored into three skills.
 
