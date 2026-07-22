@@ -1,6 +1,6 @@
 ---
 name: map-issue-to-tasks
-description: Turn a GitHub issue into an enriched analysis plus a concrete task breakdown. Use when asked to map/analyse/enrich/scope a GitHub issue, break an issue into tasks, or plan the work for an issue before implementing. Posts the enrichment as a non-destructive issue comment and writes tasks to tasks/issue-<n>-<slug>.md.
+description: Turn a GitHub issue into an enriched analysis plus a concrete task breakdown. Use when asked to map/analyse/enrich/scope a GitHub issue, break an issue into tasks, or plan the work for an issue before implementing. Posts the enrichment as a non-destructive issue comment, labels the issue "mapped", and writes tasks to tasks/issue-<n>-<slug>.md.
 ---
 
 # Map Issue → Tasks
@@ -15,7 +15,8 @@ The enrichment template is `${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/temp
 ## Do this
 
 1. **Fetch.** `issue.sh fetch <n>` — read title, body, labels, and existing
-   comments. Note related/duplicate issues.
+   comments. Note related/duplicate issues. If it's already labeled `mapped`,
+   say so and confirm before redoing the work.
 2. **Explore the codebase** for the modules/files this touches. Use the
    project's own affordances (e.g. `what-about` has a `run-what-about` skill and
    a `tasks/` convention). Cite concrete file paths.
@@ -35,18 +36,25 @@ The enrichment template is `${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/temp
      `<n>-<slug>` stem). Never overwrite an unrelated existing task file.
    - Enrichment → a **GitHub issue comment** via `issue.sh comment <n> <file>`.
      The original issue body is **left untouched**.
+6. **Label it.** `issue.sh label <n>` — tags the issue `mapped` (creating the
+   label on first use). This is what lets `issue.sh unmapped` distinguish
+   issues still needing this treatment from ones already scoped. Do this last,
+   after the enrichment comment has actually posted.
 
 ## Review before posting
 
-Default to **`DRY_RUN=1`** first — it prints the comment instead of posting, so
-you (and the user) can check it. Post for real only once it reads well.
+Default to **`DRY_RUN=1`** first — it prints the comment (and the label action)
+instead of posting, so you (and the user) can check it. Post for real only once
+it reads well.
 
 ```bash
 I=${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/issue.sh
+"$I" unmapped                          # which open issues still need mapping
 "$I" fetch 24                          # read the issue
 "$I" slug  24                          # -> 24-show-a-notification-when-a-profile-is-re-published
 DRY_RUN=1 "$I" comment 24 enrich.md    # preview the enrichment comment
 "$I" comment 24 enrich.md              # post it for real
+"$I" label 24                          # tag it mapped
 ```
 
 ## Boundaries

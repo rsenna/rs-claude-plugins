@@ -7,10 +7,15 @@
 #   slug  <n>            print "<n>-<slugified-title>" (used for tasks/issue-<n>-<slug>.md)
 #   comment <n> <file>   post <file> as a comment on #n   (DRY_RUN=1 prints instead of posting)
 #   close <n> <file>     post <file> as a comment on #n, then close it (DRY_RUN=1 prints, no close)
+#   label <n>            apply the LABEL (default "mapped") to #n, creating it if missing
+#   unmapped             list open issues that don't have LABEL yet (what's still unmapped)
 #
 # Env:
 #   DRY_RUN=1   never write to GitHub; print what would be posted.
+#   LABEL       label used to mark a mapped issue (default: mapped)
 set -euo pipefail
+
+LABEL="${LABEL:-mapped}"
 
 log()  { printf '\033[1;34m[issue]\033[0m %s\n' "$*"; }
 die()  { printf '\033[1;31m[issue] %s\033[0m\n' "$*" >&2; exit 1; }
@@ -59,11 +64,31 @@ cmd_close() {
   gh issue close "$n"; log "commented on and closed #$n"
 }
 
+cmd_label() {
+  local n="${1:?usage: issue.sh label <n>}"
+  if [ "${DRY_RUN:-0}" = "1" ]; then
+    log "DRY_RUN — would ensure label '$LABEL' exists and apply it to #$n"; return 0
+  fi
+  # Idempotent: create-if-missing (--force updates color/description if it already
+  # exists rather than failing), then add — gh issue edit --add-label is a no-op
+  # if the issue already has it.
+  gh label create "$LABEL" --color "0E8A16" --description "Analysed and broken into tasks by map-issue-to-tasks" --force >/dev/null
+  gh issue edit "$n" --add-label "$LABEL"
+  log "labeled #$n with '$LABEL'"
+}
+
+cmd_unmapped() {
+  gh issue list --state open --search "-label:\"$LABEL\"" \
+    --json number,title,url --jq '.[] | "#\(.number)\t\(.title)\t\(.url)"'
+}
+
 case "${1:-}" in
-  fetch)   shift; cmd_fetch "$@" ;;
-  json)    shift; cmd_json "$@" ;;
-  slug)    shift; cmd_slug "$@" ;;
-  comment) shift; cmd_comment "$@" ;;
-  close)   shift; cmd_close "$@" ;;
-  *) die "usage: issue.sh {fetch|json|slug|comment|close} ..." ;;
+  fetch)    shift; cmd_fetch "$@" ;;
+  json)     shift; cmd_json "$@" ;;
+  slug)     shift; cmd_slug "$@" ;;
+  comment)  shift; cmd_comment "$@" ;;
+  close)    shift; cmd_close "$@" ;;
+  label)    shift; cmd_label "$@" ;;
+  unmapped) shift; cmd_unmapped "$@" ;;
+  *) die "usage: issue.sh {fetch|json|slug|comment|close|label|unmapped} ..." ;;
 esac
