@@ -1,18 +1,18 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "rsenna-claude-plugins",
-  "description": "Rogério Senna's personal Claude Code plugins",
+  "name": "rs-claude-plugins",
+  "description": "Roger Senna's personal Claude Code plugins",
   "owner": {
-    "name": "Rogério Senna",
+    "name": "Roger Senna",
     "url": "https://github.com/rsenna"
   },
   "plugins": [
     {
-      "name": "rsenna-workflow-skills",
+      "name": "rs-workflow-skills",
       "source": "./",
       "description": "GitHub issue → PR workflow: map-issue-to-tasks, fix-mapped-issue, pull-request-process",
       "category": "development",
-      "author": { "name": "Rogério Senna" },
+      "author": { "name": "Roger Senna" },
       "homepage": "https://github.com/rsenna/rsenna-claude-plugins"
     }
   ]
