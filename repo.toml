@@ -1,0 +1,7 @@
+full-name = "rsenna-claude-plugins"
+main-language = "Markdown"
+created = "2026-07-22T16:42:08+02:00"
+updated = "2026-07-22T17:04:28+02:00"
+favorite = false
+flags = ["claude", "ai", "skills", "github"]
+description = "Personal Claude Code plugin: GitHub issue to PR workflow, factored into three skills"
