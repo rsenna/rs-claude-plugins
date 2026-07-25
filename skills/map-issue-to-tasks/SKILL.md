@@ -35,7 +35,11 @@ The enrichment template is `${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/temp
    checkbox** — `- [ ] **ID — Title** 🔒gate` — even when matching an
    existing project convention that doesn't itself use one, so
    `fix-mapped-issue` always has something unambiguous to tick after each
-   task merges.
+   task merges. If `tasks/issue-<n>-<slug>.md` already exists for this issue
+   from before this convention (headings with no leading checkbox), retrofit
+   one onto every heading while you're editing the file — `- [x]` for tasks
+   the file already marks done/merged, `- [ ]` for the rest — rather than
+   adding new checkbox-only headings alongside old checkbox-less ones.
 5. **Write outputs (non-destructive):**
    - Tasks → **`tasks/issue-<n>-<slug>.md`** (`issue.sh slug <n>` gives the
      `<n>-<slug>` stem). Never overwrite an unrelated existing task file.

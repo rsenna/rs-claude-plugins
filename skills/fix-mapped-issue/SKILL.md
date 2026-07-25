@@ -24,7 +24,11 @@ From the project's `AGENTS.md`/`CLAUDE.md`: the **base branch** and the
 ## Do this (per task, until the issue is done)
 
 1. **Pick the next task** from `tasks/issue-<n>-*.md`: the next unchecked box,
-   respecting dependency order. If it's a 🔒 ask-first gate (new dependency, DB
+   respecting dependency order. If the file predates the checkbox convention
+   (any heading with no leading `- [ ]`/`- [x]`), retrofit a checkbox onto
+   **every** heading before picking — `- [x]` for tasks the file already notes
+   as done/merged, `- [ ]` for the rest — so the "next unchecked box" rule has
+   something to operate on. If it's a 🔒 ask-first gate (new dependency, DB
    migration, CI/secret change), **pause and get explicit approval** before starting.
 2. **Implement** via the `incremental-implementation` and
    `test-driven-development` skills. New or changed behaviour **must be described
@@ -34,10 +38,16 @@ From the project's `AGENTS.md`/`CLAUDE.md`: the **base branch** and the
    → **STOP** (never merge). Then handle review threads per that skill.
 4. **After the maintainer/bots merge**, tick the task's checkbox in
    `tasks/issue-<n>-*.md` (`- [ ]` → `- [x]`) and append the merged PR link to
-   that task's heading line (e.g. `— ✅ merged (#9)`), then move to the next
-   task. Repeat until every task is merged. If a task file predates this
-   checkbox convention (no leading `- [ ]`), add one rather than improvising a
-   different marker.
+   that task's heading line in exactly this form: `— ✅ merged (#<n>)` — a
+   fixed syntax so later automation can parse it reliably. If a task shipped
+   across more than one PR, list every merged PR in that same parenthetical,
+   in merge order, comma-separated (`— ✅ merged (#9, #12)`); never drop an
+   earlier PR link when a later one for the same task lands. This edit is
+   itself a change to a tracked file, so commit and ship it through the same
+   `pull-request-process` flow as any other change — never push it straight to
+   the base branch. Either give it its own small PR or fold it into the next
+   task's branch if you're about to start that task anyway. Then move to the
+   next task. Repeat until every task is merged.
 
 ## Close it (step 6)
 
