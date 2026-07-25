@@ -32,8 +32,12 @@ From the project's `AGENTS.md`/`CLAUDE.md`: the **base branch** and the
 3. **Ship it via the `pull-request-process` skill** — one task ≈ one PR:
    `pr.sh start` → implement/commit → run the gate → `pr.sh push` → `pr.sh open`
    → **STOP** (never merge). Then handle review threads per that skill.
-4. **After the maintainer/bots merge**, tick the task in `tasks/issue-<n>-*.md`
-   and move to the next. Repeat until every task is merged.
+4. **After the maintainer/bots merge**, tick the task's checkbox in
+   `tasks/issue-<n>-*.md` (`- [ ]` → `- [x]`) and append the merged PR link to
+   that task's heading line (e.g. `— ✅ merged (#9)`), then move to the next
+   task. Repeat until every task is merged. If a task file predates this
+   checkbox convention (no leading `- [ ]`), add one rather than improvising a
+   different marker.
 
 ## Close it (step 6)
 

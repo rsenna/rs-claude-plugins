@@ -30,7 +30,10 @@ The enrichment template is `${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/temp
    `what-about`'s `tasks/todo.md`: `**ID — Title** 🔒gate`, then `Acceptance:` /
    `Verify:` / `Files:`, where **`Verify:` always includes the project's quality
    gate**; add dependency/milestone notes à la `tasks/plan.md`). If the repo has
-   no `tasks/` convention, create `tasks/issue-<n>-<slug>.md` with that shape.
+   no `tasks/` convention, create `tasks/issue-<n>-<slug>.md` with that shape,
+   using a **leading checkbox on every task heading** —
+   `- [ ] **ID — Title** 🔒gate` — so `fix-mapped-issue` has something
+   unambiguous to tick after each task merges.
 5. **Write outputs (non-destructive):**
    - Tasks → **`tasks/issue-<n>-<slug>.md`** (`issue.sh slug <n>` gives the
      `<n>-<slug>` stem). Never overwrite an unrelated existing task file.
