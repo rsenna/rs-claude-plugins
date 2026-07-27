@@ -10,6 +10,7 @@ upgrade. Read the relevant section before doing the analogous thing again.
 - [Endpoint shape and discovery](#endpoint-shape-and-discovery)
 - [Reading and writing multi-select fields](#reading-and-writing-multi-select-fields)
 - [Save vs. apply](#save-vs-apply)
+- [Sourcing credentials from Doppler](#sourcing-credentials-from-doppler)
 - [Config backups are cheap insurance](#config-backups-are-cheap-insurance)
 - [Settings with no API at all](#settings-with-no-api-at-all)
 - [Stuck mid major-version upgrade](#stuck-mid-major-version-upgrade)
@@ -83,6 +84,31 @@ returned `{"result":"saved"}`.
 If the module has a `configtest` action (HAProxy does), call it before
 `reconfigure` — cheap insurance against syntax errors landing on a live
 config.
+
+## Sourcing credentials from Doppler
+
+If the API key/secret live in Doppler rather than your own shell env, it's
+tempting to wrap a call in `doppler run -- bash -c '...'` and string-build the
+inner script to include the request path and any `-d`/`-H` args. Don't -
+concatenating them into the quoted script text breaks the moment any of them
+contain their own quotes, which a JSON `-d` payload always does. It fails
+confusingly too: `curl: option -X: requires parameter`, or worse, silently
+sends a mangled/truncated request that still gets a response, just the wrong
+one.
+
+Pass the dynamic bits as real positional arguments to the inner `bash -c`
+instead of interpolating them into its script text:
+
+```bash
+doppler run --token "$DOPPLER_TOKEN" -- bash -c '
+  curl -sk -u "${OPNSENSE_API_KEY}:${OPNSENSE_API_SECRET}" "https://host:port${1}" "${@:2}"
+' _ "$path" "$@"
+```
+
+The literal `_` is a throwaway `$0` for the inner shell; `$path` becomes `$1`,
+everything else in `"$@"` becomes `$2` onward. `scripts/opn-api.sh` in this
+skill already does this correctly - reuse it rather than re-deriving the
+pattern.
 
 ## Config backups are cheap insurance
 
