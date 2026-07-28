@@ -29,7 +29,10 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 1. **Branch.** `pr.sh start <branch>` — updates local `main` and cuts the branch
    the safe way. Do this on a feature branch; never commit straight to `main`.
 2. **Implement + commit.** (Commit conventions: follow the
-   `git-workflow-and-versioning` skill.)
+   `git-workflow-and-versioning` skill.) If the code you're touching has a
+   nearby `TODO` comment, fixing it — if unblocked — takes priority over
+   other opportunistic cleanup in the same edit; see **TODO comments**
+   below.
 3. **Gate.** Run the project's quality gate yourself. **Do not push unless green.**
 4. **Push.** `pr.sh push <branch>` — explicit-refspec push, then verifies the
    branch landed and `origin/main` did **not** move.
@@ -94,6 +97,26 @@ that thread.
   and verify afterward. `pr.sh push` captures `origin/main` before and after and
   **fails loudly if it moved** — this is the guardrail against the once-real
   accident of pushing straight to `main`.
+
+## TODO comments
+
+Inline `TODO` comments in code are fine — encouraged, even — for technical
+debt where having the surrounding code context is specially relevant to
+understanding it. This complements (doesn't replace) any project-level debt
+tracker the repo already has (e.g. a `tech-debt.md` with TD-NNN entries):
+use the tracker for debt that's better understood at the epic/spec level,
+and an inline `TODO` for debt that only really makes sense next to the code
+it concerns.
+
+- Make a `TODO` specific enough to act on later — what's deferred, and
+  ideally why — not a bare `TODO: fix this`.
+- They need periodic review, not just creation. When doing broader
+  codebase work (audits, automation recommendations, epic close-outs), a
+  sweep of existing `TODO`s is worth surfacing as part of that pass.
+- **When editing code that already has a nearby `TODO`, fixing it — if
+  unblocked — takes priority over other opportunistic cleanup in the same
+  change.** Don't leave it for "later" again if you're already there and
+  nothing blocks resolving it now.
 
 ## Guardrails (never violate)
 
