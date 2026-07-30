@@ -5,7 +5,9 @@
 # yourself (per the project's AGENTS.md/CLAUDE.md) BEFORE `pr.sh push`.
 #
 # Subcommands:
-#   start <branch>        create <branch> off an up-to-date local BASE, the safe way
+#   start <branch>        create <branch> in a FRESH git worktree off up-to-date origin/BASE
+#                         (a sibling directory next to the repo, never the shared checkout)
+#                         and print its path — cd there for every remaining step.
 #   push <branch>         explicit-refspec push + verify branch landed & BASE didn't move
 #   open <title> [body]   gh pr create --base BASE (body = path to a markdown file), print URL, STOP
 #   threads <pr>          list UNRESOLVED review threads on a PR (work them one by one)
@@ -14,7 +16,8 @@
 #                          replied to with `reply`). Pulls out each bot's "Prompt for AI Agent(s)"
 #                          block when present, since that's the actionable part.
 #   reply <pr> <id> <body> reply to a review thread comment (body = inline string or path to a markdown file)
-#   cleanup               after a PR: verify the worktree is pristine, then switch to BASE.
+#   cleanup               after a PR: verify the worktree is pristine, remove it, and print the
+#                         path of the main checkout (the one with BASE) to cd back into.
 #                         NON-DESTRUCTIVE — if dirty, it reports and stops (never discards).
 #
 # Env:
@@ -35,16 +38,24 @@ cmd_start() {
   git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repo"
   git show-ref --verify --quiet "refs/heads/$br" && die "branch '$br' already exists locally"
   log "fetching origin/$BASE"; git fetch origin "$BASE"
-  # Update local BASE to origin/BASE without switching risk, then branch off it.
-  if git show-ref --verify --quiet "refs/heads/$BASE"; then
-    git switch "$BASE" >/dev/null 2>&1
-    git merge --ff-only "origin/$BASE" || die "local '$BASE' has diverged from origin/$BASE; reconcile first"
-  else
-    git switch -c "$BASE" "origin/$BASE" >/dev/null 2>&1
-  fi
-  # Plain checkout -b (NOT `-b <br> origin/BASE`) so the branch does NOT track BASE.
-  git switch -c "$br" >/dev/null 2>&1
-  log "on new branch '$br' (off up-to-date $BASE). push.default-safe: use 'pr.sh push $br'."
+  local repo_root wt_root wt_path
+  repo_root="$(git rev-parse --show-toplevel)"
+  wt_root="$(dirname "$repo_root")/$(basename "$repo_root")-worktrees"
+  wt_path="$wt_root/$br"
+  [ -e "$wt_path" ] && die "worktree path '$wt_path' already exists"
+  mkdir -p "$(dirname "$wt_path")"
+  # --no-track: branch off origin/$BASE's tip WITHOUT setting up tracking against it.
+  # Without this, `branch.autoSetupMerge` (on by default) would make the new branch
+  # track origin/$BASE since the start point is a remote-tracking ref — then a bare
+  # `git push` (push.default=upstream) would write straight to origin/$BASE, bypassing
+  # the whole PR/review flow. This is also why we never touch the shared checkout's
+  # own local $BASE branch here: a fresh worktree branching straight off origin/$BASE
+  # needs no local $BASE ref update at all, and can't collide with whatever the shared
+  # checkout (or another worktree) currently has checked out or uncommitted.
+  git worktree add --no-track -b "$br" "$wt_path" "origin/$BASE" >/dev/null
+  log "worktree created at '$wt_path' on new branch '$br' (off up-to-date origin/$BASE)."
+  log "cd into it now — every remaining step (implement, gate, push, open, review loop) runs from there:"
+  log "  cd '$wt_path'"
 }
 
 cmd_push() {
@@ -159,14 +170,35 @@ cmd_cleanup() {
   # git status ignores gitignored build artifacts, so a non-empty result is real
   # uncommitted/untracked work — surface it and STOP rather than discard anything.
   if [ -n "$(git status --porcelain)" ]; then
-    warn "worktree NOT pristine — leaving branch '$(git rev-parse --abbrev-ref HEAD)' as-is, not switching to $BASE."
+    warn "worktree NOT pristine — leaving '$(pwd)' (branch '$(git rev-parse --abbrev-ref HEAD)') as-is."
     warn "resolve these (commit, stash, or remove) then re-run 'pr.sh cleanup':"
     git status --short >&2
     return 1
   fi
   log "worktree pristine"
-  git switch "$BASE" >/dev/null 2>&1 || die "could not switch to $BASE"
-  log "checked out $BASE — ready for the next task"
+  local wt_path main_wt
+  wt_path="$(git rev-parse --show-toplevel)"
+  # Find the OTHER worktree that has $BASE checked out — that's the shared/main
+  # checkout this task's worktree branched away from, and where we return control to.
+  main_wt="$(git worktree list --porcelain | awk -v base="refs/heads/$BASE" '
+    /^worktree /{p=$2} /^branch /{if ($2==base) print p}
+  ')"
+  [ -n "$main_wt" ] || die "no worktree has '$BASE' checked out — can't determine where to return; remove '$wt_path' manually with 'git worktree remove'"
+  [ "$wt_path" != "$main_wt" ] || die "refusing to remove '$wt_path' — it IS the $BASE checkout, not a task worktree"
+  # Run the removal from the main checkout's context, not the worktree being removed
+  # (git refuses `worktree remove` on whatever the invoking process's cwd is inside of).
+  git -C "$main_wt" worktree remove "$wt_path" \
+    || die "could not auto-remove worktree at '$wt_path' — remove manually: git -C '$main_wt' worktree remove '$wt_path'"
+  # Slash-named branches (e.g. feat/my-thing) leave a now-empty parent dir behind under
+  # <repo>-worktrees/ — prune upward while empty, stopping at the worktrees root itself.
+  local parent; parent="$(dirname "$wt_path")"
+  local wtroot_name; wtroot_name="$(dirname "$main_wt")/$(basename "$main_wt")-worktrees"
+  while [ "$parent" != "$wtroot_name" ] && [ -d "$parent" ] && [ -z "$(ls -A "$parent" 2>/dev/null)" ]; do
+    rmdir "$parent"
+    parent="$(dirname "$parent")"
+  done
+  log "worktree removed. cd back into the $BASE checkout for the next task:"
+  log "  cd '$main_wt'"
 }
 
 case "${1:-}" in

@@ -5,13 +5,33 @@ description: Open a pull request the safe way and handle review comments on it. 
 
 # Pull Request Process
 
-The repeatable, safe way to ship a change: branch → run the project's quality
-gate → push without ever touching `main` → open a PR → **stop** (never merge) →
-work each review thread. This is a **building block** other skills call
-(`fix-mapped-issue` follows it for "till the issue is fixed").
+The repeatable, safe way to ship a change: branch (in its own git worktree,
+never the shared checkout) → run the project's quality gate → push without
+ever touching `main` → open a PR → **stop** (never merge) → work each review
+thread. This is a **building block** other skills call (`fix-mapped-issue`
+follows it for "till the issue is fixed").
 
 The git/gh plumbing is in **`pr.sh`**, at `${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh`.
 It is language-agnostic and **does not run the quality gate** — you do, per the project's docs.
+
+## Worktrees, not the shared checkout
+
+`pr.sh start` creates every task's branch in its **own git worktree** — a
+sibling directory next to the repo (`<repo>-worktrees/<branch>`) — rather than
+switching branches in place inside whatever checkout you started from. This
+matters because that shared checkout often has its own uncommitted, unrelated
+work sitting in it (the user's own in-progress edits, a previous task's
+leftovers) — switching branches in place forces a stash/pop dance around that
+every single time, and risks mixing it into the wrong commit. A fresh worktree
+sidesteps this entirely: it's created straight from `origin/<BASE>`, so the
+shared checkout's working directory is never touched, never needs stashing,
+and can't collide with the task branch's own changes.
+
+**cd into the printed worktree path after `start`**, and run every remaining
+step (implement, gate, push, open, review loop) from there — not from the
+directory you ran `start` in. `cleanup` removes the worktree once it's
+pristine and prints the path of the checkout that has `BASE`, for you to `cd`
+back into.
 
 ## Portability — read the project's specifics first
 
@@ -26,13 +46,20 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 
 ## The process
 
-1. **Branch.** `pr.sh start <branch>` — updates local `main` and cuts the branch
-   the safe way. Do this on a feature branch; never commit straight to `main`.
+1. **Branch.** `pr.sh start <branch>` — creates a fresh git worktree off
+   up-to-date `origin/<BASE>` and prints its path. **`cd` into that path** —
+   every remaining step runs from there, never from the shared checkout.
 2. **Implement + commit.** (Commit conventions: follow the
    `git-workflow-and-versioning` skill.) If the code you're touching has a
    nearby `TODO` comment, fixing it — if unblocked — takes priority over
    other opportunistic cleanup in the same edit; see **TODO comments**
-   below.
+   below. **Check docs for staleness** before committing: does this change
+   make `README.md` or any other project doc (spec files, `docs/*.md`)
+   inaccurate — a status/capability claim that no longer holds, a stale
+   "not yet implemented" note, a link to a file that doesn't exist? Fix
+   those in this same PR, not a follow-up — a doc that contradicts the code
+   it describes is a bug, not polish, and it only gets more misleading the
+   longer it's left.
 3. **Gate.** Run the project's quality gate yourself. **Do not push unless green.**
 4. **Push.** `pr.sh push <branch>` — explicit-refspec push, then verifies the
    branch landed and `origin/main` did **not** move.
@@ -56,20 +83,23 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    ```
 
    **Never resolve threads yourself and never merge** — the maintainer does both.
-7. **Cleanup.** Once the PR is opened, `pr.sh cleanup` leaves the worktree ready
-   for the next task: it verifies the tree is **pristine** and switches back to
-   `main`. It is **non-destructive** — if there are uncommitted or untracked
-   files it reports them and stops (never discards), so you can commit/stash/remove
-   them and re-run. (`git status --porcelain` ignores gitignored build artifacts
-   like `target/`, `node_modules/`, `_build/`, so those don't count as dirty.)
-   Run this after `open`, and also after
-   the review loop when you switch away to another task.
+7. **Cleanup.** Once the PR is opened, `pr.sh cleanup` (run from inside the
+   task's worktree) verifies the tree is **pristine**, removes the worktree,
+   and prints the path of the checkout that has `BASE` — `cd` there for the
+   next task. It is **non-destructive** — if there are uncommitted or
+   untracked files it reports them and stops (never discards, never
+   removes), so you can commit/stash/remove them and re-run. (`git status
+   --porcelain` ignores gitignored build artifacts like `target/`,
+   `node_modules/`, `_build/`, so those don't count as dirty.) Run this after
+   `open`, and also after the review loop when you switch away to another
+   task.
 
 ## Commands (verified)
 
 ```bash
 P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
-BASE=main "$P" start  my-feature          # cut branch off up-to-date main
+BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
+cd ../<repo>-worktrees/my-feature          # <-- cd into the printed path; everything below runs from here
 BASE=main "$P" push   my-feature          # safe push + verify main didn't advance
 BASE=main "$P" open   "feat: my feature" body.md   # gh pr create --base main, then STOP
 BASE=main DRAFT=1 "$P" open "wip: experiment"      # open as draft (bots typically skip drafts)
@@ -78,7 +108,7 @@ BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command with
 "$P" reviews 17                            # list PR-level review comments + their AI-agent prompts
 "$P" reply 17 3623709612 "Fixed in abc1234."       # reply to a thread (inline)
 "$P" reply 17 3623709612 /tmp/reply.md             # reply to a thread (file)
-BASE=main "$P" cleanup                     # verify pristine, switch back to main (non-destructive)
+BASE=main "$P" cleanup                     # verify pristine, remove worktree, print BASE checkout path
 ```
 
 `threads` truncates each comment body to 280 chars — enough to identify the
@@ -88,11 +118,13 @@ that thread.
 
 ## Why the push is done this way (don't shortcut it)
 
-- Create branches with **plain** `git checkout -b <name>` off an updated local
-  `main` — **not** `git checkout -b <name> origin/main`. The latter makes the
-  branch *track* `main`; with `push.default=upstream` a bare `git push` then
-  writes to `origin/main`, bypassing the whole PR/review flow. `pr.sh start`
-  does it the safe way for you.
+- `pr.sh start` branches with `git worktree add --no-track -b <name> <path>
+  origin/<BASE>`. The `--no-track` matters: branching from a remote-tracking
+  ref like `origin/main` would otherwise (via `branch.autoSetupMerge`,
+  on by default) set the new branch to *track* `origin/main`; with
+  `push.default=upstream` a bare `git push` would then write straight to
+  `origin/main`, bypassing the whole PR/review flow. `pr.sh start` does this
+  safely for you — don't recreate the branch by hand without the same flag.
 - Always push with an **explicit refspec** (`git push origin HEAD:refs/heads/<name>`)
   and verify afterward. `pr.sh push` captures `origin/main` before and after and
   **fails loudly if it moved** — this is the guardrail against the once-real
