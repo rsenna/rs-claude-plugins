@@ -29,9 +29,11 @@ and can't collide with the task branch's own changes.
 
 **cd into the printed worktree path after `start`**, and run every remaining
 step (implement, gate, push, open, review loop) from there — not from the
-directory you ran `start` in. `cleanup` removes the worktree once it's
-pristine and prints the path of the checkout that has `BASE`, for you to `cd`
-back into.
+directory you ran `start` in. **Don't run `cleanup` right after `open`** —
+unlike the old switch-in-place behavior, `cleanup` now *deletes* the
+worktree, and the review loop still needs to push fixes from that same
+branch. Only run `cleanup` once the task is genuinely done: the PR merged,
+or abandoned.
 
 ## Portability — read the project's specifics first
 
@@ -83,23 +85,23 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    ```
 
    **Never resolve threads yourself and never merge** — the maintainer does both.
-7. **Cleanup.** Once the PR is opened, `pr.sh cleanup` (run from inside the
-   task's worktree) verifies the tree is **pristine**, removes the worktree,
-   and prints the path of the checkout that has `BASE` — `cd` there for the
-   next task. It is **non-destructive** — if there are uncommitted or
-   untracked files it reports them and stops (never discards, never
-   removes), so you can commit/stash/remove them and re-run. (`git status
-   --porcelain` ignores gitignored build artifacts like `target/`,
-   `node_modules/`, `_build/`, so those don't count as dirty.) Run this after
-   `open`, and also after the review loop when you switch away to another
-   task.
+7. **Cleanup.** Once — and only once — the task is fully done (PR **merged**,
+   or abandoned): `pr.sh cleanup` (run from inside the task's worktree)
+   verifies the tree is **pristine**, removes the worktree, and prints the
+   main checkout's path — `cd` there for the next task. **Do not run this
+   right after `open`** — the review loop (step 6) still needs to push
+   fixes from this same worktree, and `cleanup` deletes it. It's
+   **non-destructive**: uncommitted/untracked files (including gitignored
+   ones `git worktree remove` would otherwise silently delete along with
+   the whole directory) make it report and stop rather than discard
+   anything, so you can commit/stash/move them and re-run.
 
 ## Commands (verified)
 
 ```bash
 P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
 BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
-cd ../<repo>-worktrees/my-feature          # <-- cd into the printed path; everything below runs from here
+cd '<path printed by pr.sh start>'         # <-- cd into THAT exact printed path; everything below runs from here
 BASE=main "$P" push   my-feature          # safe push + verify main didn't advance
 BASE=main "$P" open   "feat: my feature" body.md   # gh pr create --base main, then STOP
 BASE=main DRAFT=1 "$P" open "wip: experiment"      # open as draft (bots typically skip drafts)
@@ -108,7 +110,8 @@ BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command with
 "$P" reviews 17                            # list PR-level review comments + their AI-agent prompts
 "$P" reply 17 3623709612 "Fixed in abc1234."       # reply to a thread (inline)
 "$P" reply 17 3623709612 /tmp/reply.md             # reply to a thread (file)
-BASE=main "$P" cleanup                     # verify pristine, remove worktree, print BASE checkout path
+# ...only once the PR is merged or abandoned, never right after `open`:
+BASE=main "$P" cleanup                     # verify pristine, remove worktree, print main checkout path
 ```
 
 `threads` truncates each comment body to 280 chars — enough to identify the

@@ -16,14 +16,21 @@
 #                          replied to with `reply`). Pulls out each bot's "Prompt for AI Agent(s)"
 #                          block when present, since that's the actionable part.
 #   reply <pr> <id> <body> reply to a review thread comment (body = inline string or path to a markdown file)
-#   cleanup               after a PR: verify the worktree is pristine, remove it, and print the
-#                         path of the main checkout (the one with BASE) to cd back into.
-#                         NON-DESTRUCTIVE — if dirty, it reports and stops (never discards).
+#   cleanup               once a task is FULLY done (PR merged or abandoned — not right after
+#                         opening; the review loop still needs this worktree): verify it's
+#                         pristine, remove it, and print the main checkout's path to cd back
+#                         into. Only ever removes a worktree under the exact <repo>-worktrees
+#                         root `start` creates. NON-DESTRUCTIVE — if dirty (including gitignored
+#                         files the removal would otherwise silently take with it) it reports
+#                         and stops (never discards).
 #
 # Env:
-#   BASE     base branch (default: main). The skill supplies this from the project's docs.
-#   DRAFT    set DRAFT=1 to open the PR as a draft (bots typically don't review drafts).
-#   DRY_RUN  set DRY_RUN=1 so `open` prints the gh command instead of creating the PR.
+#   BASE                  base branch (default: main). The skill supplies this from the project's docs.
+#   DRAFT                 set DRAFT=1 to open the PR as a draft (bots typically don't review drafts).
+#   DRY_RUN               set DRY_RUN=1 so `open` prints the gh command instead of creating the PR.
+#   FORCE_REMOVE_IGNORED  set to 1 to let `cleanup` remove a worktree that still has gitignored
+#                         files in it (otherwise it refuses, since removal deletes the whole
+#                         directory — build artifacts are fine to lose, a stray .env isn't).
 set -euo pipefail
 
 BASE="${BASE:-main}"
@@ -33,14 +40,27 @@ die()  { printf '\033[1;31m[pr] %s\033[0m\n' "$*" >&2; exit 1; }
 
 remote_sha() { git ls-remote --heads origin "$1" 2>/dev/null | awk '{print $1}'; }
 
+# Resolves the TRUE main checkout's root, regardless of which worktree (if any)
+# we're currently invoked from. The common git dir is shared across every
+# worktree of a repo and always resolves to <main-checkout>/.git in a standard
+# (non-bare) setup — unlike scanning `git worktree list` for a worktree with a
+# particular branch checked out, this doesn't break the moment nothing has
+# $BASE checked out (e.g. the shared checkout is on some other branch).
+main_checkout_root() {
+  local common_dir
+  common_dir="$(git rev-parse --git-common-dir)"
+  common_dir="$(cd "$common_dir" && pwd)" # normalize to an absolute path
+  dirname "$common_dir"
+}
+
 cmd_start() {
   local br="${1:?usage: pr.sh start <branch>}"
   git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repo"
   git show-ref --verify --quiet "refs/heads/$br" && die "branch '$br' already exists locally"
   log "fetching origin/$BASE"; git fetch origin "$BASE"
-  local repo_root wt_root wt_path
-  repo_root="$(git rev-parse --show-toplevel)"
-  wt_root="$(dirname "$repo_root")/$(basename "$repo_root")-worktrees"
+  local main_root wt_root wt_path
+  main_root="$(main_checkout_root)"
+  wt_root="${main_root}-worktrees"
   wt_path="$wt_root/$br"
   [ -e "$wt_path" ] && die "worktree path '$wt_path' already exists"
   mkdir -p "$(dirname "$wt_path")"
@@ -176,29 +196,50 @@ cmd_cleanup() {
     return 1
   fi
   log "worktree pristine"
-  local wt_path main_wt
+  local wt_path main_root wt_root
   wt_path="$(git rev-parse --show-toplevel)"
-  # Find the OTHER worktree that has $BASE checked out — that's the shared/main
-  # checkout this task's worktree branched away from, and where we return control to.
-  main_wt="$(git worktree list --porcelain | awk -v base="refs/heads/$BASE" '
-    /^worktree /{p=$2} /^branch /{if ($2==base) print p}
-  ')"
-  [ -n "$main_wt" ] || die "no worktree has '$BASE' checked out — can't determine where to return; remove '$wt_path' manually with 'git worktree remove'"
-  [ "$wt_path" != "$main_wt" ] || die "refusing to remove '$wt_path' — it IS the $BASE checkout, not a task worktree"
-  # Run the removal from the main checkout's context, not the worktree being removed
-  # (git refuses `worktree remove` on whatever the invoking process's cwd is inside of).
-  git -C "$main_wt" worktree remove "$wt_path" \
-    || die "could not auto-remove worktree at '$wt_path' — remove manually: git -C '$main_wt' worktree remove '$wt_path'"
+  main_root="$(main_checkout_root)"
+  wt_root="${main_root}-worktrees"
+  [ "$wt_path" != "$main_root" ] || die "refusing to remove '$wt_path' — it IS the main checkout, not a task worktree"
+  # Only ever remove worktrees under the exact root `pr.sh start` creates —
+  # never an unrelated worktree someone else made for something else, even if
+  # it happens to be pristine and even if it's linked to this same repo.
+  case "$wt_path" in
+    "$wt_root"/*) ;;
+    *) die "refusing to remove '$wt_path' — it's not under '$wt_root', so 'pr.sh start' didn't create it; if you're sure, remove it manually with 'git worktree remove'" ;;
+  esac
+  # `git worktree remove` deletes the WHOLE directory, including anything
+  # gitignored — unlike the old git-switch-in-place cleanup, which left
+  # ignored files sitting on disk untouched. A build-artifact directory
+  # (target/, node_modules/) disappearing is fine; a stray .env or local DB
+  # someone stashed there is not. Refuse by default if any ignored path is
+  # present; FORCE_REMOVE_IGNORED=1 opts in explicitly.
+  local ignored
+  ignored="$(git status --porcelain --ignored=matching | sed -n 's/^!! //p')"
+  if [ -n "$ignored" ] && [ "${FORCE_REMOVE_IGNORED:-0}" != "1" ]; then
+    warn "worktree has gitignored files 'git worktree remove' would delete along with the directory:"
+    echo "$ignored" | sed 's/^/  /' >&2
+    warn "if these are disposable build artifacts, re-run with FORCE_REMOVE_IGNORED=1 to remove anyway."
+    warn "if not, move/copy anything you need out first."
+    return 1
+  fi
+  # Point --git-dir directly at the shared git directory rather than running
+  # `git -C <some-other-worktree>` — this works with no OTHER worktree needing
+  # to exist in any particular state (in particular, no worktree needs $BASE
+  # checked out), and still works even though the invoking shell's cwd is
+  # literally inside the directory being removed.
+  local common_dir; common_dir="$(cd "$(git rev-parse --git-common-dir)" && pwd)"
+  git --git-dir="$common_dir" worktree remove "$wt_path" \
+    || die "could not auto-remove worktree at '$wt_path' — remove manually: git --git-dir='$common_dir' worktree remove '$wt_path'"
   # Slash-named branches (e.g. feat/my-thing) leave a now-empty parent dir behind under
   # <repo>-worktrees/ — prune upward while empty, stopping at the worktrees root itself.
   local parent; parent="$(dirname "$wt_path")"
-  local wtroot_name; wtroot_name="$(dirname "$main_wt")/$(basename "$main_wt")-worktrees"
-  while [ "$parent" != "$wtroot_name" ] && [ -d "$parent" ] && [ -z "$(ls -A "$parent" 2>/dev/null)" ]; do
+  while [ "$parent" != "$wt_root" ] && [ -d "$parent" ] && [ -z "$(ls -A "$parent" 2>/dev/null)" ]; do
     rmdir "$parent"
     parent="$(dirname "$parent")"
   done
-  log "worktree removed. cd back into the $BASE checkout for the next task:"
-  log "  cd '$main_wt'"
+  log "worktree removed. cd back into the main checkout for the next task:"
+  log "  cd '$main_root'"
 }
 
 case "${1:-}" in
