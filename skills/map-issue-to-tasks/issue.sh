@@ -13,12 +13,31 @@
 # Env:
 #   DRY_RUN=1   never write to GitHub; print what would be posted.
 #   LABEL       label used to mark a mapped issue (default: mapped)
+#   PR_BOT_DOPPLER_PROJECT / PR_BOT_DOPPLER_CONFIG  Doppler project/config holding
+#               GITHUB_AGENT_PATC (default: common/dev) — every gh call this script
+#               makes uses that identity, never whatever personal `gh auth` account
+#               happens to be ambient. Fetched fresh on every invocation; dies loudly
+#               if unreachable rather than silently falling back. Same convention as
+#               the pull-request-process skill's pr.sh.
 set -euo pipefail
 
 LABEL="${LABEL:-mapped}"
 
 log()  { printf '\033[1;34m[issue]\033[0m %s\n' "$*"; }
 die()  { printf '\033[1;31m[issue] %s\033[0m\n' "$*" >&2; exit 1; }
+
+# --- Agent identity enforcement -----------------------------------------
+# GH_TOKEN, once exported, overrides gh's own ambient `gh auth` active
+# account for every `gh` call this script makes — without touching the
+# user's own global `gh auth` state at all.
+PR_BOT_DOPPLER_PROJECT="${PR_BOT_DOPPLER_PROJECT:-common}"
+PR_BOT_DOPPLER_CONFIG="${PR_BOT_DOPPLER_CONFIG:-dev}"
+# `|| true`: under `set -e`, a failed command substitution here would otherwise
+# kill the script silently, before the `[ -n "$GH_TOKEN" ] || die ...` check below
+# ever runs.
+GH_TOKEN="$(doppler secrets get GITHUB_AGENT_PATC --plain --project "$PR_BOT_DOPPLER_PROJECT" --config "$PR_BOT_DOPPLER_CONFIG" 2>/dev/null || true)"
+[ -n "$GH_TOKEN" ] || die "could not fetch GITHUB_AGENT_PATC from Doppler ($PR_BOT_DOPPLER_PROJECT/$PR_BOT_DOPPLER_CONFIG) — refusing to fall back to the ambient 'gh auth' identity. Check Doppler access, or override PR_BOT_DOPPLER_PROJECT/PR_BOT_DOPPLER_CONFIG."
+export GH_TOKEN
 
 cmd_json() { gh issue view "${1:?usage: issue.sh json <n>}" \
   --json number,title,state,labels,body,comments,url; }

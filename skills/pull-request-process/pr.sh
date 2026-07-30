@@ -31,12 +31,44 @@
 #   FORCE_REMOVE_IGNORED  set to 1 to let `cleanup` remove a worktree that still has gitignored
 #                         files in it (otherwise it refuses, since removal deletes the whole
 #                         directory — build artifacts are fine to lose, a stray .env isn't).
+#   PR_BOT_DOPPLER_PROJECT / PR_BOT_DOPPLER_CONFIG  Doppler project/config holding the agent
+#                         identity secrets below (default: common/dev). Every gh call and every
+#                         commit this script makes uses this identity, NEVER whatever personal
+#                         `gh auth`/git identity happens to be ambient — that's what silently
+#                         leaked a personal account into commits/PR comments before this existed.
+#                         Requires GITHUB_AGENT_PATC (a gh token), GITHUB_AGENT_USERNAME, and
+#                         GITHUB_AGENT_EMAIL to exist in that Doppler config. Fetched fresh on
+#                         every invocation (never cached to disk); if Doppler/the secrets aren't
+#                         reachable, every subcommand dies loudly rather than falling back to
+#                         the ambient identity.
 set -euo pipefail
 
 BASE="${BASE:-main}"
 log()  { printf '\033[1;34m[pr]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[pr] %s\033[0m\n' "$*" >&2; }
 die()  { printf '\033[1;31m[pr] %s\033[0m\n' "$*" >&2; exit 1; }
+
+# --- Agent identity enforcement -----------------------------------------
+# GH_TOKEN, once exported, overrides gh's own ambient `gh auth` active
+# account for every `gh` call this script (and anything it spawns) makes —
+# without touching the user's own global `gh auth` state at all. Git commit
+# identity is handled separately in cmd_start, scoped to just that worktree.
+PR_BOT_DOPPLER_PROJECT="${PR_BOT_DOPPLER_PROJECT:-common}"
+PR_BOT_DOPPLER_CONFIG="${PR_BOT_DOPPLER_CONFIG:-dev}"
+
+_bot_secret() {
+  # `|| true`: under `set -e`, a failed command substitution in an assignment
+  # (e.g. `x="$(_bot_secret ...)"`) would otherwise kill the script right here,
+  # silently, before the caller's own `[ -n "$x" ] || die ...` check ever runs.
+  doppler secrets get "$1" --plain --project "$PR_BOT_DOPPLER_PROJECT" --config "$PR_BOT_DOPPLER_CONFIG" 2>/dev/null || true
+}
+
+GH_TOKEN="$(_bot_secret GITHUB_AGENT_PATC)"
+[ -n "$GH_TOKEN" ] || die "could not fetch GITHUB_AGENT_PATC from Doppler ($PR_BOT_DOPPLER_PROJECT/$PR_BOT_DOPPLER_CONFIG) — refusing to fall back to the ambient 'gh auth' identity. Check Doppler access, or override PR_BOT_DOPPLER_PROJECT/PR_BOT_DOPPLER_CONFIG."
+export GH_TOKEN
+BOT_NAME="$(_bot_secret GITHUB_AGENT_USERNAME)"
+BOT_EMAIL="$(_bot_secret GITHUB_AGENT_EMAIL)"
+[ -n "$BOT_NAME" ] && [ -n "$BOT_EMAIL" ] || die "could not fetch GITHUB_AGENT_USERNAME/GITHUB_AGENT_EMAIL from Doppler ($PR_BOT_DOPPLER_PROJECT/$PR_BOT_DOPPLER_CONFIG) — refusing to guess a commit identity."
 
 remote_sha() { git ls-remote --heads origin "$1" 2>/dev/null | awk '{print $1}'; }
 
@@ -56,6 +88,11 @@ main_checkout_root() {
 cmd_start() {
   local br="${1:?usage: pr.sh start <branch>}"
   git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repo"
+  # Validate BEFORE deriving wt_path from it — a ref like `../evil` would
+  # otherwise let `dirname`/`mkdir -p` escape $wt_root and create stray
+  # directories before `git worktree add` itself ever gets a chance to
+  # reject the ref.
+  git check-ref-format --branch "$br" >/dev/null 2>&1 || die "'$br' is not a valid branch name"
   git show-ref --verify --quiet "refs/heads/$br" && die "branch '$br' already exists locally"
   log "fetching origin/$BASE"; git fetch origin "$BASE"
   local main_root wt_root wt_path
@@ -73,7 +110,19 @@ cmd_start() {
   # needs no local $BASE ref update at all, and can't collide with whatever the shared
   # checkout (or another worktree) currently has checked out or uncommitted.
   git worktree add --no-track -b "$br" "$wt_path" "origin/$BASE" >/dev/null
+  # Scope the agent's commit identity to JUST this task's worktree, via
+  # `--worktree` config (needs extensions.worktreeConfig, a one-time,
+  # harmless repo-level flag enabling per-worktree config to exist at all —
+  # it does NOT move or overwrite anything already in the shared config).
+  # This is deliberate: setting user.name/user.email the normal (shared) way
+  # would silently change the identity for every OTHER worktree of this
+  # repo too, including the main checkout the user does their own personal
+  # commits from.
+  git -C "$wt_path" config extensions.worktreeConfig true
+  git -C "$wt_path" config --worktree user.name "$BOT_NAME"
+  git -C "$wt_path" config --worktree user.email "$BOT_EMAIL"
   log "worktree created at '$wt_path' on new branch '$br' (off up-to-date origin/$BASE)."
+  log "commit identity set to '$BOT_NAME <$BOT_EMAIL>' for this worktree only."
   log "cd into it now — every remaining step (implement, gate, push, open, review loop) runs from there:"
   log "  cd '$wt_path'"
 }

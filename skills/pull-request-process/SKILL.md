@@ -14,6 +14,21 @@ follows it for "till the issue is fixed").
 The git/gh plumbing is in **`pr.sh`**, at `${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh`.
 It is language-agnostic and **does not run the quality gate** — you do, per the project's docs.
 
+## Agent identity, not the personal one
+
+Every `gh` call and every commit `pr.sh` makes uses a dedicated agent
+identity (`GITHUB_AGENT_PATC`/`GITHUB_AGENT_USERNAME`/`GITHUB_AGENT_EMAIL`,
+sourced fresh from Doppler on every invocation — see `pr.sh`'s own header
+comment for the env vars that control which Doppler project/config), never
+whatever personal `gh auth` account or global git identity happens to be
+ambient. This isn't optional or best-effort: every subcommand dies loudly if
+those secrets aren't reachable, rather than silently falling back to the
+ambient identity — that silent fallback is exactly what leaked a personal
+GitHub account into commits and PR comments before this existed. Commit
+identity is scoped to just the task's own worktree (via git's
+`--worktree`-level config), so it never touches the shared checkout's own
+identity.
+
 ## Worktrees, not the shared checkout
 
 `pr.sh start` creates every task's branch in its **own git worktree** — a
