@@ -34,8 +34,9 @@ From the project's `AGENTS.md`/`CLAUDE.md`: the **base branch** and the
    `test-driven-development` skills. New or changed behaviour **must be described
    by tests** (behaviour-asserting, not coverage-padding).
 3. **Ship it via the `pull-request-process` skill** — one task ≈ one PR:
-   `pr.sh start` → implement/commit → run the gate → `pr.sh push` → `pr.sh open`
-   → **STOP** (never merge). Then handle review threads per that skill.
+   `pr.sh start` (then `cd` into the worktree path it prints) → implement/commit
+   → run the gate → `pr.sh push` → `pr.sh open` → **STOP** (never merge). Then
+   handle review threads per that skill.
 4. **After the maintainer/bots merge**, tick the task's checkbox in
    `tasks/issue-<n>-*.md` (`- [ ]` → `- [x]`) and append the merged PR link to
    that task's heading line in exactly this form: `— ✅ merged (#<n>)` — a
@@ -60,6 +61,7 @@ Once **all** tasks are merged:
 P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
 I=${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/issue.sh
 BASE=main "$P" start fix/issue-24-notify
+cd <printed-worktree-path>
 # …implement + test…  then run the project gate…
 BASE=main "$P" push fix/issue-24-notify
 BASE=main "$P" open "feat: notify on (re)publish (#24)" pr-body.md   # then STOP
