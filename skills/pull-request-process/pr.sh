@@ -18,9 +18,11 @@
 #                          replied to with `reply`). Pulls out each bot's "Prompt for AI Agent(s)"
 #                          block when present, since that's the actionable part.
 #   comment <pr> <body>   post a general/top-level PR comment, not tied to any review thread
-#                         (body = inline string or path to a markdown file); use this for
-#                         quote-reply responses to PR-level reviews too, since those have no
-#                         thread and can't use `reply`
+#                         (body = inline string or path to a markdown file); use this to
+#                         respond to PR-level reviews (from `reviews`) that have no thread.
+#                         ALWAYS use quote-reply format so it is clear which part you address:
+#                           pr.sh comment 27 "> quoted text from the review
+#                           Your response here."
 #   comment-delete <id>   delete a general/top-level PR comment by its numeric id (from the
 #                         URL printed by `comment`, or an id you already have) — the correction
 #                         path when a `comment` needs fixing, since GitHub comments can't be
@@ -270,6 +272,10 @@ cmd_reviews() {
     fi
     echo
   done
+  echo "[pr] reply to these with: pr.sh comment $pr \"<body>\""
+  echo "[pr] use quote-reply format so it's clear which part you're addressing:"
+  echo "[pr]   pr.sh comment $pr \"> quoted text from review"
+  echo "[pr]   Your response here.\""
 }
 
 cmd_cleanup() {
