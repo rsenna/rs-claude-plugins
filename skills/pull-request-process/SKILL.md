@@ -97,7 +97,8 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    review comments (a bot's "Overall Comments" on the review itself, not on a
    line — these have no thread and can't be replied to with `reply`; the
    command pulls out each bot's "Prompt for AI Agent(s)" block when present).
-   For each unresolved thread: make the fix if warranted (re-push via step 4,
+
+   **For each unresolved thread:** make the fix if warranted (re-push via step 4,
    keeping the gate green), then **reply on that thread** with your conclusion:
 
    ```bash
@@ -106,6 +107,16 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 
    # Or reply from a file:
    pr.sh reply 27 3623709612 /tmp/reply.md
+   ```
+
+   **For PR-level (non-thread) review comments** from `pr.sh reviews`: these
+   can't be threaded, so reply as a regular PR comment via `gh pr comment`.
+   Use **quote-reply format** (`> quoted text`) so readers know exactly which
+   part of the review you're addressing:
+
+   ```bash
+   gh pr comment 27 --body "> The \`die\` message is quite long...
+   Acknowledged — shortened the message and moved the rationale to SKILL.md."
    ```
 
    **Never resolve threads yourself and never merge** — the maintainer does both.

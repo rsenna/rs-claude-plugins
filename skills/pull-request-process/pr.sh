@@ -135,7 +135,7 @@ cmd_start() {
 
 cmd_push() {
   local br="${1:?usage: pr.sh push <branch>}"
-  [ "${REVIEWED:-0}" = "1" ] || die "REVIEWED=1 not set — run pr-review-toolkit:review-pr on your changes first, fix what it flags, then re-run as 'REVIEWED=1 pr.sh push $br'. This is a guardrail, not a formality: skipping self-review here just means bots catch the same issues later, in public, after the PR is already open."
+  [ "${REVIEWED:-0}" = "1" ] || die "REVIEWED=1 not set — run pr-review-toolkit:review-pr, fix what it flags, then: REVIEWED=1 pr.sh push $br"
   [ "$(git rev-parse --abbrev-ref HEAD)" = "$br" ] || warn "HEAD is not '$br' (pushing HEAD anyway)"
   local base_before; base_before="$(remote_sha "$BASE")"
   log "pushing HEAD -> origin/$br (explicit refspec)"
