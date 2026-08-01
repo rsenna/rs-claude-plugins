@@ -35,7 +35,8 @@ From the project's `AGENTS.md`/`CLAUDE.md`: the **base branch** and the
    by tests** (behaviour-asserting, not coverage-padding).
 3. **Ship it via the `pull-request-process` skill** — one task ≈ one PR:
    `pr.sh start` (then `cd` into the worktree path it prints) → implement/commit
-   → run the gate → `pr.sh push` → `pr.sh open` → **STOP** (never merge). Then
+   → run the gate → run `pr-review-toolkit:review-pr` and fix what it flags →
+   `REVIEWED=1 pr.sh push` → `pr.sh open` → **STOP** (never merge). Then
    handle review threads per that skill.
 4. **After the maintainer/bots merge**, tick the task's checkbox in
    `tasks/issue-<n>-*.md` (`- [ ]` → `- [x]`) and append the merged PR link to
@@ -63,7 +64,7 @@ I=${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/issue.sh
 BASE=main "$P" start fix/issue-24-notify
 cd <printed-worktree-path>
 # …implement + test…  then run the project gate…
-BASE=main "$P" push fix/issue-24-notify
+BASE=main REVIEWED=1 "$P" push fix/issue-24-notify   # after review-pr and fixes
 BASE=main "$P" open "feat: notify on (re)publish (#24)" pr-body.md   # then STOP
 # …after all tasks merged…
 DRY_RUN=1 "$I" close 24 solution.md      # preview
@@ -76,3 +77,5 @@ DRY_RUN=1 "$I" close 24 solution.md      # preview
 - Never resolve review threads — reply per thread; the maintainer resolves.
 - Never close the issue until **every** mapped task is merged.
 - Never push unless the project's quality gate is green.
+- Never push without running `pr-review-toolkit:review-pr` first and
+  addressing what it flags (enforced by `pr.sh push` requiring `REVIEWED=1`).

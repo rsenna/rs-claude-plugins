@@ -84,8 +84,9 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    on the PR instead of after.
 4. **Push.** `REVIEWED=1 pr.sh push <branch>` — explicit-refspec push, then
    verifies the branch landed and `origin/main` did **not** move.
-   `REVIEWED=1` is required and confirms step 3's review pass happened;
-   `pr.sh push` refuses to run without it.
+   `REVIEWED=1` is required and attests that step 3's review pass happened
+   (the script can only check the flag is set, not that a review actually
+   ran); `pr.sh push` refuses to run without it.
 5. **Open.** `pr.sh open "<title>" [body.md]` — `gh pr create --base main`,
    prints the URL, then **STOP.** Do not merge, do not mark ready — automated
    review bots and the maintainer review and merge.
