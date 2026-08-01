@@ -29,6 +29,17 @@ identity is scoped to just the task's own worktree (via git's
 `--worktree`-level config), so it never touches the shared checkout's own
 identity.
 
+**Never call `gh` directly for anything PR-related** (`gh pr comment`,
+`gh pr create`, `gh api .../comments`, etc.) — even for one-off actions that
+feel too small to bother with `pr.sh`. A direct `gh` call rides whatever
+`gh auth` happens to be ambient (your personal account, if you're logged in
+locally), silently reintroducing the exact leak this identity enforcement exists to
+prevent. Every PR interaction has a `pr.sh` subcommand: opening (`open`), a
+general/top-level comment (`comment`), correcting one (`comment-delete`), a
+threaded reply (`reply`), reading review state (`threads`, `reviews`). If a
+PR action you need has no subcommand yet, that's a gap in `pr.sh` to fix —
+add the subcommand rather than reaching for raw `gh`.
+
 ## Worktrees, not the shared checkout
 
 `pr.sh start` creates every task's branch in its **own git worktree** — a
@@ -77,9 +88,18 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    those in this same PR, not a follow-up — a doc that contradicts the code
    it describes is a bug, not polish, and it only gets more misleading the
    longer it's left.
-3. **Gate.** Run the project's quality gate yourself. **Do not push unless green.**
-4. **Push.** `pr.sh push <branch>` — explicit-refspec push, then verifies the
-   branch landed and `origin/main` did **not** move.
+3. **Gate.** Run the project's quality gate yourself. **Do not push unless
+   green.** Then run `pr-review-toolkit:review-pr` on your changes and fix
+   what it flags — this is a self-review pass, catching what bots
+   (cubic-dev-ai, codacy, etc.) would flag anyway, just before it's public
+   on the PR instead of after. **If the review pass leads to code changes,
+   re-run the quality gate on the updated code before pushing** — `REVIEWED=1`
+   only satisfies the push guard, not the gate.
+4. **Push.** `REVIEWED=1 pr.sh push <branch>` — explicit-refspec push, then
+   verifies the branch landed and `origin/main` did **not** move.
+   `REVIEWED=1` is required and attests that step 3's review pass happened
+   (the script can only check the flag is set, not that a review actually
+   ran); `pr.sh push` refuses to run without it.
 5. **Open.** `pr.sh open "<title>" [body.md]` — `gh pr create --base main`,
    prints the URL, then **STOP.** Do not merge, do not mark ready — automated
    review bots and the maintainer review and merge.
@@ -88,8 +108,16 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    review comments (a bot's "Overall Comments" on the review itself, not on a
    line — these have no thread and can't be replied to with `reply`; the
    command pulls out each bot's "Prompt for AI Agent(s)" block when present).
-   For each unresolved thread: make the fix if warranted (re-push via step 4,
-   keeping the gate green), then **reply on that thread** with your conclusion:
+
+   **For each unresolved thread:** make the fix if warranted, then re-run
+   `pr-review-toolkit:review-pr` on the updated diff and fix what it flags,
+   re-run the quality gate if any code changed, then re-push (step 4):
+
+   ```bash
+   BASE=main REVIEWED=1 "$P" push <branch>
+   ```
+
+   Then **reply on that thread** with your conclusion:
 
    ```bash
    # Reply with an inline message:
@@ -97,6 +125,24 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 
    # Or reply from a file:
    pr.sh reply 27 3623709612 /tmp/reply.md
+   ```
+
+   For a general/top-level PR comment that isn't tied to a review thread
+   (e.g. flagging something found while reviewing a *different* PR, a
+   follow-up note, a status update): `pr.sh comment 27 "<body>"` (or a file
+   path, same convention as `reply`). To correct a prior comment,
+   `pr.sh comment-delete <id>` (the id from the URL `comment` printed) then
+   repost via `pr.sh comment` — never a raw `gh api -X DELETE`/`-X PATCH`,
+   same reason as everywhere else in this doc.
+
+   **For PR-level (non-thread) review comments** from `pr.sh reviews`: these
+   can't be threaded, so reply the same way — as a regular PR comment via
+   `pr.sh comment`. Use **quote-reply format** (`> quoted text`) so readers
+   know exactly which part of the review you're addressing:
+
+   ```bash
+   "$P" comment 27 "> The \`die\` message is quite long...
+   Acknowledged — shortened the message and moved the rationale to SKILL.md."
    ```
 
    **Never resolve threads yourself and never merge** — the maintainer does both.
@@ -117,14 +163,18 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
 BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
 cd '<path printed by pr.sh start>'         # <-- cd into THAT exact printed path; everything below runs from here
-BASE=main "$P" push   my-feature          # safe push + verify main didn't advance
+BASE=main REVIEWED=1 "$P" push my-feature # requires a review-pr run first; safe push + verify main didn't advance
 BASE=main "$P" open   "feat: my feature" body.md   # gh pr create --base main, then STOP
 BASE=main DRAFT=1 "$P" open "wip: experiment"      # open as draft (bots typically skip drafts)
 BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command without creating
 "$P" threads 17                            # list unresolved review threads on PR #17
 "$P" reviews 17                            # list PR-level review comments + their AI-agent prompts
+"$P" comment 17 "Status update: ..."               # general/top-level PR comment (inline)
+"$P" comment 17 /tmp/comment.md                    # general/top-level PR comment (file)
+"$P" comment-delete 5148799955                     # delete a prior comment (id from its URL)
 "$P" reply 17 3623709612 "Fixed in abc1234."       # reply to a thread (inline)
 "$P" reply 17 3623709612 /tmp/reply.md             # reply to a thread (file)
+"$P" comment 17 $'> quoted text\nAcknowledged.'    # PR-level quote-reply (bot identity); $'...' for a real newline
 # ...only once the PR is merged or abandoned, never right after `open`:
 BASE=main "$P" cleanup                     # verify pristine, remove worktree, print main checkout path
 ```
@@ -173,4 +223,9 @@ it concerns.
 - Never merge a PR or mark it ready-to-merge.
 - Never resolve review threads — reply, and let the maintainer resolve.
 - Never push unless the project's quality gate is green.
+- Never push without running `pr-review-toolkit:review-pr` first and
+  addressing what it flags (enforced by `pr.sh push` requiring `REVIEWED=1`).
+- Never call `gh` directly for a PR interaction — always through `pr.sh`
+  (`open`/`comment`/`comment-delete`/`reply`/`threads`/`reviews`), so the
+  agent identity enforcement can never be silently bypassed.
 - One concern per PR.

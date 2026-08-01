@@ -8,13 +8,23 @@
 #   start <branch>        create <branch> in a FRESH git worktree off up-to-date origin/BASE
 #                         (a sibling directory next to the repo, never the shared checkout)
 #                         and print its path — cd there for every remaining step.
-#   push <branch>         explicit-refspec push + verify branch landed & BASE didn't move
+#   push <branch>         requires REVIEWED=1 (run pr-review-toolkit:review-pr and fix what it
+#                         flags first); then explicit-refspec push + verify branch landed &
+#                         BASE didn't move
 #   open <title> [body]   gh pr create --base BASE (body = path to a markdown file), print URL, STOP
 #   threads <pr>          list UNRESOLVED review threads on a PR (work them one by one)
 #   reviews <pr>           list PR-LEVEL review comments (the "Overall Comments" a bot leaves on
 #                          the review itself, not on a line — these have no thread and can't be
 #                          replied to with `reply`). Pulls out each bot's "Prompt for AI Agent(s)"
 #                          block when present, since that's the actionable part.
+#   comment <pr> <body>   post a general/top-level PR comment, not tied to any review thread
+#                         (body = inline string or path to a markdown file); use this for
+#                         quote-reply responses to PR-level reviews too, since those have no
+#                         thread and can't use `reply`
+#   comment-delete <id>   delete a general/top-level PR comment by its numeric id (from the
+#                         URL printed by `comment`, or an id you already have) — the correction
+#                         path when a `comment` needs fixing, since GitHub comments can't be
+#                         edited via `gh pr comment`
 #   reply <pr> <id> <body> reply to a review thread comment (body = inline string or path to a markdown file)
 #   cleanup               once a task is FULLY done (PR merged or abandoned — not right after
 #                         opening; the review loop still needs this worktree): verify it's
@@ -31,6 +41,10 @@
 #   FORCE_REMOVE_IGNORED  set to 1 to let `cleanup` remove a worktree that still has gitignored
 #                         files in it (otherwise it refuses, since removal deletes the whole
 #                         directory — build artifacts are fine to lose, a stray .env isn't).
+#   REVIEWED              set to 1 to confirm pr-review-toolkit:review-pr has been run on the
+#                         changes and anything it flagged has been addressed. `push` refuses to
+#                         run without it — self-review before push catches what bots would flag
+#                         anyway, just before it's public on the PR instead of after.
 #   PR_BOT_DOPPLER_PROJECT / PR_BOT_DOPPLER_CONFIG  Doppler project/config holding the agent
 #                         identity secrets below (default: common/dev). Every gh call and every
 #                         commit this script makes uses this identity, NEVER whatever personal
@@ -129,6 +143,7 @@ cmd_start() {
 
 cmd_push() {
   local br="${1:?usage: pr.sh push <branch>}"
+  [ "${REVIEWED:-0}" = "1" ] || die "REVIEWED=1 not set — run pr-review-toolkit:review-pr, fix what it flags, then: REVIEWED=1 pr.sh push $br"
   [ "$(git rev-parse --abbrev-ref HEAD)" = "$br" ] || warn "HEAD is not '$br' (pushing HEAD anyway)"
   local base_before; base_before="$(remote_sha "$BASE")"
   log "pushing HEAD -> origin/$br (explicit refspec)"
@@ -153,6 +168,29 @@ cmd_open() {
   local url; url="$(gh "${args[@]}")"
   log "PR opened: $url"
   warn "STOP: do not merge or mark ready — bots/maintainer review and merge."
+}
+
+cmd_comment() {
+  local pr="${1:?usage: pr.sh comment <pr-number> <body>}"
+  local body="${2:?usage: pr.sh comment <pr-number> <body>}"
+  # Accept body as a file path or inline string, matching cmd_reply's convention.
+  local body_arg
+  if [ -f "$body" ]; then
+    body_arg="$(cat "$body")"
+  else
+    body_arg="$body"
+  fi
+  local url
+  url="$(gh pr comment "$pr" --body "$body_arg")"
+  log "comment posted: $url"
+}
+
+cmd_comment_delete() {
+  local id="${1:?usage: pr.sh comment-delete <comment-id>}"
+  local nwo owner repo; nwo="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
+  owner="${nwo%%/*}"; repo="${nwo##*/}"
+  gh api -X DELETE "repos/$owner/$repo/issues/comments/$id"
+  log "comment $id deleted"
 }
 
 cmd_reply() {
@@ -297,7 +335,9 @@ case "${1:-}" in
   open)    shift; cmd_open "$@" ;;
   threads) shift; cmd_threads "$@" ;;
   reviews) shift; cmd_reviews "$@" ;;
+  comment) shift; cmd_comment "$@" ;;
+  comment-delete) shift; cmd_comment_delete "$@" ;;
   reply)   shift; cmd_reply "$@" ;;
   cleanup) shift; cmd_cleanup "$@" ;;
-  *) die "usage: pr.sh {start|push|open|threads|reviews|reply|cleanup} ...  (BASE=$BASE)" ;;
+  *) die "usage: pr.sh {start|push|open|threads|reviews|comment|comment-delete|reply|cleanup} ...  (BASE=$BASE)" ;;
 esac
