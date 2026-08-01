@@ -17,6 +17,8 @@
 #                          the review itself, not on a line — these have no thread and can't be
 #                          replied to with `reply`). Pulls out each bot's "Prompt for AI Agent(s)"
 #                          block when present, since that's the actionable part.
+#   comment <pr> <body>   post a general/top-level PR comment, not tied to any review thread
+#                         (body = inline string or path to a markdown file)
 #   reply <pr> <id> <body> reply to a review thread comment (body = inline string or path to a markdown file)
 #   cleanup               once a task is FULLY done (PR merged or abandoned — not right after
 #                         opening; the review loop still needs this worktree): verify it's
@@ -162,6 +164,21 @@ cmd_open() {
   warn "STOP: do not merge or mark ready — bots/maintainer review and merge."
 }
 
+cmd_comment() {
+  local pr="${1:?usage: pr.sh comment <pr-number> <body>}"
+  local body="${2:?usage: pr.sh comment <pr-number> <body>}"
+  # Accept body as a file path or inline string, matching cmd_reply's convention.
+  local body_arg
+  if [ -f "$body" ]; then
+    body_arg="$(cat "$body")"
+  else
+    body_arg="$body"
+  fi
+  local url
+  url="$(gh pr comment "$pr" --body "$body_arg")"
+  log "comment posted: $url"
+}
+
 cmd_reply() {
   local pr="${1:?usage: pr.sh reply <pr-number> <comment-id> <body>}"
   local comment_id="${2:?usage: pr.sh reply <pr-number> <comment-id> <body>}"
@@ -304,7 +321,8 @@ case "${1:-}" in
   open)    shift; cmd_open "$@" ;;
   threads) shift; cmd_threads "$@" ;;
   reviews) shift; cmd_reviews "$@" ;;
+  comment) shift; cmd_comment "$@" ;;
   reply)   shift; cmd_reply "$@" ;;
   cleanup) shift; cmd_cleanup "$@" ;;
-  *) die "usage: pr.sh {start|push|open|threads|reviews|reply|cleanup} ...  (BASE=$BASE)" ;;
+  *) die "usage: pr.sh {start|push|open|threads|reviews|comment|reply|cleanup} ...  (BASE=$BASE)" ;;
 esac
