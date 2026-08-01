@@ -272,10 +272,10 @@ cmd_reviews() {
     fi
     echo
   done
-  echo "[pr] reply to these with: pr.sh comment $pr \"<body>\""
+  echo "[pr] reply to these with: pr.sh comment $pr '<body>'"
   echo "[pr] use quote-reply format so it's clear which part you're addressing:"
-  echo "[pr]   pr.sh comment $pr \"> quoted text from review"
-  echo "[pr]   Your response here.\""
+  echo "[pr]   pr.sh comment $pr '> quoted text from review"
+  echo "[pr]   Your response here.'"
 }
 
 cmd_cleanup() {
