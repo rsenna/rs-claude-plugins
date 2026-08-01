@@ -8,7 +8,9 @@
 #   start <branch>        create <branch> in a FRESH git worktree off up-to-date origin/BASE
 #                         (a sibling directory next to the repo, never the shared checkout)
 #                         and print its path — cd there for every remaining step.
-#   push <branch>         explicit-refspec push + verify branch landed & BASE didn't move
+#   push <branch>         requires REVIEWED=1 (run pr-review-toolkit:review-pr and fix what it
+#                         flags first); then explicit-refspec push + verify branch landed &
+#                         BASE didn't move
 #   open <title> [body]   gh pr create --base BASE (body = path to a markdown file), print URL, STOP
 #   threads <pr>          list UNRESOLVED review threads on a PR (work them one by one)
 #   reviews <pr>           list PR-LEVEL review comments (the "Overall Comments" a bot leaves on
@@ -31,6 +33,10 @@
 #   FORCE_REMOVE_IGNORED  set to 1 to let `cleanup` remove a worktree that still has gitignored
 #                         files in it (otherwise it refuses, since removal deletes the whole
 #                         directory — build artifacts are fine to lose, a stray .env isn't).
+#   REVIEWED              set to 1 to confirm pr-review-toolkit:review-pr has been run on the
+#                         changes and anything it flagged has been addressed. `push` refuses to
+#                         run without it — self-review before push catches what bots would flag
+#                         anyway, just before it's public on the PR instead of after.
 #   PR_BOT_DOPPLER_PROJECT / PR_BOT_DOPPLER_CONFIG  Doppler project/config holding the agent
 #                         identity secrets below (default: common/dev). Every gh call and every
 #                         commit this script makes uses this identity, NEVER whatever personal
@@ -129,6 +135,7 @@ cmd_start() {
 
 cmd_push() {
   local br="${1:?usage: pr.sh push <branch>}"
+  [ "${REVIEWED:-0}" = "1" ] || die "REVIEWED=1 not set — run pr-review-toolkit:review-pr on your changes first, fix what it flags, then re-run as 'REVIEWED=1 pr.sh push $br'. This is a guardrail, not a formality: skipping self-review here just means bots catch the same issues later, in public, after the PR is already open."
   [ "$(git rev-parse --abbrev-ref HEAD)" = "$br" ] || warn "HEAD is not '$br' (pushing HEAD anyway)"
   local base_before; base_before="$(remote_sha "$BASE")"
   log "pushing HEAD -> origin/$br (explicit refspec)"

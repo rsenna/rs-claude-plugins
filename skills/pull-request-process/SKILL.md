@@ -77,9 +77,15 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    those in this same PR, not a follow-up — a doc that contradicts the code
    it describes is a bug, not polish, and it only gets more misleading the
    longer it's left.
-3. **Gate.** Run the project's quality gate yourself. **Do not push unless green.**
-4. **Push.** `pr.sh push <branch>` — explicit-refspec push, then verifies the
-   branch landed and `origin/main` did **not** move.
+3. **Gate.** Run the project's quality gate yourself. **Do not push unless
+   green.** Then run `pr-review-toolkit:review-pr` on your changes and fix
+   what it flags — this is a self-review pass, catching what bots
+   (cubic-dev-ai, codacy, etc.) would flag anyway, just before it's public
+   on the PR instead of after.
+4. **Push.** `REVIEWED=1 pr.sh push <branch>` — explicit-refspec push, then
+   verifies the branch landed and `origin/main` did **not** move.
+   `REVIEWED=1` is required and confirms step 3's review pass happened;
+   `pr.sh push` refuses to run without it.
 5. **Open.** `pr.sh open "<title>" [body.md]` — `gh pr create --base main`,
    prints the URL, then **STOP.** Do not merge, do not mark ready — automated
    review bots and the maintainer review and merge.
@@ -117,7 +123,7 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
 BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
 cd '<path printed by pr.sh start>'         # <-- cd into THAT exact printed path; everything below runs from here
-BASE=main "$P" push   my-feature          # safe push + verify main didn't advance
+BASE=main REVIEWED=1 "$P" push my-feature # requires review-pr run first; safe push + verify main didn't advance
 BASE=main "$P" open   "feat: my feature" body.md   # gh pr create --base main, then STOP
 BASE=main DRAFT=1 "$P" open "wip: experiment"      # open as draft (bots typically skip drafts)
 BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command without creating
@@ -173,4 +179,6 @@ it concerns.
 - Never merge a PR or mark it ready-to-merge.
 - Never resolve review threads — reply, and let the maintainer resolve.
 - Never push unless the project's quality gate is green.
+- Never push without running `pr-review-toolkit:review-pr` first and
+  addressing what it flags (enforced by `pr.sh push` requiring `REVIEWED=1`).
 - One concern per PR.
