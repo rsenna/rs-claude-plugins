@@ -6,17 +6,19 @@ Across the six actively-worked repos under `~/REPO/ME` (roset.sh, iklo,
 what-about, guiltty, obsidian-hivemind, wawk.js), there is no consistent
 answer to "where does the agent doc live," "where do specs live," "where do
 tasks live," or "does this repo even have an agent doc." Evidence gathered
-2026-07-31/08-01:
+2026-07-31 (baseline):
 
 | | roset.sh | iklo | what-about | guiltty | obsidian-hivemind | wawk.js |
 |---|---|---|---|---|---|---|
 | Agent doc | AGENTS.md | AGENTS.md | AGENTS.md | none | none | none |
 | `repo.toml` | ✓ | — | ✓ | ✓ | — | ✓ |
-| `tasks/` dir | — (added 2026-08-01) | (specs/NNN/tasks.md) | ✓ | ✓ | ✓ | — |
+| `tasks/` dir | — (planned) | (specs/NNN/tasks.md) | ✓ | ✓ | ✓ | — |
 | Spec location | `SPEC.md` | `specs/NNN-slug/` | `docs/specs/` | `docs/spec.md` | — | — |
 
-Half these repos have no agent doc at all; no two agree on where specs or
-tasks live. This is a genuinely new standard to define, not a restore.
+Half these repos have no agent doc at all. Spec locations vary across every
+repo — no two agree. Task placement is more consistent (three repos use
+`tasks/`, one embeds tasks in `specs/NNN/tasks.md`, two have none) but still
+not uniform. This is a genuinely new standard to define, not a restore.
 
 ## Decision
 
@@ -62,6 +64,29 @@ ceremony exists*, which does scale with stage.
 wholesale (templates, scripts, `/speckit.*` slash commands included), not a
 hand-rolled imitation of its folder names.
 
+#### Required paths by stage (authoritative)
+
+The `audit` command checks for these exact paths; `scaffold` creates missing
+ones. Items marked *(optional)* are not reported missing.
+
+| Path | `prototype` | `in-progress` | `released` | `archived` |
+|---|---|---|---|---|
+| `repo.toml` (with `stage=`) | required | required | required | required |
+| `AGENTS.md` | required | required | required | — (untouched) |
+| `README.md` | required | required | required | required (frozen) |
+| `SPEC.md` | required | — | — | — |
+| `specs/` | — | required | required | — |
+| `specs/decisions/` | — | required | required | — |
+| `.specify/` (full spec-kit) | — | required | required | — |
+| `.specify/memory/constitution.md` | — | required | required | — |
+| `tasks/` | — | required | required | — |
+| `CHANGELOG.md` | — | *(optional)* | required | — |
+| `SECURITY.md` | — | *(optional)* | *(optional)* | — |
+
+`audit` fails with a clear error if `repo.toml` is absent or `stage` is
+missing/invalid — it does not infer a default stage. `scaffold` requires a
+valid, declared stage before creating any files.
+
 ### 3. Enforcement: on-demand `repo-standard` skill
 
 A new skill in this repo (`rsenna-claude-plugins`), alongside
@@ -69,10 +94,14 @@ A new skill in this repo (`rsenna-claude-plugins`), alongside
 
 - **`audit`** — read `repo.toml`'s `stage`, diff the repo's actual
   files/folders against that stage's required tier, report what's
-  missing/misplaced. Read-only, no side effects.
+  missing/misplaced. Read-only, no side effects. **Fails closed** if
+  `repo.toml` is absent, or `stage` is missing or not one of the four
+  valid values — no default stage is inferred.
 - **`scaffold`** — same diff, but offers to create what's missing. Never
   overwrites existing content (same non-destructive posture as
-  `map-issue-to-tasks`).
+  `map-issue-to-tasks`). **Requires a valid `stage`** already declared in
+  `repo.toml` before creating any files; if stage is absent or invalid,
+  stops and reports the problem without touching the working tree.
 
 Triggered on demand only (`/repo-standard audit`, `/repo-standard scaffold`)
 — explicitly **not** wired into `pull-request-process` as an automatic

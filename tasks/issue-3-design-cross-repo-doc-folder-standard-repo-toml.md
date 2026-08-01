@@ -18,15 +18,22 @@ https://github.com/rsenna/rs-claude-plugins/issues/3
     creation of what's missing), matching the design doc's Section 3.
   - Verify: manual dry run against at least one real repo per stage tier
     that exists today (e.g. roset.sh for `prototype`, iklo for
-    `in-progress`).
+    `in-progress`). Each test repo must have a valid `stage` in `repo.toml`
+    before running audit/scaffold — the skill fails closed on a missing or
+    invalid value (by design). Also verify that `audit` fails with a clear
+    error on a repo without `repo.toml`.
   - Files: `skills/repo-standard/SKILL.md` (+ any supporting script)
 
 - [ ] **3 — Set `stage` + roll out tiers per repo, one PR each**
   - Acceptance: each of roset.sh, iklo, what-about, guiltty,
     obsidian-hivemind, wawk.js has a `repo.toml` `stage` field and matches
-    its tier's required artifacts — shipped as separate, per-repo PRs
-    through the normal issue → worktree → PR flow, not one mass edit.
+    its tier's required artifacts (see the required-paths table in the design
+    doc — that table is authoritative; the file list below is non-exhaustive)
+    — shipped as separate, per-repo PRs through the normal issue → worktree →
+    PR flow, not one mass edit.
   - Verify: `repo-standard audit` (from task 2) reports clean for each repo
     after its PR merges.
-  - Files: `repo.toml`, `AGENTS.md`, `README.md`, and stage-specific spec
-    folders in each of the six repos.
+  - Files: `repo.toml`, `AGENTS.md`, `README.md`, and stage-specific paths
+    per the required-paths table (e.g. `specs/`, `.specify/`,
+    `specs/decisions/`, `tasks/`, `CHANGELOG.md`) in each of the six repos,
+    as applicable for that repo's declared stage.
