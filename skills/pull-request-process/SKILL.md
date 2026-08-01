@@ -174,7 +174,7 @@ BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command with
 "$P" comment-delete 5148799955                     # delete a prior comment (id from its URL)
 "$P" reply 17 3623709612 "Fixed in abc1234."       # reply to a thread (inline)
 "$P" reply 17 3623709612 /tmp/reply.md             # reply to a thread (file)
-"$P" comment 17 "> quoted text\nAcknowledged."     # PR-level quote-reply (bot identity)
+"$P" comment 17 $'> quoted text\nAcknowledged.'    # PR-level quote-reply (bot identity); $'...' for a real newline
 # ...only once the PR is merged or abandoned, never right after `open`:
 BASE=main "$P" cleanup                     # verify pristine, remove worktree, print main checkout path
 ```
