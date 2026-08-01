@@ -18,7 +18,9 @@
 #                          replied to with `reply`). Pulls out each bot's "Prompt for AI Agent(s)"
 #                          block when present, since that's the actionable part.
 #   comment <pr> <body>   post a general/top-level PR comment, not tied to any review thread
-#                         (body = inline string or path to a markdown file)
+#                         (body = inline string or path to a markdown file); use this for
+#                         quote-reply responses to PR-level reviews too, since those have no
+#                         thread and can't use `reply`
 #   comment-delete <id>   delete a general/top-level PR comment by its numeric id (from the
 #                         URL printed by `comment`, or an id you already have) — the correction
 #                         path when a `comment` needs fixing, since GitHub comments can't be
@@ -141,7 +143,7 @@ cmd_start() {
 
 cmd_push() {
   local br="${1:?usage: pr.sh push <branch>}"
-  [ "${REVIEWED:-0}" = "1" ] || die "REVIEWED=1 not set — run pr-review-toolkit:review-pr on your changes first, fix what it flags, then re-run as 'REVIEWED=1 pr.sh push $br'. This is a guardrail, not a formality: skipping self-review here just means bots catch the same issues later, in public, after the PR is already open."
+  [ "${REVIEWED:-0}" = "1" ] || die "REVIEWED=1 not set — run pr-review-toolkit:review-pr, fix what it flags, then: REVIEWED=1 pr.sh push $br"
   [ "$(git rev-parse --abbrev-ref HEAD)" = "$br" ] || warn "HEAD is not '$br' (pushing HEAD anyway)"
   local base_before; base_before="$(remote_sha "$BASE")"
   log "pushing HEAD -> origin/$br (explicit refspec)"

@@ -92,7 +92,9 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    green.** Then run `pr-review-toolkit:review-pr` on your changes and fix
    what it flags — this is a self-review pass, catching what bots
    (cubic-dev-ai, codacy, etc.) would flag anyway, just before it's public
-   on the PR instead of after.
+   on the PR instead of after. **If the review pass leads to code changes,
+   re-run the quality gate on the updated code before pushing** — `REVIEWED=1`
+   only satisfies the push guard, not the gate.
 4. **Push.** `REVIEWED=1 pr.sh push <branch>` — explicit-refspec push, then
    verifies the branch landed and `origin/main` did **not** move.
    `REVIEWED=1` is required and attests that step 3's review pass happened
@@ -106,8 +108,16 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    review comments (a bot's "Overall Comments" on the review itself, not on a
    line — these have no thread and can't be replied to with `reply`; the
    command pulls out each bot's "Prompt for AI Agent(s)" block when present).
-   For each unresolved thread: make the fix if warranted (re-push via step 4,
-   keeping the gate green), then **reply on that thread** with your conclusion:
+
+   **For each unresolved thread:** make the fix if warranted, then re-run
+   `pr-review-toolkit:review-pr` on the updated diff and fix what it flags,
+   re-run the quality gate if any code changed, then re-push (step 4):
+
+   ```bash
+   BASE=main REVIEWED=1 "$P" push <branch>
+   ```
+
+   Then **reply on that thread** with your conclusion:
 
    ```bash
    # Reply with an inline message:
@@ -124,6 +134,16 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    `pr.sh comment-delete <id>` (the id from the URL `comment` printed) then
    repost via `pr.sh comment` — never a raw `gh api -X DELETE`/`-X PATCH`,
    same reason as everywhere else in this doc.
+
+   **For PR-level (non-thread) review comments** from `pr.sh reviews`: these
+   can't be threaded, so reply the same way — as a regular PR comment via
+   `pr.sh comment`. Use **quote-reply format** (`> quoted text`) so readers
+   know exactly which part of the review you're addressing:
+
+   ```bash
+   "$P" comment 27 "> The \`die\` message is quite long...
+   Acknowledged — shortened the message and moved the rationale to SKILL.md."
+   ```
 
    **Never resolve threads yourself and never merge** — the maintainer does both.
 7. **Cleanup.** Once — and only once — the task is fully done (PR **merged**,
@@ -143,7 +163,7 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
 BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
 cd '<path printed by pr.sh start>'         # <-- cd into THAT exact printed path; everything below runs from here
-BASE=main REVIEWED=1 "$P" push my-feature # requires review-pr run first; safe push + verify main didn't advance
+BASE=main REVIEWED=1 "$P" push my-feature # requires a review-pr run first; safe push + verify main didn't advance
 BASE=main "$P" open   "feat: my feature" body.md   # gh pr create --base main, then STOP
 BASE=main DRAFT=1 "$P" open "wip: experiment"      # open as draft (bots typically skip drafts)
 BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command without creating
@@ -154,6 +174,7 @@ BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command with
 "$P" comment-delete 5148799955                     # delete a prior comment (id from its URL)
 "$P" reply 17 3623709612 "Fixed in abc1234."       # reply to a thread (inline)
 "$P" reply 17 3623709612 /tmp/reply.md             # reply to a thread (file)
+"$P" comment 17 "> quoted text\nAcknowledged."     # PR-level quote-reply (bot identity)
 # ...only once the PR is merged or abandoned, never right after `open`:
 BASE=main "$P" cleanup                     # verify pristine, remove worktree, print main checkout path
 ```
