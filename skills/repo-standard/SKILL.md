@@ -39,7 +39,7 @@ This table is the single source of truth. `audit` reports anything in the "requi
 | Path | `prototype` | `in-progress` | `released` | `archived` |
 |---|---|---|---|---|
 | `repo.toml` (with `stage=`) | required | required | required | required |
-| `AGENTS.md` | required | required | required | — (untouched) |
+| `AGENTS.md` | required | required | required | required (frozen) |
 | `README.md` | required | required | required | required (frozen) |
 | `SPEC.md` | required | — | — | — |
 | `specs/` | — | required | required | — |
@@ -51,7 +51,7 @@ This table is the single source of truth. `audit` reports anything in the "requi
 | `SECURITY.md` | — | *(optional)* | *(optional)* | — |
 
 **`archived` notes:**
-- `AGENTS.md` and `README.md` must exist (frozen) but are not created/enforced by scaffold — they should already be there from a prior stage.
+- `AGENTS.md` and `README.md` are marked `required (frozen)` — audit checks they exist; scaffold does **not** create them (they should already exist from a prior stage). If they are somehow absent, that is reported but not auto-fixed.
 - All spec/tasks/changelog artifacts are not required and not scaffolded.
 
 ## Starter content for `scaffold`
@@ -64,7 +64,11 @@ When creating a missing required file, use the minimal content below. All starte
 stage = "prototype"  # prototype | in-progress | released | archived
 ```
 
-### `AGENTS.md` (prototype style)
+### `AGENTS.md`
+
+Use the **prototype style** for `stage = prototype`; use the **in-progress / released style** for `stage = in-progress` or `stage = released`. (`archived` repos are not scaffolded.)
+
+#### prototype style
 ```markdown
 # AGENTS.md
 
@@ -78,7 +82,7 @@ stage = "prototype"  # prototype | in-progress | released | archived
 <!-- TODO: the quality gate command (tests, linter, formatter) -->
 ```
 
-### `AGENTS.md` (in-progress / released style)
+#### in-progress / released style
 ```markdown
 # AGENTS.md
 
@@ -116,7 +120,7 @@ stage = "prototype"  # prototype | in-progress | released | archived
 Create as empty directories (add a `.gitkeep` if needed).
 
 ### `.specify/` and `.specify/memory/constitution.md`
-`.specify/` should be bootstrapped from iklo's reference implementation — do **not** create a hand-rolled imitation. Copy the full `.specify/` tree from `~/REPO/ME/iklo` and adapt only the project-specific references in `constitution.md`.
+`.specify/` should be bootstrapped from iklo's reference implementation — do **not** create a hand-rolled imitation. The reference is in the `iklo` repo (sibling of the target repo under `~/REPO/ME/` by default — adjust the path to match your local layout). Copy the full `.specify/` tree from that reference and adapt only the project-specific references in `constitution.md`.
 
 ```markdown
 # Constitution — <repo name>
@@ -136,6 +140,17 @@ All notable changes to this project will be documented here.
 
 <!-- TODO: follow Keep a Changelog format (https://keepachangelog.com) -->
 ```
+
+## Invocation
+
+This skill is a **GitHub Copilot CLI slash command** — invoke it by typing `/repo-standard` in the Copilot CLI chat, followed by the mode:
+
+```
+/repo-standard audit      # read-only compliance check
+/repo-standard scaffold   # non-destructive creation of missing artifacts
+```
+
+Run from inside the target repo's directory (so the skill can find `repo.toml` and check paths relative to the repo root).
 
 ## Example session
 
