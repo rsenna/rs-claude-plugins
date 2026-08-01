@@ -4,7 +4,7 @@ https://github.com/rsenna/rs-claude-plugins/issues/3
 
 ## Tasks
 
-- [x] **1 — Write and commit the design doc**
+- [x] **1 — Write and commit the design doc** — ✅ merged (#4)
   - Acceptance: `docs/superpowers/specs/2026-08-01-repo-standard-design.md`
     covers the `repo.toml` `stage` field, the per-stage doc/folder tier
     table, and the `repo-standard` skill's audit/scaffold enforcement model.
