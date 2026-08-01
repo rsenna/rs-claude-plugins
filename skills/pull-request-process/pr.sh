@@ -17,7 +17,9 @@
 #                          the review itself, not on a line — these have no thread and can't be
 #                          replied to with `reply`). Pulls out each bot's "Prompt for AI Agent(s)"
 #                          block when present, since that's the actionable part.
-#   reply <pr> <id> <body> reply to a review thread comment (body = inline string or path to a markdown file)
+#   comment <pr> <body>    post a PR-level comment as the bot identity (body = inline string or path to a
+#                          markdown file); use this for quote-reply responses to PR-level reviews,
+#                          since those have no thread and can't use `reply`
 #   cleanup               once a task is FULLY done (PR merged or abandoned — not right after
 #                         opening; the review loop still needs this worktree): verify it's
 #                         pristine, remove it, and print the main checkout's path to cd back
@@ -241,6 +243,21 @@ cmd_reviews() {
   done
 }
 
+cmd_comment() {
+  local pr="${1:?usage: pr.sh comment <pr-number> <body>}"
+  local body="${2:?usage: pr.sh comment <pr-number> <body>}"
+  # Accept body as a file path or inline string.
+  local body_arg
+  if [ -f "$body" ]; then
+    body_arg="$(cat "$body")"
+  else
+    body_arg="$body"
+  fi
+  local url
+  url="$(gh pr comment "$pr" --body "$body_arg" --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)")"
+  log "comment posted: $url"
+}
+
 cmd_cleanup() {
   git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repo"
   # git status ignores gitignored build artifacts, so a non-empty result is real
@@ -305,6 +322,7 @@ case "${1:-}" in
   threads) shift; cmd_threads "$@" ;;
   reviews) shift; cmd_reviews "$@" ;;
   reply)   shift; cmd_reply "$@" ;;
+  comment) shift; cmd_comment "$@" ;;
   cleanup) shift; cmd_cleanup "$@" ;;
-  *) die "usage: pr.sh {start|push|open|threads|reviews|reply|cleanup} ...  (BASE=$BASE)" ;;
+  *) die "usage: pr.sh {start|push|open|threads|reviews|reply|comment|cleanup} ...  (BASE=$BASE)" ;;
 esac

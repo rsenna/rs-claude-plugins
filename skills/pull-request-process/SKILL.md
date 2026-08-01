@@ -98,8 +98,15 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    line — these have no thread and can't be replied to with `reply`; the
    command pulls out each bot's "Prompt for AI Agent(s)" block when present).
 
-   **For each unresolved thread:** make the fix if warranted (re-push via step 4,
-   keeping the gate green), then **reply on that thread** with your conclusion:
+   **For each unresolved thread:** make the fix if warranted, then re-run
+   `pr-review-toolkit:review-pr` on the updated diff and fix what it flags,
+   re-run the quality gate if any code changed, then re-push (step 4):
+
+   ```bash
+   BASE=main REVIEWED=1 "$P" push <branch>
+   ```
+
+   Then **reply on that thread** with your conclusion:
 
    ```bash
    # Reply with an inline message:
@@ -110,12 +117,13 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    ```
 
    **For PR-level (non-thread) review comments** from `pr.sh reviews`: these
-   can't be threaded, so reply as a regular PR comment via `gh pr comment`.
+   can't be threaded, so reply as a regular PR comment using `pr.sh comment`
+   (which runs as the bot identity, same as every other `pr.sh` subcommand).
    Use **quote-reply format** (`> quoted text`) so readers know exactly which
    part of the review you're addressing:
 
    ```bash
-   gh pr comment 27 --body "> The \`die\` message is quite long...
+   "$P" comment 27 "> The \`die\` message is quite long...
    Acknowledged — shortened the message and moved the rationale to SKILL.md."
    ```
 
@@ -145,6 +153,7 @@ BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command with
 "$P" reviews 17                            # list PR-level review comments + their AI-agent prompts
 "$P" reply 17 3623709612 "Fixed in abc1234."       # reply to a thread (inline)
 "$P" reply 17 3623709612 /tmp/reply.md             # reply to a thread (file)
+"$P" comment 17 "> quoted text\nAcknowledged."     # PR-level quote-reply (bot identity)
 # ...only once the PR is merged or abandoned, never right after `open`:
 BASE=main "$P" cleanup                     # verify pristine, remove worktree, print main checkout path
 ```
