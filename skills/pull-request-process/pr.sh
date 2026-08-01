@@ -19,6 +19,10 @@
 #                          block when present, since that's the actionable part.
 #   comment <pr> <body>   post a general/top-level PR comment, not tied to any review thread
 #                         (body = inline string or path to a markdown file)
+#   comment-delete <id>   delete a general/top-level PR comment by its numeric id (from the
+#                         URL printed by `comment`, or an id you already have) — the correction
+#                         path when a `comment` needs fixing, since GitHub comments can't be
+#                         edited via `gh pr comment`
 #   reply <pr> <id> <body> reply to a review thread comment (body = inline string or path to a markdown file)
 #   cleanup               once a task is FULLY done (PR merged or abandoned — not right after
 #                         opening; the review loop still needs this worktree): verify it's
@@ -179,6 +183,14 @@ cmd_comment() {
   log "comment posted: $url"
 }
 
+cmd_comment_delete() {
+  local id="${1:?usage: pr.sh comment-delete <comment-id>}"
+  local nwo owner repo; nwo="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
+  owner="${nwo%%/*}"; repo="${nwo##*/}"
+  gh api -X DELETE "repos/$owner/$repo/issues/comments/$id"
+  log "comment $id deleted"
+}
+
 cmd_reply() {
   local pr="${1:?usage: pr.sh reply <pr-number> <comment-id> <body>}"
   local comment_id="${2:?usage: pr.sh reply <pr-number> <comment-id> <body>}"
@@ -322,7 +334,8 @@ case "${1:-}" in
   threads) shift; cmd_threads "$@" ;;
   reviews) shift; cmd_reviews "$@" ;;
   comment) shift; cmd_comment "$@" ;;
+  comment-delete) shift; cmd_comment_delete "$@" ;;
   reply)   shift; cmd_reply "$@" ;;
   cleanup) shift; cmd_cleanup "$@" ;;
-  *) die "usage: pr.sh {start|push|open|threads|reviews|comment|reply|cleanup} ...  (BASE=$BASE)" ;;
+  *) die "usage: pr.sh {start|push|open|threads|reviews|comment|comment-delete|reply|cleanup} ...  (BASE=$BASE)" ;;
 esac

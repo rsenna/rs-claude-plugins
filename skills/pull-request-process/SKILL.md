@@ -34,11 +34,12 @@ identity.
 feel too small to bother with `pr.sh`. A direct `gh` call rides whatever
 `gh auth` happens to be ambient (your personal account, if you're logged in
 locally), silently reintroducing the exact leak this identity enforcement
-exists to prevent. Every PR interaction has a `pr.sh` subcommand: opening
-(`open`), a general/top-level comment (`comment`), a threaded reply
-(`reply`), reading review state (`threads`, `reviews`). If a PR action you
-need has no subcommand yet, that's a gap in `pr.sh` to fix — add the
-subcommand rather than reaching for raw `gh`.
+on. Every PR interaction has a `pr.sh` subcommand: opening
+(`open`), a general/top-level comment (`comment`), correcting one
+(`comment-delete`), a threaded reply (`reply`), reading review state
+(`threads`, `reviews`). If a PR action you need has no subcommand yet,
+that's a gap in `pr.sh` to fix — add the subcommand rather than reaching for
+raw `gh`.
 
 ## Worktrees, not the shared checkout
 
@@ -120,10 +121,10 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    For a general/top-level PR comment that isn't tied to a review thread
    (e.g. flagging something found while reviewing a *different* PR, a
    follow-up note, a status update): `pr.sh comment 27 "<body>"` (or a file
-   path, same convention as `reply`). This is also how to correct your own
-   prior comment — the underlying GitHub comment can't be edited via `gh`,
-   so delete the wrong one (`gh api -X DELETE .../issues/comments/<id>`
-   using the same bot token) and repost via `pr.sh comment`.
+   path, same convention as `reply`). To correct a prior comment,
+   `pr.sh comment-delete <id>` (the id from the URL `comment` printed) then
+   repost via `pr.sh comment` — never a raw `gh api -X DELETE`/`-X PATCH`,
+   same reason as everywhere else in this doc.
 
    **Never resolve threads yourself and never merge** — the maintainer does both.
 7. **Cleanup.** Once — and only once — the task is fully done (PR **merged**,
@@ -151,6 +152,7 @@ BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command with
 "$P" reviews 17                            # list PR-level review comments + their AI-agent prompts
 "$P" comment 17 "Status update: ..."               # general/top-level PR comment (inline)
 "$P" comment 17 /tmp/comment.md                    # general/top-level PR comment (file)
+"$P" comment-delete 5148799955                     # delete a prior comment (id from its URL)
 "$P" reply 17 3623709612 "Fixed in abc1234."       # reply to a thread (inline)
 "$P" reply 17 3623709612 /tmp/reply.md             # reply to a thread (file)
 # ...only once the PR is merged or abandoned, never right after `open`:
@@ -204,6 +206,6 @@ it concerns.
 - Never push without running `pr-review-toolkit:review-pr` first and
   addressing what it flags (enforced by `pr.sh push` requiring `REVIEWED=1`).
 - Never call `gh` directly for a PR interaction — always through `pr.sh`
-  (`open`/`comment`/`reply`/`threads`/`reviews`), so the agent identity
-  enforcement can never be silently bypassed.
+  (`open`/`comment`/`comment-delete`/`reply`/`threads`/`reviews`), so the
+  agent identity enforcement can never be silently bypassed.
 - One concern per PR.
