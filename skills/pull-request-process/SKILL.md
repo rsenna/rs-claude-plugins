@@ -81,7 +81,9 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    green.** Then run `pr-review-toolkit:review-pr` on your changes and fix
    what it flags — this is a self-review pass, catching what bots
    (cubic-dev-ai, codacy, etc.) would flag anyway, just before it's public
-   on the PR instead of after.
+   on the PR instead of after. **If the review pass leads to code changes,
+   re-run the quality gate on the updated code before pushing** — `REVIEWED=1`
+   only satisfies the push guard, not the gate.
 4. **Push.** `REVIEWED=1 pr.sh push <branch>` — explicit-refspec push, then
    verifies the branch landed and `origin/main` did **not** move.
    `REVIEWED=1` is required and attests that step 3's review pass happened
@@ -124,7 +126,7 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
 BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
 cd '<path printed by pr.sh start>'         # <-- cd into THAT exact printed path; everything below runs from here
-BASE=main REVIEWED=1 "$P" push my-feature # requires review-pr run first; safe push + verify main didn't advance
+BASE=main REVIEWED=1 "$P" push my-feature # requires a review-pr run first; safe push + verify main didn't advance
 BASE=main "$P" open   "feat: my feature" body.md   # gh pr create --base main, then STOP
 BASE=main DRAFT=1 "$P" open "wip: experiment"      # open as draft (bots typically skip drafts)
 BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command without creating
