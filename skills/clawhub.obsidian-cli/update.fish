@@ -7,8 +7,9 @@ fd . --exclude update.fish | xargs rm -rf {}
 
 ## Source moved to GitHub: https://github.com/slmoloch/obsidian-official-cli-skill
 ## ClawHub source (dead): https://clawhub.ai/slmoloch/skills/obsidian-oficial-cli
+## Pinned to v1.0.0 — update this when a new release is available upstream.
 
-set -l GITHUB_RAW https://raw.githubusercontent.com/slmoloch/obsidian-official-cli-skill/main
+set -l GITHUB_RAW https://raw.githubusercontent.com/slmoloch/obsidian-official-cli-skill/v1.0.0
 set -l FILES SKILL.md
 
 for file in $FILES
