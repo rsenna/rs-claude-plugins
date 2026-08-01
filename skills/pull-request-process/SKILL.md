@@ -33,13 +33,12 @@ identity.
 `gh pr create`, `gh api .../comments`, etc.) — even for one-off actions that
 feel too small to bother with `pr.sh`. A direct `gh` call rides whatever
 `gh auth` happens to be ambient (your personal account, if you're logged in
-locally), silently reintroducing the exact leak this identity enforcement
-on. Every PR interaction has a `pr.sh` subcommand: opening
-(`open`), a general/top-level comment (`comment`), correcting one
-(`comment-delete`), a threaded reply (`reply`), reading review state
-(`threads`, `reviews`). If a PR action you need has no subcommand yet,
-that's a gap in `pr.sh` to fix — add the subcommand rather than reaching for
-raw `gh`.
+locally), silently reintroducing the exact leak this identity enforcement exists to
+prevent. Every PR interaction has a `pr.sh` subcommand: opening (`open`), a
+general/top-level comment (`comment`), correcting one (`comment-delete`), a
+threaded reply (`reply`), reading review state (`threads`, `reviews`). If a
+PR action you need has no subcommand yet, that's a gap in `pr.sh` to fix —
+add the subcommand rather than reaching for raw `gh`.
 
 ## Worktrees, not the shared checkout
 
