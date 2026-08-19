@@ -82,15 +82,67 @@ be revisited later when a repo does adopt it.
 
 ### Audit behavior
 
-`.gitignore` is the one required path where audit does more than check existence:
-it also verifies the file contains both a line starting with `# graphify` and a
-line containing `graphify-out/*` — the comment alone isn't sufficient, since a
-`.gitignore` with the marker comment but no actual pattern would still (wrongly)
-pass a comment-only check. A `.gitignore` that exists but lacks either is reported
-as non-compliant. This is a deliberate exception to repo-standard's existing
-presence-only audit pattern, justified because a missing graphify block silently
-defeats the whole point of the requirement (a stray `graph.html`, `cache/`, or
-future export tree getting committed).
+`.gitignore` is the one required path where audit does more than check existence.
+
+An earlier draft of this design checked for the presence of a `# graphify`
+comment plus a `graphify-out/*` pattern via text matching. Review on the PR
+that shipped this design (both `sourcery-ai` and `copilot-pull-request-reviewer`
+independently) caught that text matching can't actually confirm the allowlist
+*works*: the deny-all pattern could be present with one or both `!` negations
+missing (silently blocking `graph.json`/`GRAPH_REPORT.md` from ever being
+committed while still "looking" compliant), a pattern could be commented out,
+or a later unrelated rule elsewhere in the file could override the allowlist
+— none of which a substring check would catch, and a comment-wording or
+whitespace tweak could just as easily produce a false negative on an otherwise
+correct file.
+
+The fix: audit is **behavioral**, not textual. From the repo root, run
+`git check-ignore --no-index -q <path>` against five representative paths and
+read the exit code (`0` = ignored, `1` = not ignored; `-q` suppresses output,
+so the two "not ignored" paths print nothing either way and the exit code is
+the only signal):
+
+| Path | Expected exit code | Meaning |
+|---|---|---|
+| `graphify-out/graph.html` | `0` | ignored |
+| `graphify-out/some-bookkeeping-file` | `0` | ignored |
+| `graphify-out/wiki/index.md` | `0` | ignored (nested export tree) |
+| `graphify-out/graph.json` | `1` | not ignored |
+| `graphify-out/GRAPH_REPORT.md` | `1` | not ignored |
+
+**`--no-index` is not optional.** A first pass at this fix (caught in the same
+review round) ran plain `git check-ignore` and verified it manually — but only
+against a scratch repo where nothing was committed yet. In every real target
+repo, `graph.json`/`GRAPH_REPORT.md` *are* committed by design, and without
+`--no-index`, `git check-ignore` answers "not ignored" for any tracked path
+regardless of `.gitignore` content — silently reducing the two positive probes
+to a no-op in exactly the repos this standard is meant to protect.
+`--no-index` forces git to evaluate the ignore rules directly instead of
+consulting the index. Confirmed by reproducing the bots' exact scenario
+(negations deleted from an already-committed repo): without `--no-index` all
+five probes falsely reported compliant; with it, the broken allowlist was
+correctly caught.
+
+The fifth probe (`wiki/index.md`) closes a second gap the first four paths
+didn't cover: all four original probes are flat files directly under
+`graphify-out/`, so a pattern set that only matches flat files (e.g.
+`graphify-out/*.html` plus a literal filename, instead of the real
+`graphify-out/*` deny-all) would pass all four while leaving an entire nested
+export tree — including the `graphify-out/wiki/index.md` file `CLAUDE.md`
+tells agents to read — committable.
+
+Exit code `128` (not a git repo, unsupported flag, git version too old) is an
+audit error, not a verdict — report it as "audit could not run," never treat
+a non-zero, non-`1` code as "not ignored."
+
+If any of the five doesn't match its expected verdict, `.gitignore` is
+reported non-compliant, even though the file exists. This catches the
+text-matching failure modes above by asking the same question audit
+ultimately cares about — would `git add -A` actually pick up the two
+committed files and skip everything else — instead of a text proxy for it.
+The five paths are representative, not exhaustive; extend the table if
+`graphify-out/`'s output layout grows a new top-level shape worth probing.
+Non-git repos: report the `.gitignore` row as not applicable.
 
 Every other required path keeps its existing presence-only check — this is not a
 general shift toward content auditing.
