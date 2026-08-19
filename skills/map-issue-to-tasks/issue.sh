@@ -3,13 +3,13 @@
 #
 # Subcommands:
 #   create <title> <file>  open a new issue: <title> + <file> as the body (DRY_RUN=1 prints instead of posting)
-#   fetch <n>            print a readable digest of issue #n (title, state, labels, body, comments)
-#   json  <n>            raw JSON (number,title,state,labels,body,comments,url) for parsing
-#   slug  <n>            print "<n>-<slugified-title>" (used for tasks/issue-<n>-<slug>.md)
-#   comment <n> <file>   post <file> as a comment on #n   (DRY_RUN=1 prints instead of posting)
-#   close <n> <file>     post <file> as a comment on #n, then close it (DRY_RUN=1 prints, no close)
-#   label <n>            apply the LABEL (default "mapped") to #n, creating it if missing
-#   unmapped             list open issues that don't have LABEL yet (what's still unmapped)
+#   fetch <n>              print a readable digest of issue #n (title, state, labels, body, comments)
+#   json  <n>               raw JSON (number,title,state,labels,body,comments,url) for parsing
+#   slug  <n>               print "<n>-<slugified-title>" (used for tasks/issue-<n>-<slug>.md)
+#   comment <n> <file>     post <file> as a comment on #n   (DRY_RUN=1 prints instead of posting)
+#   close <n> <file>       post <file> as a comment on #n, then close it (DRY_RUN=1 prints, no close)
+#   label <n>              apply the LABEL (default "mapped") to #n, creating it if missing
+#   unmapped               list open issues that don't have LABEL yet (what's still unmapped)
 #
 # Env:
 #   DRY_RUN=1   never write to GitHub; print what would be posted.
