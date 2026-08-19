@@ -52,7 +52,7 @@ ceremony exists*, which does scale with stage.
 | Artifact | `prototype` | `in-progress` (= iklo today) | `released` | `archived` |
 |---|---|---|---|---|
 | `repo.toml` (`stage=...`) | ✓ | ✓ | ✓ | ✓ |
-| `AGENTS.md` | terse (rules/setup/validation, roset.sh's current style) | rich (reality-check of what's implemented, decided rules, dev commands, "where things live" map) | in-progress + versioning/migration discipline | untouched, not enforced |
+| `AGENTS.md` | terse (rules/setup/validation, roset.sh's current style) | rich (reality-check of what's implemented, decided rules, dev commands, "where things live" map) | in-progress + versioning/migration discipline | frozen, marked archived |
 | `README.md` | full outward-facing (status, limitations, next steps) | short — AGENTS.md is the hub, README just orients | polished for external consumers (install, badges, supported versions) | frozen, marked archived |
 | Spec | single `SPEC.md` | `specs/NNN-slug/{spec,plan,tasks}.md` (spec-kit) | same as in-progress | none required |
 | ADRs | none | `specs/decisions/ADR-NNNN` | same | none |
@@ -72,7 +72,8 @@ ones. Items marked *(optional)* are not reported missing.
 | Path | `prototype` | `in-progress` | `released` | `archived` |
 |---|---|---|---|---|
 | `repo.toml` (with `stage=`) | required | required | required | required |
-| `AGENTS.md` | required | required | required | — (untouched) |
+| `.gitignore` (graphify block, behavior-verified) | required | required | required | required |
+| `AGENTS.md` | required | required | required | required (frozen) |
 | `README.md` | required | required | required | required (frozen) |
 | `SPEC.md` | required | — | — | — |
 | `specs/` | — | required | required | — |
@@ -86,6 +87,15 @@ ones. Items marked *(optional)* are not reported missing.
 `audit` fails with a clear error if `repo.toml` is absent or `stage` is
 missing/invalid — it does not infer a default stage. `scaffold` requires a
 valid, declared stage before creating any files.
+
+> **Addendum (2026-08-19):** `.gitignore` added as a required path at every
+> stage, added by
+> [2026-08-19-graphify-gitignore-standard-design.md](2026-08-19-graphify-gitignore-standard-design.md),
+> which also defines the exact starter content and the (singular) exception
+> where audit checks content, not just presence. This edit also reconciled the
+> `AGENTS.md`/`archived` row above with `skills/repo-standard/SKILL.md`'s own
+> archived notes (both now read "required (frozen)"); the two had silently
+> drifted apart before this pass.
 
 ### 3. Enforcement: on-demand `repo-standard` skill
 

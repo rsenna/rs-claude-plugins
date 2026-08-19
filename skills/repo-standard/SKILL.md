@@ -23,7 +23,7 @@ Both fail closed if `repo.toml` is absent or `stage` is missing/invalid.
 
 1. **Verify bootstrap:** confirm `repo.toml` exists and `stage` is a valid value. If not, stop with a clear error — do not infer a default.
 2. **Read the stage** from `repo.toml`.
-3. **Diff against the required-paths table** (see below). For each required path: check whether it exists. For `repo.toml` itself, also confirm the `stage=` line is present and valid.
+3. **Diff against the required-paths table** (see below). For each required path: check whether it exists. For `repo.toml` itself, also confirm the `stage=` line is present and valid. For `.gitignore`, existence isn't enough — verify the graphify block *works*, not that it merely contains certain text (see the `### .gitignore` starter-content section below, "Audit behavior"). This is the one required path with a behavioral check, everywhere else stays presence-only.
 4. **Report** missing required paths, note optional paths that are absent (for information only), and confirm what is already present. Output is human-readable; no files are created or modified.
 
 ### `scaffold` — non-destructive creation
@@ -39,6 +39,7 @@ This table is the single source of truth. `audit` reports anything in the "requi
 | Path | `prototype` | `in-progress` | `released` | `archived` |
 |---|---|---|---|---|
 | `repo.toml` (with `stage=`) | required | required | required | required |
+| `.gitignore` (graphify block, behavior-verified) | required | required | required | required |
 | `AGENTS.md` | required | required | required | required (frozen) |
 | `README.md` | required | required | required | required (frozen) |
 | `SPEC.md` | required | — | — | — |
@@ -56,9 +57,47 @@ This table is the single source of truth. `audit` reports anything in the "requi
 
 ## Starter content for `scaffold`
 
-When creating a missing required file, use the minimal content below. All starters include a `# TODO` marker so the maintainer knows what to fill in.
+When creating a missing required file, use the minimal content below. Most starters include a `# TODO` marker so the maintainer knows what to fill in — `.gitignore` is the exception, since there's nothing project-specific to fill in.
 
 > **Note:** `repo.toml` is never created by scaffold — both modes require it to already exist with a valid `stage`. If it is absent, stop and tell the user to create it manually first.
+
+### `.gitignore`
+Same graphify block in every repo, regardless of whether `/graphify` has been run yet — the goal is one standard template, not a conditional one. If `.gitignore` already exists but is missing the graphify block, scaffold does **not** auto-append (never overwrite existing content, even if it looks incomplete) — it reports the gap and moves on, same as any other required path.
+```gitignore
+# OS / editor
+.DS_Store
+*.swp
+
+# graphify (knowledge graph) — allowlist: commit only graph.json + GRAPH_REPORT.md,
+# ignore everything else graphify-out/ produces (exports, caches, bookkeeping)
+graphify-out/*
+!graphify-out/graph.json
+!graphify-out/GRAPH_REPORT.md
+```
+
+**Audit behavior:** don't text-match the lines above — a grep-based check (marker comment present, `graphify-out/*` string present) can be satisfied by a commented-out pattern, a block missing one or both `!` negations, or a later unrelated rule in the file overriding the allowlist, while still looking "present." Instead verify what the rules actually *do*: from the repo root, run
+
+```shell
+git check-ignore --no-index -q <path>
+```
+
+against five representative paths, and read the **exit code**, not any printed output (`-q` suppresses output; the two "not ignored" paths print nothing either way):
+
+| Path | Expected exit code | Meaning |
+|---|---|---|
+| `graphify-out/graph.html` | `0` | ignored |
+| `graphify-out/some-bookkeeping-file` | `0` | ignored |
+| `graphify-out/wiki/index.md` | `0` | ignored (nested export tree — a pattern that only matches flat files under `graphify-out/` would wrongly leave this committable) |
+| `graphify-out/graph.json` | `1` | **not** ignored |
+| `graphify-out/GRAPH_REPORT.md` | `1` | **not** ignored |
+
+**`--no-index` is required, not optional.** Without it, `git check-ignore` answers from the index for any path already tracked — and `graph.json`/`GRAPH_REPORT.md` are tracked by design (that's the whole point of the allowlist), so those two probes always report "not ignored" regardless of what `.gitignore` actually says. That would hide a missing-negation or overridden-rule failure on exactly the two files this allowlist exists to commit. `--no-index` forces git to evaluate the ignore rules instead, so a non-compliant block is caught there too.
+
+**Exit code `128`** (not a git repo, bad flag, git version too old) is an audit error, not a verdict — report it as "audit could not run," never coerce it into "not ignored."
+
+If any of the five doesn't match its expected verdict, `.gitignore` is reported non-compliant, even though the file exists. This catches the text-matching failure modes above (commented-out pattern, missing negation, overriding rule, comment-wording/whitespace drift) by asking git the same question audit ultimately cares about — would `git add -A` actually pick up `graph.json`/`GRAPH_REPORT.md` and skip everything else — instead of a text proxy for it. The five paths are representative, not exhaustive: extend the table if `graphify-out/`'s output layout grows a new top-level shape worth probing.
+
+Non-git repos: report the `.gitignore` row as not applicable rather than attempting an equivalent check — `repo-standard`'s starter content and this audit are git-specific by design.
 
 ### `AGENTS.md`
 
@@ -174,5 +213,6 @@ cd ~/REPO/ME/roset.sh
 - Never infer a default stage — fail closed if `repo.toml` or `stage` is absent/invalid.
 - Never overwrite existing files in scaffold mode.
 - Never run as an automatic pre-PR check — on-demand only.
+- `.gitignore` is audited behaviorally (`git check-ignore` against representative paths), not by text or presence — this is a deliberate, singular exception; every other required path stays presence-only.
 - For `.specify/`: always bootstrap from iklo's reference, never hand-roll.
 - For `archived` repos: audit reports that the repo is archived and skips all non-required checks; scaffold does nothing (archived repos are frozen).
