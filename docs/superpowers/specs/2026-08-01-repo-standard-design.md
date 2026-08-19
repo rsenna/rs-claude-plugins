@@ -73,7 +73,7 @@ ones. Items marked *(optional)* are not reported missing.
 |---|---|---|---|---|
 | `repo.toml` (with `stage=`) | required | required | required | required |
 | `.gitignore` (with `# graphify` block) | required | required | required | required |
-| `AGENTS.md` | required | required | required | — (untouched) |
+| `AGENTS.md` | required | required | required | required (frozen) |
 | `README.md` | required | required | required | required (frozen) |
 | `SPEC.md` | required | — | — | — |
 | `specs/` | — | required | required | — |
@@ -92,7 +92,10 @@ valid, declared stage before creating any files.
 > stage, added by
 > [2026-08-19-graphify-gitignore-standard-design.md](2026-08-19-graphify-gitignore-standard-design.md),
 > which also defines the exact starter content and the (singular) exception
-> where audit checks content, not just presence.
+> where audit checks content, not just presence. This edit also reconciled the
+> `AGENTS.md`/`archived` row above with `skills/repo-standard/SKILL.md`'s own
+> archived notes (both now read "required (frozen)"); the two had silently
+> drifted apart before this pass.
 
 ### 3. Enforcement: on-demand `repo-standard` skill
 

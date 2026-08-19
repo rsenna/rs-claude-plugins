@@ -38,5 +38,5 @@ graph and its audit report are real outputs worth having on a fresh clone and
 worth tracking in history. Everything else under `graphify-out/` (`graph.html`,
 `manifest.json`, `cost.json`, `cache/`, `.graphify_*`) is local bookkeeping or
 regenerable in seconds, and stays gitignored. After code changes, run
-`graphify update .` (or `/graphify --update`) to keep the committed graph current
-before it ships in a PR.
+`graphify update .` (or `/graphify . --update`) to keep the committed graph
+current before it ships in a PR.
