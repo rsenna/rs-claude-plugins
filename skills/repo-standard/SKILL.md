@@ -158,6 +158,13 @@ Create as empty directories (add a `.gitkeep` if needed).
 ### `.specify/` and `.specify/memory/constitution.md`
 `.specify/` should be bootstrapped from iklo's reference implementation — do **not** create a hand-rolled imitation. The reference is in the `iklo` repo (sibling of the target repo under `~/REPO/ME/` by default — adjust the path to match your local layout). Copy the full `.specify/` tree from that reference and adapt only the project-specific references in `constitution.md`.
 
+This standard is **agent-agnostic by default**: do not treat one integration
+surface as exclusive. If a repo already contains Copilot/Claude/other-agent
+integration files outside `.specify/` (for example `.github/agents/`,
+`.github/prompts/`, `.vscode/settings.json`), scaffolding `.specify/` is
+additive and must not prune those files just because a different agent is
+running this session.
+
 ```markdown
 # Constitution — <repo name>
 
@@ -226,4 +233,6 @@ cd ~/REPO/ME/roset.sh
 - Never run as an automatic pre-PR check — on-demand only.
 - `.gitignore` is audited behaviorally (`git check-ignore` against representative paths), not by text or presence — this is a deliberate, singular exception; every other required path stays presence-only.
 - For `.specify/`: always bootstrap from iklo's reference, never hand-roll.
+- Keep repos agent-agnostic: never delete/prune another agent's integration
+  files as part of scaffold/audit; integrations are additive.
 - For `archived` repos: audit reports that the repo is archived and skips all non-required checks; scaffold does nothing (archived repos are frozen).

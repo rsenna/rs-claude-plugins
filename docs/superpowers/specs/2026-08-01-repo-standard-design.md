@@ -64,6 +64,14 @@ ceremony exists*, which does scale with stage.
 wholesale (templates, scripts, `/speckit.*` slash commands included), not a
 hand-rolled imitation of its folder names.
 
+For `in-progress` and `released`, repos are **agent-agnostic by default**:
+they are not treated as single-agent workspaces. If one agent integration is
+added (for example Copilot slash-command wiring under `.github/agents/`,
+`.github/prompts/`, `.vscode/settings.json`, or any future Claude/other-agent
+equivalent), that integration is additive and must not be treated as a reason
+to remove/prune another integration surface just because a different agent is
+running the current session.
+
 #### Required paths by stage (authoritative)
 
 The `audit` command checks for these exact paths; `scaffold` creates missing
@@ -118,6 +126,18 @@ Triggered on demand only (`/repo-standard audit`, `/repo-standard scaffold`)
 pre-PR check. Doc/folder shape is advisory/structural, not correctness, so a
 human-in-the-loop nudge fits better than a hard gate that could block
 unrelated work.
+
+#### Guardrails for agent-agnostic scaffolding (binding)
+
+- Repos in this standard are multi-agent by default; no workflow step may
+  assume "current session agent == only supported agent".
+- Agent-native integrations are **additive, not exclusive**. Installing one
+  integration must not imply deleting another.
+- This rule is binding in two places agents read when scaffolding:
+  `AGENTS.md` (repo-local operating contract) and
+  `.specify/memory/constitution.md` (project principles).
+- `repo-standard` may audit/scaffold required paths in this spec, but it does
+  not enforce a single-agent worldview by pruning unrelated integration files.
 
 ## Non-goals
 
