@@ -2,14 +2,18 @@
 # issue.sh — GitHub issue plumbing for the map-issue-to-tasks / fix-mapped-issue skills.
 #
 # Subcommands:
-#   create <title> <file>  open a new issue: <title> + <file> as the body (DRY_RUN=1 prints instead of posting)
-#   fetch <n>              print a readable digest of issue #n (title, state, labels, body, comments)
-#   json  <n>               raw JSON (number,title,state,labels,body,comments,url) for parsing
-#   slug  <n>               print "<n>-<slugified-title>" (used for tasks/issue-<n>-<slug>.md)
-#   comment <n> <file>     post <file> as a comment on #n   (DRY_RUN=1 prints instead of posting)
-#   close <n> <file>       post <file> as a comment on #n, then close it (DRY_RUN=1 prints, no close)
-#   label <n>              apply the LABEL (default "mapped") to #n, creating it if missing
-#   unmapped               list open issues that don't have LABEL yet (what's still unmapped)
+#   create <repo> <title> <file>  open a new issue in <repo> (owner/name — so an agent
+#                                  can file a follow-up in a DIFFERENT repo than the one
+#                                  it's sitting in, e.g. a rs-claude-plugins tooling gap
+#                                  found while working in another repo): <title> + <file>
+#                                  as the body (DRY_RUN=1 prints instead of posting)
+#   fetch <n>                     print a readable digest of issue #n (title, state, labels, body, comments)
+#   json  <n>                     raw JSON (number,title,state,labels,body,comments,url) for parsing
+#   slug  <n>                     print "<n>-<slugified-title>" (used for tasks/issue-<n>-<slug>.md)
+#   comment <n> <file>            post <file> as a comment on #n   (DRY_RUN=1 prints instead of posting)
+#   close <n> <file>              post <file> as a comment on #n, then close it (DRY_RUN=1 prints, no close)
+#   label <n>                     apply the LABEL (default "mapped") to #n, creating it if missing
+#   unmapped                      list open issues that don't have LABEL yet (what's still unmapped)
 #
 # Env:
 #   DRY_RUN=1   never write to GitHub; print what would be posted.
@@ -41,12 +45,14 @@ GH_TOKEN="$(doppler secrets get GITHUB_AGENT_PATC --plain --project "$PR_BOT_DOP
 export GH_TOKEN
 
 cmd_create() {
-  local title="${1:?usage: issue.sh create <title> <file>}"; local f="${2:?missing file}"
+  local repo="${1:?usage: issue.sh create <repo> <title> <file>}"
+  local title="${2:?usage: issue.sh create <repo> <title> <file>}"
+  local f="${3:?usage: issue.sh create <repo> <title> <file>}"
   [ -f "$f" ] || die "file not found: $f"
   if [ "${DRY_RUN:-0}" = "1" ]; then
-    log "DRY_RUN — would create issue titled '$title':"; echo "-----"; cat "$f"; echo "-----"; return 0
+    log "DRY_RUN — would create issue in '$repo' titled '$title':"; echo "-----"; cat "$f"; echo "-----"; return 0
   fi
-  local url; url="$(gh issue create --title "$title" --body-file "$f")"
+  local url; url="$(gh issue create --repo "$repo" --title "$title" --body-file "$f")"
   log "created: $url"
 }
 
