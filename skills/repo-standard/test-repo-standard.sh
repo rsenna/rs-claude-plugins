@@ -30,7 +30,7 @@ run_expect_fail() {
 run_expect_ok() {
   local dir="$1"
   shift
-  cd "$dir" && "$SCRIPT" "$@"
+  (cd "$dir" && "$SCRIPT" "$@")
 }
 
 TMP_ROOT="$(mktemp -d)"
@@ -63,10 +63,16 @@ git -C "$repo3" init -q
 cat > "$repo3/repo.toml" <<'EOF'
 stage = "prototype"
 EOF
+cat > "$repo3/AGENTS.md" <<'EOF'
+SENTINEL CONTENT
+EOF
 run_expect_ok "$repo3" scaffold >/dev/null
-[[ -f "$repo3/AGENTS.md" ]] || fail "AGENTS.md not created"
+[[ -f "$repo3/AGENTS.md" ]] || fail "AGENTS.md missing"
 [[ -f "$repo3/README.md" ]] || fail "README.md not created"
 [[ -f "$repo3/SPEC.md" ]] || fail "SPEC.md not created"
+[[ "$(cat "$repo3/AGENTS.md")" = "SENTINEL CONTENT" ]] || fail "AGENTS.md should not be overwritten"
+out="$(run_expect_ok "$repo3" audit 2>&1)"
+assert_contains "$out" "audit complete: compliant"
 
 # Archived scaffold does not create frozen files.
 repo4="$TMP_ROOT/archived"
@@ -78,5 +84,31 @@ EOF
 run_expect_ok "$repo4" scaffold >/dev/null
 [[ ! -f "$repo4/AGENTS.md" ]] || fail "AGENTS.md should not be scaffolded for archived"
 [[ ! -f "$repo4/README.md" ]] || fail "README.md should not be scaffolded for archived"
+
+# Existing .specify without constitution gets repaired from reference.
+repo5="$TMP_ROOT/in-progress-missing-constitution"
+mkdir -p "$repo5/.specify/memory"
+git -C "$repo5" init -q
+cat > "$repo5/repo.toml" <<'EOF'
+stage = "in-progress"
+EOF
+cat > "$repo5/.gitignore" <<'EOF'
+# OS / editor
+.DS_Store
+*.swp
+
+# graphify (knowledge graph) — allowlist: commit only graph.json + GRAPH_REPORT.md,
+# ignore everything else graphify-out/ produces (exports, caches, bookkeeping)
+graphify-out/*
+!graphify-out/graph.json
+!graphify-out/GRAPH_REPORT.md
+EOF
+ref="$TMP_ROOT/ref-specify"
+mkdir -p "$ref/memory"
+cat > "$ref/memory/constitution.md" <<'EOF'
+# Constitution — reference
+EOF
+REPO_STANDARD_SPECIFY_REF="$ref" run_expect_ok "$repo5" scaffold >/dev/null
+[[ -f "$repo5/.specify/memory/constitution.md" ]] || fail "constitution.md not restored from reference"
 
 echo "ok"

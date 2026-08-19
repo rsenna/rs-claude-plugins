@@ -264,6 +264,20 @@ copy_specify_from_reference() {
   log "created: .specify/ (copied from $source)"
 }
 
+ensure_constitution_from_reference() {
+  local default_ref="$HOME/REPO/ME/iklo/.specify"
+  local source="${REPO_STANDARD_SPECIFY_REF:-$default_ref}"
+  local ref_constitution="$source/memory/constitution.md"
+  [ -f "$ref_constitution" ] || die "required reference constitution missing at '$ref_constitution'."
+  mkdir -p ".specify/memory"
+  if [ -f ".specify/memory/constitution.md" ]; then
+    log "skipped (exists): .specify/memory/constitution.md"
+    return 0
+  fi
+  cp "$ref_constitution" ".specify/memory/constitution.md"
+  log "created: .specify/memory/constitution.md (copied from $ref_constitution)"
+}
+
 if [ "$cmd" = "audit" ]; then
   run_audit
   total_failures=$(( ${#missing_required[@]} + ${#missing_required_frozen[@]} + ${#noncompliant_required[@]} ))
@@ -312,8 +326,17 @@ done
 
 if ! path_exists ".specify/memory/constitution.md" && [ "$(requirement_for ".specify/memory/constitution.md")" = "required" ]; then
   if [ -e ".specify/" ]; then
-    warn "required file still missing after scaffold: .specify/memory/constitution.md (check reference source contents)"
+    ensure_constitution_from_reference
   fi
+fi
+
+if [ "${#noncompliant_required[@]}" -gt 0 ]; then
+  warn "scaffold does not overwrite existing non-compliant required files: ${noncompliant_required[*]}"
+  warn "fix these manually, then re-run audit."
+fi
+
+if ! path_exists ".specify/memory/constitution.md" && [ "$(requirement_for ".specify/memory/constitution.md")" = "required" ]; then
+  die "required file still missing after scaffold: .specify/memory/constitution.md"
 fi
 
 log "scaffold complete for stage '$stage'."

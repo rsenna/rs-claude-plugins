@@ -186,16 +186,17 @@ This skill is a **GitHub Copilot CLI slash command** — invoke it by typing `/r
 /repo-standard scaffold   # non-destructive creation of missing artifacts
 ```
 
-Equivalent direct script usage:
+Equivalent direct script usage (from this plugin repo checkout, not from the target repo):
 
 ```bash
-skills/repo-standard/repo-standard.sh audit
-skills/repo-standard/repo-standard.sh scaffold
+PLUGIN_REPO=~/REPO/ME/rs-claude-plugins
+"$PLUGIN_REPO"/skills/repo-standard/repo-standard.sh audit
+"$PLUGIN_REPO"/skills/repo-standard/repo-standard.sh scaffold
 ```
 
 If the target repo's iklo reference is not at `~/REPO/ME/iklo/.specify`, set `REPO_STANDARD_SPECIFY_REF=/path/to/iklo/.specify` before running `scaffold`.
 
-Run from inside the target repo's directory (so the skill can find `repo.toml` and check paths relative to the repo root).
+Run from inside the **target repo's** directory (the script resolves that repo via `git rev-parse --show-toplevel`), while invoking the script by absolute path from the plugin repo as above.
 
 ## Example session
 
