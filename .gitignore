@@ -1,0 +1,10 @@
+# OS / editor
+.DS_Store
+*.swp
+
+# graphify (knowledge graph) — commit graph.json + GRAPH_REPORT.md, ignore local/bookkeeping state
+graphify-out/graph.html
+graphify-out/manifest.json
+graphify-out/cost.json
+graphify-out/cache/
+graphify-out/.graphify_*

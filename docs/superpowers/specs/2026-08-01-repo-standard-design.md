@@ -72,6 +72,7 @@ ones. Items marked *(optional)* are not reported missing.
 | Path | `prototype` | `in-progress` | `released` | `archived` |
 |---|---|---|---|---|
 | `repo.toml` (with `stage=`) | required | required | required | required |
+| `.gitignore` (with `# graphify` block) | required | required | required | required |
 | `AGENTS.md` | required | required | required | — (untouched) |
 | `README.md` | required | required | required | required (frozen) |
 | `SPEC.md` | required | — | — | — |
@@ -86,6 +87,12 @@ ones. Items marked *(optional)* are not reported missing.
 `audit` fails with a clear error if `repo.toml` is absent or `stage` is
 missing/invalid — it does not infer a default stage. `scaffold` requires a
 valid, declared stage before creating any files.
+
+> **Addendum (2026-08-19):** `.gitignore` added as a required path at every
+> stage, added by
+> [2026-08-19-graphify-gitignore-standard-design.md](2026-08-19-graphify-gitignore-standard-design.md),
+> which also defines the exact starter content and the (singular) exception
+> where audit checks content, not just presence.
 
 ### 3. Enforcement: on-demand `repo-standard` skill
 

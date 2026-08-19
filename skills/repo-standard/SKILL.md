@@ -23,7 +23,7 @@ Both fail closed if `repo.toml` is absent or `stage` is missing/invalid.
 
 1. **Verify bootstrap:** confirm `repo.toml` exists and `stage` is a valid value. If not, stop with a clear error — do not infer a default.
 2. **Read the stage** from `repo.toml`.
-3. **Diff against the required-paths table** (see below). For each required path: check whether it exists. For `repo.toml` itself, also confirm the `stage=` line is present and valid.
+3. **Diff against the required-paths table** (see below). For each required path: check whether it exists. For `repo.toml` itself, also confirm the `stage=` line is present and valid. For `.gitignore`, existence isn't enough — also confirm it contains the `# graphify` marker line (see starter content below); this is the one required path with a content check, everywhere else stays presence-only.
 4. **Report** missing required paths, note optional paths that are absent (for information only), and confirm what is already present. Output is human-readable; no files are created or modified.
 
 ### `scaffold` — non-destructive creation
@@ -39,6 +39,7 @@ This table is the single source of truth. `audit` reports anything in the "requi
 | Path | `prototype` | `in-progress` | `released` | `archived` |
 |---|---|---|---|---|
 | `repo.toml` (with `stage=`) | required | required | required | required |
+| `.gitignore` (with `# graphify` block) | required | required | required | required |
 | `AGENTS.md` | required | required | required | required (frozen) |
 | `README.md` | required | required | required | required (frozen) |
 | `SPEC.md` | required | — | — | — |
@@ -59,6 +60,21 @@ This table is the single source of truth. `audit` reports anything in the "requi
 When creating a missing required file, use the minimal content below. All starters include a `# TODO` marker so the maintainer knows what to fill in.
 
 > **Note:** `repo.toml` is never created by scaffold — both modes require it to already exist with a valid `stage`. If it is absent, stop and tell the user to create it manually first.
+
+### `.gitignore`
+Same graphify block in every repo, regardless of whether `/graphify` has been run yet — the goal is one standard template, not a conditional one. If `.gitignore` already exists but is missing the `# graphify` marker, scaffold does **not** auto-append (never overwrite existing content, even if it looks incomplete) — it reports the gap and moves on, same as any other required path.
+```gitignore
+# OS / editor
+.DS_Store
+*.swp
+
+# graphify (knowledge graph) — commit graph.json + GRAPH_REPORT.md, ignore local/bookkeeping state
+graphify-out/graph.html
+graphify-out/manifest.json
+graphify-out/cost.json
+graphify-out/cache/
+graphify-out/.graphify_*
+```
 
 ### `AGENTS.md`
 
@@ -174,5 +190,6 @@ cd ~/REPO/ME/roset.sh
 - Never infer a default stage — fail closed if `repo.toml` or `stage` is absent/invalid.
 - Never overwrite existing files in scaffold mode.
 - Never run as an automatic pre-PR check — on-demand only.
+- `.gitignore` is audited by content (the `# graphify` marker), not just presence — this is a deliberate, singular exception; every other required path stays presence-only.
 - For `.specify/`: always bootstrap from iklo's reference, never hand-roll.
 - For `archived` repos: audit reports that the repo is archived and skips all non-required checks; scaffold does nothing (archived repos are frozen).
