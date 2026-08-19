@@ -8,8 +8,8 @@
 #                                  found while working in another repo): <title> + <file>
 #                                  as the body (DRY_RUN=1 prints instead of posting)
 #   fetch <n>                     print a readable digest of issue #n (title, state, labels, body, comments)
-#   json  <n>                     raw JSON (number,title,state,labels,body,comments,url) for parsing
-#   slug  <n>                     print "<n>-<slugified-title>" (used for tasks/issue-<n>-<slug>.md)
+#   json <n>                      raw JSON (number,title,state,labels,body,comments,url) for parsing
+#   slug <n>                      print "<n>-<slugified-title>" (used for tasks/issue-<n>-<slug>.md)
 #   comment <n> <file>            post <file> as a comment on #n   (DRY_RUN=1 prints instead of posting)
 #   close <n> <file>              post <file> as a comment on #n, then close it (DRY_RUN=1 prints, no close)
 #   label <n>                     apply the LABEL (default "mapped") to #n, creating it if missing
@@ -82,7 +82,7 @@ cmd_slug() {
 }
 
 cmd_comment() {
-  local n="${1:?usage: issue.sh comment <n> <file>}"; local f="${2:?missing file}"
+  local n="${1:?usage: issue.sh comment <n> <file>}"; local f="${2:?usage: issue.sh comment <n> <file>}"
   [ -f "$f" ] || die "file not found: $f"
   if [ "${DRY_RUN:-0}" = "1" ]; then
     log "DRY_RUN — would post to #$n:"; echo "-----"; cat "$f"; echo "-----"; return 0
@@ -91,7 +91,7 @@ cmd_comment() {
 }
 
 cmd_close() {
-  local n="${1:?usage: issue.sh close <n> <file>}"; local f="${2:?missing file}"
+  local n="${1:?usage: issue.sh close <n> <file>}"; local f="${2:?usage: issue.sh close <n> <file>}"
   [ -f "$f" ] || die "file not found: $f"
   if [ "${DRY_RUN:-0}" = "1" ]; then
     log "DRY_RUN — would comment then close #$n:"; echo "-----"; cat "$f"; echo "-----"; return 0
