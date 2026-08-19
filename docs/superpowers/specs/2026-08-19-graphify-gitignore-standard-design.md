@@ -21,12 +21,13 @@ that installs the plugin.
 
 | File | Committed? | Why |
 |---|---|---|
+| `.graphify_python`, `.graphify_root`, `.graphify_labels.json`, other `.graphify_*` | No | Session/bookkeeping state; labels are already baked into the committed `graph.json`. |
+| `cache/` | No | Semantic-extraction cache — see the `manifest.json` caveat; ignoring it is still correct, just not free on re-run for non-code corpora. |
+| `cost.json` | No | Local token-cost tracking, machine-specific, not useful in history. |
+| `graph.html` | No | Large self-contained visualization, no diff value, regenerate on demand (`graphify export html`). |
 | `graph.json` | Yes | The knowledge graph itself — the actual output. |
 | `GRAPH_REPORT.md` | Yes | Human-readable audit report — browsable on GitHub, useful in diff review. |
-| `graph.html` | No | Large self-contained visualization, no diff value, regenerate on demand (`graphify export html`). |
 | `manifest.json` | No | Incremental-update bookkeeping (per-file hashes). AST-only rebuilds (`graphify update .`) from a fresh clone are cheap either way; a corpus with docs/papers/images re-running full semantic extraction (`graphify extract`) is not — a missing `manifest.json`/`cache/` means that work (and its LLM cost) redoes from scratch. |
-| `cost.json` | No | Local token-cost tracking, machine-specific, not useful in history. |
-| `cache/` | No | Semantic-extraction cache — see the `manifest.json` caveat above; ignoring it is still correct, just not free on re-run for non-code corpora. |
 | Everything else (`wiki/`, `obsidian/`, `.graphify_*`, and any future export/bookkeeping graphify adds) | No | Not enumerated individually — see "Denylist vs allowlist" below. |
 
 Rationale: `graph.json` and `GRAPH_REPORT.md` are the knowledge the graph exists to
