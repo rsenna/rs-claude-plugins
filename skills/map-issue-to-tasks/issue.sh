@@ -2,6 +2,7 @@
 # issue.sh — GitHub issue plumbing for the map-issue-to-tasks / fix-mapped-issue skills.
 #
 # Subcommands:
+#   create <title> <file>  open a new issue: <title> + <file> as the body (DRY_RUN=1 prints instead of posting)
 #   fetch <n>            print a readable digest of issue #n (title, state, labels, body, comments)
 #   json  <n>            raw JSON (number,title,state,labels,body,comments,url) for parsing
 #   slug  <n>            print "<n>-<slugified-title>" (used for tasks/issue-<n>-<slug>.md)
@@ -38,6 +39,16 @@ PR_BOT_DOPPLER_CONFIG="${PR_BOT_DOPPLER_CONFIG:-dev}"
 GH_TOKEN="$(doppler secrets get GITHUB_AGENT_PATC --plain --project "$PR_BOT_DOPPLER_PROJECT" --config "$PR_BOT_DOPPLER_CONFIG" 2>/dev/null || true)"
 [ -n "$GH_TOKEN" ] || die "could not fetch GITHUB_AGENT_PATC from Doppler ($PR_BOT_DOPPLER_PROJECT/$PR_BOT_DOPPLER_CONFIG) — refusing to fall back to the ambient 'gh auth' identity. Check Doppler access, or override PR_BOT_DOPPLER_PROJECT/PR_BOT_DOPPLER_CONFIG."
 export GH_TOKEN
+
+cmd_create() {
+  local title="${1:?usage: issue.sh create <title> <file>}"; local f="${2:?missing file}"
+  [ -f "$f" ] || die "file not found: $f"
+  if [ "${DRY_RUN:-0}" = "1" ]; then
+    log "DRY_RUN — would create issue titled '$title':"; echo "-----"; cat "$f"; echo "-----"; return 0
+  fi
+  local url; url="$(gh issue create --title "$title" --body-file "$f")"
+  log "created: $url"
+}
 
 cmd_json() { gh issue view "${1:?usage: issue.sh json <n>}" \
   --json number,title,state,labels,body,comments,url; }
@@ -102,6 +113,7 @@ cmd_unmapped() {
 }
 
 case "${1:-}" in
+  create)   shift; cmd_create "$@" ;;
   fetch)    shift; cmd_fetch "$@" ;;
   json)     shift; cmd_json "$@" ;;
   slug)     shift; cmd_slug "$@" ;;
@@ -109,5 +121,5 @@ case "${1:-}" in
   close)    shift; cmd_close "$@" ;;
   label)    shift; cmd_label "$@" ;;
   unmapped) shift; cmd_unmapped "$@" ;;
-  *) die "usage: issue.sh {fetch|json|slug|comment|close|label|unmapped} ..." ;;
+  *) die "usage: issue.sh {create|fetch|json|slug|comment|close|label|unmapped} ..." ;;
 esac
