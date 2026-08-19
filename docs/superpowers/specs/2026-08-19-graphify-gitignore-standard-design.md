@@ -21,18 +21,38 @@ that installs the plugin.
 
 | File | Committed? | Why |
 |---|---|---|
+| `.graphify_python`, `.graphify_root`, `.graphify_labels.json`, other `.graphify_*` | No | Session/bookkeeping state; labels are already baked into the committed `graph.json`. |
+| `cache/` | No | Semantic-extraction cache — see the `manifest.json` caveat; ignoring it is still correct, just not free on re-run for non-code corpora. |
+| `cost.json` | No | Local token-cost tracking, machine-specific, not useful in history. |
+| `graph.html` | No | Large self-contained visualization, no diff value, regenerate on demand (`graphify export html`). |
 | `graph.json` | Yes | The knowledge graph itself — the actual output. |
 | `GRAPH_REPORT.md` | Yes | Human-readable audit report — browsable on GitHub, useful in diff review. |
-| `graph.html` | No | Large self-contained visualization, no diff value, regenerate on demand (`graphify export html`). |
-| `manifest.json` | No | Incremental-update bookkeeping (per-file hashes); rebuilding from a fresh clone is cheap. |
-| `cost.json` | No | Local token-cost tracking, machine-specific, not useful in history. |
-| `cache/` | No | Semantic-extraction cache, purely a local speed optimization. |
-| `.graphify_python`, `.graphify_root`, `.graphify_labels.json`, other `.graphify_*` | No | Session/bookkeeping state; labels are already baked into the committed `graph.json`. |
+| `manifest.json` | No | Incremental-update bookkeeping (per-file hashes). AST-only rebuilds (`graphify update .`) from a fresh clone are cheap either way; a corpus with docs/papers/images re-running full semantic extraction (`graphify extract`) is not — a missing `manifest.json`/`cache/` means that work (and its LLM cost) redoes from scratch. |
+| Everything else (`wiki/`, `obsidian/`, `.graphify_*`, and any future export/bookkeeping graphify adds) | No | Not enumerated individually — see "Denylist vs allowlist" below. |
 
 Rationale: `graph.json` and `GRAPH_REPORT.md` are the knowledge the graph exists to
 produce — worth having on a fresh clone and worth tracking in history. Everything
-else is either regenerable in seconds or specific to the machine/session that
-produced it, and committing it would turn every rebuild into diff noise.
+else is either regenerable (at some cost, see above) or specific to the
+machine/session that produced it, and committing it would turn every rebuild into
+diff noise.
+
+### Denylist vs allowlist
+
+An early draft of this design enumerated each ignored file by name
+(`graph.html`, `manifest.json`, `cost.json`, `cache/`, `.graphify_*`). That list
+was already incomplete against graphify's actual output surface — it missed
+`graphify-out/wiki/`, `graphify-out/obsidian/`, `graphify-out/needs_update`
+(no leading dot), `graphify-out/.vocab.txt`, and several other export/bookkeeping
+paths — and would keep drifting every time graphify adds a new export flag.
+`CLAUDE.md`'s own graphify block already tells Claude to check
+`graphify-out/wiki/index.md` when present, so an incomplete denylist would let a
+`--wiki` run's full export tree land in git by default.
+
+The starter content below uses an **allowlist** instead: ignore everything
+under `graphify-out/`, then explicitly un-ignore only the two files that are
+meant to be committed. This is robust to graphify growing new output types —
+nothing new can accidentally get committed — at the cost of needing to update
+the allowlist (not a denylist) if a third file ever earns commit status.
 
 ## Change to `repo-standard`
 
@@ -50,12 +70,11 @@ and once created it persists through `archived` like the other frozen-required d
 .DS_Store
 *.swp
 
-# graphify (knowledge graph) — commit graph.json + GRAPH_REPORT.md, ignore local/bookkeeping state
-graphify-out/graph.html
-graphify-out/manifest.json
-graphify-out/cost.json
-graphify-out/cache/
-graphify-out/.graphify_*
+# graphify (knowledge graph) — allowlist: commit only graph.json + GRAPH_REPORT.md,
+# ignore everything else graphify-out/ produces (exports, caches, bookkeeping)
+graphify-out/*
+!graphify-out/graph.json
+!graphify-out/GRAPH_REPORT.md
 ```
 
 The graphify block is always included, even in repos that haven't run `/graphify`
@@ -64,12 +83,67 @@ be revisited later when a repo does adopt it.
 
 ### Audit behavior
 
-`.gitignore` is the one required path where audit does more than check existence:
-it also verifies the file contains the `# graphify` marker line. A `.gitignore`
-that exists but lacks the graphify block is reported as non-compliant. This is a
-deliberate exception to repo-standard's existing presence-only audit pattern,
-justified because a missing graphify block silently defeats the whole point of the
-requirement (a stray `graph.html` or `cache/` getting committed).
+`.gitignore` is the one required path where audit does more than check existence.
+
+An earlier draft of this design checked for the presence of a `# graphify`
+comment plus a `graphify-out/*` pattern via text matching. Review on the PR
+that shipped this design (both `sourcery-ai` and `copilot-pull-request-reviewer`
+independently) caught that text matching can't actually confirm the allowlist
+*works*: the deny-all pattern could be present with one or both `!` negations
+missing (silently blocking `graph.json`/`GRAPH_REPORT.md` from ever being
+committed while still "looking" compliant), a pattern could be commented out,
+or a later unrelated rule elsewhere in the file could override the allowlist
+— none of which a substring check would catch, and a comment-wording or
+whitespace tweak could just as easily produce a false negative on an otherwise
+correct file.
+
+The fix: audit is **behavioral**, not textual. From the repo root, run
+`git check-ignore --no-index -q <path>` against five representative paths and
+read the exit code (`0` = ignored, `1` = not ignored; `-q` suppresses output,
+so the two "not ignored" paths print nothing either way and the exit code is
+the only signal):
+
+| Path | Expected exit code | Meaning |
+|---|---|---|
+| `graphify-out/graph.html` | `0` | ignored |
+| `graphify-out/some-bookkeeping-file` | `0` | ignored |
+| `graphify-out/wiki/index.md` | `0` | ignored (nested export tree) |
+| `graphify-out/graph.json` | `1` | not ignored |
+| `graphify-out/GRAPH_REPORT.md` | `1` | not ignored |
+
+**`--no-index` is not optional.** A first pass at this fix (caught in the same
+review round) ran plain `git check-ignore` and verified it manually — but only
+against a scratch repo where nothing was committed yet. In every real target
+repo, `graph.json`/`GRAPH_REPORT.md` *are* committed by design, and without
+`--no-index`, `git check-ignore` answers "not ignored" for any tracked path
+regardless of `.gitignore` content — silently reducing the two positive probes
+to a no-op in exactly the repos this standard is meant to protect.
+`--no-index` forces git to evaluate the ignore rules directly instead of
+consulting the index. Confirmed by reproducing the bots' exact scenario
+(negations deleted from an already-committed repo): without `--no-index` all
+five probes falsely reported compliant; with it, the broken allowlist was
+correctly caught.
+
+The fifth probe (`wiki/index.md`) closes a second gap the first four paths
+didn't cover: all four original probes are flat files directly under
+`graphify-out/`, so a pattern set that only matches flat files (e.g.
+`graphify-out/*.html` plus a literal filename, instead of the real
+`graphify-out/*` deny-all) would pass all four while leaving an entire nested
+export tree — including the `graphify-out/wiki/index.md` file `CLAUDE.md`
+tells agents to read — committable.
+
+Exit code `128` (not a git repo, unsupported flag, git version too old) is an
+audit error, not a verdict — report it as "audit could not run," never treat
+a non-zero, non-`1` code as "not ignored."
+
+If any of the five doesn't match its expected verdict, `.gitignore` is
+reported non-compliant, even though the file exists. This catches the
+text-matching failure modes above by asking the same question audit
+ultimately cares about — would `git add -A` actually pick up the two
+committed files and skip everything else — instead of a text proxy for it.
+The five paths are representative, not exhaustive; extend the table if
+`graphify-out/`'s output layout grows a new top-level shape worth probing.
+Non-git repos: report the `.gitignore` row as not applicable.
 
 Every other required path keeps its existing presence-only check — this is not a
 general shift toward content auditing.
@@ -91,8 +165,10 @@ if it looks wrong" — report and move on, same as every other required path).
 - `README.md` gains a short "Development" section pointing at `graphify query`
   as the first step for codebase questions, and documenting the commit/ignore
   split above so future contributors don't have to rediscover it.
-- `CLAUDE.md` already carries the graphify instructions (auto-written by the
-  `/graphify` run that produced this repo's graph) — no change needed.
+- `CLAUDE.md` (auto-written by the `/graphify` run that produced this repo's
+  graph) is committed as-is — no edits needed, but it is new to version control
+  as of this change (the README's "Development" section now depends on it
+  being tracked, since it points readers at `CLAUDE.md` for details).
 
 ## Out of scope
 
@@ -104,4 +180,9 @@ if it looks wrong" — report and move on, same as every other required path).
   `graphify update .` (already documented in `CLAUDE.md`) is the update path for
   now.
 - `graph.html` is not offered as an optional-commit choice — it's unconditionally
-  ignored, per the table above.
+  ignored, per the allowlist above.
+- This repo's own `repo-standard` audit/scaffold path for the new `.gitignore`
+  row can't be exercised end-to-end here (see the `stage` gap above), so it
+  ships unverified by this repo's own tooling — verification is manual review
+  of the SKILL.md/design-doc text plus `git check-ignore` against the actual
+  `.gitignore` committed here.
