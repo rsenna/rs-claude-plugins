@@ -8,6 +8,7 @@ description: Audit or scaffold a repo's documentation/folder layout against its 
 Checks (or creates) the documentation and folder artifacts required for a repo's declared `stage` tier, as defined in the [cross-repo standard design doc](../../docs/superpowers/specs/2026-08-01-repo-standard-design.md).
 
 Two modes — **`audit`** (read-only) and **`scaffold`** (non-destructive write).
+The command plumbing is implemented in `skills/repo-standard/repo-standard.sh`.
 
 Both fail closed if `repo.toml` is absent or `stage` is missing/invalid.
 
@@ -185,7 +186,17 @@ This skill is a **GitHub Copilot CLI slash command** — invoke it by typing `/r
 /repo-standard scaffold   # non-destructive creation of missing artifacts
 ```
 
-Run from inside the target repo's directory (so the skill can find `repo.toml` and check paths relative to the repo root).
+Equivalent direct script usage (from this plugin repo checkout, not from the target repo):
+
+```bash
+PLUGIN_REPO=~/REPO/ME/rs-claude-plugins
+"$PLUGIN_REPO"/skills/repo-standard/repo-standard.sh audit
+"$PLUGIN_REPO"/skills/repo-standard/repo-standard.sh scaffold
+```
+
+If the target repo's iklo reference is not at `~/REPO/ME/iklo/.specify`, set `REPO_STANDARD_SPECIFY_REF=/path/to/iklo/.specify` before running `scaffold`.
+
+Run from inside the **target repo's** directory (the script resolves that repo via `git rev-parse --show-toplevel`), while invoking the script by absolute path from the plugin repo as above.
 
 ## Example session
 
