@@ -66,6 +66,27 @@ DRY_RUN=1 "$I" comment 24 enrich.md    # preview the enrichment comment
 "$I" label 24                          # tag it mapped
 ```
 
+## Filing a follow-up issue
+
+Mapping an issue sometimes surfaces a concern that belongs in a *different*
+repo — a tooling gap in a shared skill, a design question that's really about
+another project. `issue.sh create <repo> <title> <file>` opens a new issue
+under the same bot identity as every other `issue.sh`/`pr.sh` call, so this
+never needs an ad-hoc `gh issue create` (which would use whatever `gh auth`
+happens to be ambient — exactly the identity leak this tooling exists to
+prevent). `<repo>` is `owner/name`, so it can target any repo, not just the
+one the agent is currently sitting in.
+
+```bash
+I=${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/issue.sh
+DRY_RUN=1 "$I" create rsenna/rs-claude-plugins "Title" body.md   # preview
+"$I" create rsenna/rs-claude-plugins "Title" body.md             # post it for real
+```
+
+This is not part of the numbered workflow above — it's a standalone
+capability for when mapping (or any other) work surfaces a concern that
+needs its own tracked issue elsewhere.
+
 ## Boundaries
 
 - Do not edit the issue body, do not close the issue, do not start implementing
