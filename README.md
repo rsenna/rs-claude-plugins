@@ -36,7 +36,8 @@ work the same way for narrower lookups.
 `graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md` are committed — the
 graph and its audit report are real outputs worth having on a fresh clone and
 worth tracking in history. Everything else under `graphify-out/` (`graph.html`,
-`manifest.json`, `cost.json`, `cache/`, `.graphify_*`) is local bookkeeping or
-regenerable in seconds, and stays gitignored. After code changes, run
+`manifest.json`, `cost.json`, `cache/`, `.graphify_*`) is local bookkeeping and
+stays gitignored; those artifacts can be regenerated, but semantic extraction
+from a fresh clone can redo non-trivial LLM work/cost. After code changes, run
 `graphify update .` (or `/graphify . --update`) to keep the committed graph
 current before it ships in a PR.

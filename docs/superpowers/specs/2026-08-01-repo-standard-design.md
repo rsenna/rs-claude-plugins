@@ -52,7 +52,7 @@ ceremony exists*, which does scale with stage.
 | Artifact | `prototype` | `in-progress` (= iklo today) | `released` | `archived` |
 |---|---|---|---|---|
 | `repo.toml` (`stage=...`) | ✓ | ✓ | ✓ | ✓ |
-| `AGENTS.md` | terse (rules/setup/validation, roset.sh's current style) | rich (reality-check of what's implemented, decided rules, dev commands, "where things live" map) | in-progress + versioning/migration discipline | untouched, not enforced |
+| `AGENTS.md` | terse (rules/setup/validation, roset.sh's current style) | rich (reality-check of what's implemented, decided rules, dev commands, "where things live" map) | in-progress + versioning/migration discipline | frozen, marked archived |
 | `README.md` | full outward-facing (status, limitations, next steps) | short — AGENTS.md is the hub, README just orients | polished for external consumers (install, badges, supported versions) | frozen, marked archived |
 | Spec | single `SPEC.md` | `specs/NNN-slug/{spec,plan,tasks}.md` (spec-kit) | same as in-progress | none required |
 | ADRs | none | `specs/decisions/ADR-NNNN` | same | none |
@@ -72,7 +72,7 @@ ones. Items marked *(optional)* are not reported missing.
 | Path | `prototype` | `in-progress` | `released` | `archived` |
 |---|---|---|---|---|
 | `repo.toml` (with `stage=`) | required | required | required | required |
-| `.gitignore` (with `# graphify` block) | required | required | required | required |
+| `.gitignore` (graphify block, behavior-verified) | required | required | required | required |
 | `AGENTS.md` | required | required | required | required (frozen) |
 | `README.md` | required | required | required | required (frozen) |
 | `SPEC.md` | required | — | — | — |

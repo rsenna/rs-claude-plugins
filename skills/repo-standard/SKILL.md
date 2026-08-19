@@ -77,7 +77,7 @@ graphify-out/*
 
 **Audit behavior:** don't text-match the lines above — a grep-based check (marker comment present, `graphify-out/*` string present) can be satisfied by a commented-out pattern, a block missing one or both `!` negations, or a later unrelated rule in the file overriding the allowlist, while still looking "present." Instead verify what the rules actually *do*: from the repo root, run
 
-```
+```shell
 git check-ignore --no-index -q <path>
 ```
 
@@ -91,7 +91,7 @@ against five representative paths, and read the **exit code**, not any printed o
 | `graphify-out/graph.json` | `1` | **not** ignored |
 | `graphify-out/GRAPH_REPORT.md` | `1` | **not** ignored |
 
-**`--no-index` is required, not optional.** Without it, `git check-ignore` answers from the index for any path already tracked — and `graph.json`/`GRAPH_REPORT.md` are tracked by design (that's the whole point of the allowlist), so the two "not ignored" probes would report "not ignored" regardless of what `.gitignore` actually says, silently no-oping the entire check in every repo this standard targets. `--no-index` forces git to evaluate the ignore rules directly instead.
+**`--no-index` is required, not optional.** Without it, `git check-ignore` answers from the index for any path already tracked — and `graph.json`/`GRAPH_REPORT.md` are tracked by design (that's the whole point of the allowlist), so those two probes always report "not ignored" regardless of what `.gitignore` actually says. That would hide a missing-negation or overridden-rule failure on exactly the two files this allowlist exists to commit. `--no-index` forces git to evaluate the ignore rules instead, so a non-compliant block is caught there too.
 
 **Exit code `128`** (not a git repo, bad flag, git version too old) is an audit error, not a verdict — report it as "audit could not run," never coerce it into "not ignored."
 
