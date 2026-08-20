@@ -42,16 +42,26 @@ add the subcommand rather than reaching for raw `gh`.
 
 ## Worktrees, not the shared checkout
 
-`pr.sh start` creates every task's branch in its **own git worktree** — a
-sibling directory next to the repo (`<repo>-worktrees/<branch>`) — rather than
-switching branches in place inside whatever checkout you started from. This
-matters because that shared checkout often has its own uncommitted, unrelated
-work sitting in it (the user's own in-progress edits, a previous task's
-leftovers) — switching branches in place forces a stash/pop dance around that
-every single time, and risks mixing it into the wrong commit. A fresh worktree
+`pr.sh start` creates every task's branch in its **own git worktree** — under
+a centralized directory (`~/.local/share/copilot-worktrees/<repo-name>/<branch>`
+by default; override with `PR_WORKTREE_ROOT=<dir>`) — rather than switching
+branches in place inside whatever checkout you started from. This matters
+because that shared checkout often has its own uncommitted, unrelated work
+sitting in it (the user's own in-progress edits, a previous task's leftovers)
+— switching branches in place forces a stash/pop dance around that every
+single time, and risks mixing it into the wrong commit. A fresh worktree
 sidesteps this entirely: it's created straight from `origin/<BASE>`, so the
 shared checkout's working directory is never touched, never needs stashing,
 and can't collide with the task branch's own changes.
+
+The centralized location means agent-created worktrees never appear alongside
+personal repo checkouts (e.g. inside `~/REPO/ME`) — they live under a
+separate, clearly agent-owned directory.
+
+Override with `PR_WORKTREE_ROOT=<absolute-path>` for non-standard layouts
+(e.g. a different disk). Must be absolute and must not be inside your repo
+checkout. If `XDG_DATA_HOME` is set, `~/.local/share` is replaced by its
+value (standard XDG convention).
 
 **cd into the printed worktree path after `start`**, and run every remaining
 step (implement, gate, push, open, review loop) from there — not from the
