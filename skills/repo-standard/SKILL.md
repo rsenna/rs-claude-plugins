@@ -110,6 +110,7 @@ Use the **prototype style** for `stage = prototype`; use the **in-progress / rel
 
 ## Rules
 <!-- TODO: key constraints for this repo (naming, architecture, non-goals) -->
+<!-- TODO: preserve agent-agnostic integrations (Copilot/Claude/other) as additive; do not prune one surface when adding another -->
 
 ## Setup
 <!-- TODO: how to get the repo running locally -->
@@ -127,6 +128,7 @@ Use the **prototype style** for `stage = prototype`; use the **in-progress / rel
 
 ## Rules & decisions
 <!-- TODO: decided conventions, architecture rules, non-goals -->
+<!-- TODO: preserve agent-agnostic integrations (Copilot/Claude/other) as additive; do not prune one surface when adding another -->
 
 ## Dev commands
 <!-- TODO: build, test, lint, run -->
