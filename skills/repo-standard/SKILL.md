@@ -163,7 +163,9 @@ surface as exclusive. If a repo already contains Copilot/Claude/other-agent
 integration files outside `.specify/` (for example `.github/agents/`,
 `.github/prompts/`, `.vscode/settings.json`), scaffolding `.specify/` is
 additive and must not prune those files just because a different agent is
-running this session.
+running this session. The listed paths are examples, not exhaustive; follow
+the canonical rule in the design doc section **"Guardrails for
+agent-agnostic scaffolding (binding canonical rule)"**.
 
 ```markdown
 # Constitution — <repo name>
