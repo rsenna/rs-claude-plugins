@@ -110,6 +110,43 @@ main_checkout_root() {
   dirname "$common_dir"
 }
 
+# Resolves (and validates) the centralized worktree base root.
+# Normalizes the path so start/cleanup always compare canonical forms —
+# trailing slashes and `..` components in PR_WORKTREE_ROOT would otherwise
+# make cleanup reject a worktree that start just created.
+# Validates:
+#   1. Result is absolute (rejects relative PR_WORKTREE_ROOT).
+#   2. Result is not under main_root (rejects dangerous overrides that place
+#      task worktrees inside the personal checkout).
+# The per-repo subdirectory (<repo-name>) is NOT appended here; callers do that
+# themselves so the raw base_root can be validated against main_root independently.
+_worktree_base_root() {
+  local main_root="$1"
+  local raw="${PR_WORKTREE_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/copilot-worktrees}"
+  # Validate the raw value BEFORE resolving — a relative path looks absolute after
+  # mkdir+cd since it's resolved relative to cwd, hiding the misconfiguration.
+  case "$raw" in
+    /*) ;;
+    *) die "PR_WORKTREE_ROOT ('$raw') must be an absolute path; got a relative value" ;;
+  esac
+  # Normalize: resolve symlinks / redundant components so start and cleanup
+  # always compare the same canonical form — trailing slashes or .. components
+  # in PR_WORKTREE_ROOT would otherwise make cleanup reject a worktree start created.
+  local resolved
+  mkdir -p "$raw" 2>/dev/null || true
+  if [ -d "$raw" ]; then
+    resolved="$(cd "$raw" && pwd)"
+  else
+    resolved="$raw"
+  fi
+  # Must not be under (or equal to) main_root — that would put task worktrees
+  # inside the personal checkout, defeating the purpose of this change.
+  case "$resolved/" in
+    "$main_root/"*) die "PR_WORKTREE_ROOT ('$resolved') is inside the main checkout ('$main_root'); choose a path outside your personal repo directory" ;;
+  esac
+  printf '%s' "$resolved"
+}
+
 cmd_start() {
   local br="${1:?usage: pr.sh start <branch>}"
   git rev-parse --git-dir >/dev/null 2>&1 || die "not a git repo"
@@ -123,11 +160,10 @@ cmd_start() {
   local main_root wt_root wt_path
   main_root="$(main_checkout_root)"
   # Centralized worktree root: ~/.local/share/copilot-worktrees/<repo-name>
-  # Override with PR_WORKTREE_ROOT for non-standard layouts.
-  # This deliberately avoids placing worktrees alongside personal repo checkouts
-  # (e.g. ~/REPO/ME/<repo>-worktrees) — see issue #14.
+  # Override with PR_WORKTREE_ROOT. Validated (absolute, not under main_root) by helper.
+  # See issue #14 — this avoids placing worktrees alongside personal repo checkouts.
   local base_root repo_name
-  base_root="${PR_WORKTREE_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/copilot-worktrees}"
+  base_root="$(_worktree_base_root "$main_root")"
   repo_name="$(basename "$main_root")"
   wt_root="$base_root/$repo_name"
   wt_path="$wt_root/$br"
@@ -308,9 +344,9 @@ cmd_cleanup() {
   local wt_path main_root wt_root legacy_wt_root
   wt_path="$(git rev-parse --show-toplevel)"
   main_root="$(main_checkout_root)"
-  # Centralized root (matches cmd_start's default).
+  # Centralized root (matches cmd_start via shared helper).
   local base_root repo_name
-  base_root="${PR_WORKTREE_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/copilot-worktrees}"
+  base_root="$(_worktree_base_root "$main_root")"
   repo_name="$(basename "$main_root")"
   wt_root="$base_root/$repo_name"
   # Legacy root: <main-checkout>-worktrees (pre-issue-14 layout). Accepted for

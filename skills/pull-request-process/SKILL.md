@@ -58,6 +58,11 @@ The centralized location means agent-created worktrees never appear alongside
 personal repo checkouts (e.g. inside `~/REPO/ME`) — they live under a
 separate, clearly agent-owned directory.
 
+Override with `PR_WORKTREE_ROOT=<absolute-path>` for non-standard layouts
+(e.g. a different disk). Must be absolute and must not be inside your repo
+checkout. If `XDG_DATA_HOME` is set, `~/.local/share` is replaced by its
+value (standard XDG convention).
+
 **cd into the printed worktree path after `start`**, and run every remaining
 step (implement, gate, push, open, review loop) from there — not from the
 directory you ran `start` in. **Don't run `cleanup` right after `open`** —
