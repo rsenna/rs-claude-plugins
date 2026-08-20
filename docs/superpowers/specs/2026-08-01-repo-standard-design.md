@@ -133,9 +133,10 @@ unrelated work.
   assume "current session agent == only supported agent".
 - Agent-native integrations are **additive, not exclusive**. Installing one
   integration must not imply deleting another.
-- This rule is binding in two places agents read when scaffolding:
-  `AGENTS.md` (repo-local operating contract) and
-  `.specify/memory/constitution.md` (project principles).
+- This rule is binding in `AGENTS.md` for all non-archived stages (repo-local
+  operating contract), and additionally binding in
+  `.specify/memory/constitution.md` for `in-progress`/`released` (where
+  `.specify/` is required).
 - `repo-standard` may audit/scaffold required paths in this spec, but it does
   not enforce a single-agent worldview by pruning unrelated integration files.
 
