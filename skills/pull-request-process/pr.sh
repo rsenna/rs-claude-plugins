@@ -234,6 +234,14 @@ cmd_comment() {
   else
     body_arg="$body"
   fi
+  # GitHub Markdown: a line immediately after a blockquote (>) with no blank line
+  # is rendered as part of the quote. Ensure every quote block is followed by a
+  # blank line so the response text appears outside the quote.
+  body_arg="$(printf '%s' "$body_arg" | awk '
+    /^>/ { in_quote=1; print; next }
+    in_quote && /^[^>]/ && !/^[[:space:]]*$/ { print ""; in_quote=0 }
+    { in_quote=0; print }
+  ')"
   local url
   url="$(gh pr comment "$pr" --body "$body_arg")"
   log "comment posted: $url"
