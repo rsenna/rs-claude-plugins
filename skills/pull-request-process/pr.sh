@@ -5,9 +5,10 @@
 # yourself (per the project's AGENTS.md/CLAUDE.md) BEFORE `pr.sh push`.
 #
 # Subcommands:
-#   start <branch>        create <branch> in a FRESH git worktree off up-to-date origin/BASE
-#                         (a sibling directory next to the repo, never the shared checkout)
-#                         and print its path — cd there for every remaining step.
+#   start <branch>        create <branch> in a FRESH git worktree under a centralized root
+#                         (default: ~/.local/share/copilot-worktrees/<repo-name>/<branch>;
+#                         override with PR_WORKTREE_ROOT=<dir>) and print its path —
+#                         cd there for every remaining step.
 #   push <branch>         requires REVIEWED=1 (run pr-review-toolkit:review-pr and fix what it
 #                         flags first); then explicit-refspec push + verify branch landed &
 #                         BASE didn't move
@@ -31,10 +32,11 @@
 #   cleanup               once a task is FULLY done (PR merged or abandoned — not right after
 #                         opening; the review loop still needs this worktree): verify it's
 #                         pristine, remove it, and print the main checkout's path to cd back
-#                         into. Only ever removes a worktree under the exact <repo>-worktrees
-#                         root `start` creates. NON-DESTRUCTIVE — if dirty (including gitignored
-#                         files the removal would otherwise silently take with it) it reports
-#                         and stops (never discards).
+#                         into. Only ever removes a worktree under PR_WORKTREE_ROOT (or the
+#                         default centralized root), plus backward-compat support for the
+#                         legacy <repo>-worktrees sibling path. NON-DESTRUCTIVE — if dirty
+#                         (including gitignored files the removal would otherwise silently
+#                         take with it) it reports and stops (never discards).
 #
 # Env:
 #   BASE                  base branch (default: main). The skill supplies this from the project's docs.
@@ -43,6 +45,13 @@
 #   FORCE_REMOVE_IGNORED  set to 1 to let `cleanup` remove a worktree that still has gitignored
 #                         files in it (otherwise it refuses, since removal deletes the whole
 #                         directory — build artifacts are fine to lose, a stray .env isn't).
+#   PR_WORKTREE_ROOT      base directory under which `start` creates task worktrees; a
+#                         subdirectory named after the repo is appended automatically
+#                         (default: ~/.local/share/copilot-worktrees). Must be an
+#                         absolute path. Override to put worktrees on a different disk or
+#                         mount point. Never set this to a directory under ~/REPO/ME (or
+#                         wherever your personal repo checkouts live) — that defeats the
+#                         whole purpose of this default.
 #   REVIEWED              set to 1 to confirm pr-review-toolkit:review-pr has been run on the
 #                         changes and anything it flagged has been addressed. `push` refuses to
 #                         run without it — self-review before push catches what bots would flag
@@ -113,7 +122,14 @@ cmd_start() {
   log "fetching origin/$BASE"; git fetch origin "$BASE"
   local main_root wt_root wt_path
   main_root="$(main_checkout_root)"
-  wt_root="${main_root}-worktrees"
+  # Centralized worktree root: ~/.local/share/copilot-worktrees/<repo-name>
+  # Override with PR_WORKTREE_ROOT for non-standard layouts.
+  # This deliberately avoids placing worktrees alongside personal repo checkouts
+  # (e.g. ~/REPO/ME/<repo>-worktrees) — see issue #14.
+  local base_root repo_name
+  base_root="${PR_WORKTREE_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/copilot-worktrees}"
+  repo_name="$(basename "$main_root")"
+  wt_root="$base_root/$repo_name"
   wt_path="$wt_root/$br"
   [ -e "$wt_path" ] && die "worktree path '$wt_path' already exists"
   mkdir -p "$(dirname "$wt_path")"
@@ -289,17 +305,23 @@ cmd_cleanup() {
     return 1
   fi
   log "worktree pristine"
-  local wt_path main_root wt_root
+  local wt_path main_root wt_root legacy_wt_root
   wt_path="$(git rev-parse --show-toplevel)"
   main_root="$(main_checkout_root)"
-  wt_root="${main_root}-worktrees"
+  # Centralized root (matches cmd_start's default).
+  local base_root repo_name
+  base_root="${PR_WORKTREE_ROOT:-${XDG_DATA_HOME:-$HOME/.local/share}/copilot-worktrees}"
+  repo_name="$(basename "$main_root")"
+  wt_root="$base_root/$repo_name"
+  # Legacy root: <main-checkout>-worktrees (pre-issue-14 layout). Accepted for
+  # backward-compat so worktrees created before the new default still clean up safely.
+  legacy_wt_root="${main_root}-worktrees"
   [ "$wt_path" != "$main_root" ] || die "refusing to remove '$wt_path' — it IS the main checkout, not a task worktree"
-  # Only ever remove worktrees under the exact root `pr.sh start` creates —
-  # never an unrelated worktree someone else made for something else, even if
-  # it happens to be pristine and even if it's linked to this same repo.
+  # Only ever remove worktrees under a sanctioned root — never unrelated worktrees.
   case "$wt_path" in
-    "$wt_root"/*) ;;
-    *) die "refusing to remove '$wt_path' — it's not under '$wt_root', so 'pr.sh start' didn't create it; if you're sure, remove it manually with 'git worktree remove'" ;;
+    "$wt_root"/*)        ;;
+    "$legacy_wt_root"/*) ;;
+    *) die "refusing to remove '$wt_path' — it's not under '$wt_root' (or legacy '$legacy_wt_root'), so 'pr.sh start' didn't create it; if you're sure, remove it manually with 'git worktree remove'" ;;
   esac
   # `git worktree remove` deletes the WHOLE directory, including anything
   # gitignored — unlike the old git-switch-in-place cleanup, which left
@@ -324,10 +346,17 @@ cmd_cleanup() {
   local common_dir; common_dir="$(cd "$(git rev-parse --git-common-dir)" && pwd)"
   git --git-dir="$common_dir" worktree remove "$wt_path" \
     || die "could not auto-remove worktree at '$wt_path' — remove manually: git --git-dir='$common_dir' worktree remove '$wt_path'"
-  # Slash-named branches (e.g. feat/my-thing) leave a now-empty parent dir behind under
-  # <repo>-worktrees/ — prune upward while empty, stopping at the worktrees root itself.
-  local parent; parent="$(dirname "$wt_path")"
-  while [ "$parent" != "$wt_root" ] && [ -d "$parent" ] && [ -z "$(ls -A "$parent" 2>/dev/null)" ]; do
+  # Slash-named branches (e.g. feat/my-thing) leave a now-empty parent dir behind
+  # under the worktrees root — prune upward while empty, stopping at wt_root (or
+  # legacy_wt_root for old worktrees).
+  local parent stop_at
+  parent="$(dirname "$wt_path")"
+  case "$wt_path" in
+    "$wt_root"/*)        stop_at="$wt_root" ;;
+    "$legacy_wt_root"/*) stop_at="$legacy_wt_root" ;;
+    *) stop_at="$wt_root" ;;
+  esac
+  while [ "$parent" != "$stop_at" ] && [ -d "$parent" ] && [ -z "$(ls -A "$parent" 2>/dev/null)" ]; do
     rmdir "$parent"
     parent="$(dirname "$parent")"
   done
