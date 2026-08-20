@@ -110,6 +110,8 @@ Use the **prototype style** for `stage = prototype`; use the **in-progress / rel
 
 ## Rules
 <!-- TODO: key constraints for this repo (naming, architecture, non-goals) -->
+<!-- TODO: preserve agent-agnostic integrations (Copilot/Claude/other) as additive; do not prune one surface when adding another -->
+<!-- TODO: preserve agent-agnostic integrations (Copilot/Claude/other) as additive; do not prune one surface when adding another -->
 
 ## Setup
 <!-- TODO: how to get the repo running locally -->
@@ -127,6 +129,8 @@ Use the **prototype style** for `stage = prototype`; use the **in-progress / rel
 
 ## Rules & decisions
 <!-- TODO: decided conventions, architecture rules, non-goals -->
+<!-- TODO: preserve agent-agnostic integrations (Copilot/Claude/other) as additive; do not prune one surface when adding another -->
+<!-- TODO: preserve agent-agnostic integrations (Copilot/Claude/other) as additive; do not prune one surface when adding another -->
 
 ## Dev commands
 <!-- TODO: build, test, lint, run -->
@@ -158,11 +162,21 @@ Create as empty directories (add a `.gitkeep` if needed).
 ### `.specify/` and `.specify/memory/constitution.md`
 `.specify/` should be bootstrapped from iklo's reference implementation — do **not** create a hand-rolled imitation. The reference is in the `iklo` repo (sibling of the target repo under `~/REPO/ME/` by default — adjust the path to match your local layout). Copy the full `.specify/` tree from that reference and adapt only the project-specific references in `constitution.md`.
 
+This standard is **agent-agnostic by default**: do not treat one integration
+surface as exclusive. If a repo already contains Copilot/Claude/other-agent
+integration files outside `.specify/` (for example `.github/agents/`,
+`.github/prompts/`, `.vscode/settings.json`), scaffolding `.specify/` is
+additive and must not prune those files just because a different agent is
+running this session. The listed paths are examples, not exhaustive; follow
+the canonical rule in the design doc section **"Guardrails for
+agent-agnostic scaffolding (binding canonical rule)"**.
+
 ```markdown
 # Constitution — <repo name>
 
 <!-- TODO: governing principles, constraints, and architectural decisions for this project -->
 <!-- Reference: copied from iklo/.specify/memory/constitution.md structure -->
+<!-- TODO: preserve agent-agnostic integrations (Copilot/Claude/other) as additive; do not prune one surface when adding another -->
 ```
 
 ### `tasks/`
@@ -226,4 +240,6 @@ cd ~/REPO/ME/roset.sh
 - Never run as an automatic pre-PR check — on-demand only.
 - `.gitignore` is audited behaviorally (`git check-ignore` against representative paths), not by text or presence — this is a deliberate, singular exception; every other required path stays presence-only.
 - For `.specify/`: always bootstrap from iklo's reference, never hand-roll.
+- Keep repos agent-agnostic: never delete/prune another agent's integration
+  files as part of scaffold/audit; integrations are additive.
 - For `archived` repos: audit reports that the repo is archived and skips all non-required checks; scaffold does nothing (archived repos are frozen).
