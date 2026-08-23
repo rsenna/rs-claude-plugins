@@ -1,0 +1,194 @@
+{
+  ".claude-plugin/marketplace.json": {
+    "mtime": 1785714190.7630026,
+    "seen": 1787244825.62093,
+    "ast_hash": "08bb024978e117d41d1c92b2ea062891",
+    "semantic_hash": "08bb024978e117d41d1c92b2ea062891"
+  },
+  ".claude-plugin/plugin.json": {
+    "mtime": 1785714190.7634375,
+    "seen": 1787244825.620932,
+    "ast_hash": "f44183ec48f9e18a7d9ebae3cf583a1e",
+    "semantic_hash": "f44183ec48f9e18a7d9ebae3cf583a1e"
+  },
+  ".claude/settings.json": {
+    "mtime": 1787131744.116166,
+    "seen": 1787244825.620933,
+    "ast_hash": "f12b804fa7e8f531e0fdfaa9d11c934e",
+    "semantic_hash": "f12b804fa7e8f531e0fdfaa9d11c934e"
+  },
+  ".claude/settings.local.json": {
+    "mtime": 1785153834.2696323,
+    "seen": 1787244825.620933,
+    "ast_hash": "53595477632b6b565abad220f3d51231",
+    "semantic_hash": "53595477632b6b565abad220f3d51231"
+  },
+  "skills/map-issue-to-tasks/issue.sh": {
+    "mtime": 1787134411.415944,
+    "seen": 1787244825.620933,
+    "ast_hash": "c3de30568aaf976e1c2720818d3c6b1c",
+    "semantic_hash": "c3de30568aaf976e1c2720818d3c6b1c"
+  },
+  "skills/opnsense-admin/scripts/opn-api.sh": {
+    "mtime": 1785714190.7714252,
+    "seen": 1787244825.6209338,
+    "ast_hash": "a902f55066cbbdcdb8cc1efafebfe2db",
+    "semantic_hash": "a902f55066cbbdcdb8cc1efafebfe2db"
+  },
+  "skills/patchmon-admin/scripts/patchmon-api.sh": {
+    "mtime": 1785714190.772671,
+    "seen": 1787244825.6209338,
+    "ast_hash": "602e3927d453dbd7037b0da7de612b9a",
+    "semantic_hash": "602e3927d453dbd7037b0da7de612b9a"
+  },
+  "skills/pull-request-process/pr.sh": {
+    "mtime": 1785714190.773405,
+    "seen": 1787244825.6209338,
+    "ast_hash": "36abc24398a431a8c09b56db16b568b6",
+    "semantic_hash": "36abc24398a431a8c09b56db16b568b6"
+  },
+  ".github/workflows/opencode.yml": {
+    "mtime": 1785718058.536719,
+    "seen": 1787244825.6209338,
+    "ast_hash": "9dabcf7930875581bcf349f96a6f4952",
+    "semantic_hash": "9dabcf7930875581bcf349f96a6f4952"
+  },
+  "README.md": {
+    "mtime": 1785714190.7640102,
+    "seen": 1787244825.620935,
+    "ast_hash": "b625f3388e6e2554ddde4767a433a4c7",
+    "semantic_hash": "b625f3388e6e2554ddde4767a433a4c7"
+  },
+  "docs/superpowers/specs/2026-08-01-repo-standard-design.md": {
+    "mtime": 1785714190.7645369,
+    "seen": 1787244825.620935,
+    "ast_hash": "57e2c03291ec61611d500ab8843a6831",
+    "semantic_hash": "57e2c03291ec61611d500ab8843a6831"
+  },
+  "skills/clawhub.obsidian-bases/SKILL.md": {
+    "mtime": 1785714190.7654812,
+    "seen": 1787244825.620935,
+    "ast_hash": "3c63d31f1df210556a7013d7c68d4ab5",
+    "semantic_hash": "3c63d31f1df210556a7013d7c68d4ab5"
+  },
+  "skills/clawhub.obsidian-bases/references/FUNCTIONS_REFERENCE.md": {
+    "mtime": 1785714190.7658112,
+    "seen": 1787244825.620936,
+    "ast_hash": "62cc0ad245b7ff3c7c76375ca0dc3d9f",
+    "semantic_hash": "62cc0ad245b7ff3c7c76375ca0dc3d9f"
+  },
+  "skills/clawhub.obsidian-bases/skill-card.md": {
+    "mtime": 1785714190.766188,
+    "seen": 1787244825.620936,
+    "ast_hash": "076487f38d5444b73a7929b12427ebaf",
+    "semantic_hash": "076487f38d5444b73a7929b12427ebaf"
+  },
+  "skills/clawhub.obsidian-cli/SKILL.md": {
+    "mtime": 1785714190.766982,
+    "seen": 1787244825.620936,
+    "ast_hash": "1385c91f1e6e0dbb6c6f97a0bce5f1b0",
+    "semantic_hash": "1385c91f1e6e0dbb6c6f97a0bce5f1b0"
+  },
+  "skills/clawhub.obsidian-cli/skill-card.md": {
+    "mtime": 1785714190.7673316,
+    "seen": 1787244825.620936,
+    "ast_hash": "8654e311ed1e50a7a042e8b6e1e5c019",
+    "semantic_hash": "8654e311ed1e50a7a042e8b6e1e5c019"
+  },
+  "skills/clawhub.obsidian-cli/skills/clawhub.obsidian-cli/SKILL.md": {
+    "mtime": 1785714190.76781,
+    "seen": 1787244825.6209369,
+    "ast_hash": "96f5e988c489a514f6ac4e98000d808a",
+    "semantic_hash": "96f5e988c489a514f6ac4e98000d808a"
+  },
+  "skills/clawhub.obsidian-cli/skills/clawhub.obsidian-cli/skill-card.md": {
+    "mtime": 1785714190.7682326,
+    "seen": 1787244825.6209369,
+    "ast_hash": "4b0ef79037ef1730e1706edcfdf32bc9",
+    "semantic_hash": "4b0ef79037ef1730e1706edcfdf32bc9"
+  },
+  "skills/doppler-secrets/SKILL.md": {
+    "mtime": 1785714190.7690778,
+    "seen": 1787244825.6209369,
+    "ast_hash": "a8716aa6cc1c6e6e63d897aa6b71a8db",
+    "semantic_hash": "a8716aa6cc1c6e6e63d897aa6b71a8db"
+  },
+  "skills/fix-mapped-issue/SKILL.md": {
+    "mtime": 1785714190.7694283,
+    "seen": 1787244825.6209369,
+    "ast_hash": "a57205145e46c7ffcaa6219b52f04167",
+    "semantic_hash": "a57205145e46c7ffcaa6219b52f04167"
+  },
+  "skills/map-issue-to-tasks/SKILL.md": {
+    "mtime": 1785714190.7697637,
+    "seen": 1787244825.620938,
+    "ast_hash": "f4a929055ca4dcdcd9c7cb2e21c3077d",
+    "semantic_hash": "f4a929055ca4dcdcd9c7cb2e21c3077d"
+  },
+  "skills/map-issue-to-tasks/templates/issue-enrichment.md": {
+    "mtime": 1785714190.7703218,
+    "seen": 1787244825.620938,
+    "ast_hash": "93d3a7dff811057bd9ab13a2a5551217",
+    "semantic_hash": "93d3a7dff811057bd9ab13a2a5551217"
+  },
+  "skills/opnsense-admin/SKILL.md": {
+    "mtime": 1785714190.7706125,
+    "seen": 1787244825.620938,
+    "ast_hash": "e9fd4f6994805cf4505dc4bc622f7993",
+    "semantic_hash": "e9fd4f6994805cf4505dc4bc622f7993"
+  },
+  "skills/opnsense-admin/references/lessons-learned.md": {
+    "mtime": 1785714190.7709844,
+    "seen": 1787244825.620938,
+    "ast_hash": "3ac799051dbeb6c1ea9cfbda51de3258",
+    "semantic_hash": "3ac799051dbeb6c1ea9cfbda51de3258"
+  },
+  "skills/patchmon-admin/SKILL.md": {
+    "mtime": 1785714190.771762,
+    "seen": 1787244825.620939,
+    "ast_hash": "61167245c33a1ea779a67c34939e8b65",
+    "semantic_hash": "61167245c33a1ea779a67c34939e8b65"
+  },
+  "skills/patchmon-admin/references/lessons-learned.md": {
+    "mtime": 1785714190.772189,
+    "seen": 1787244825.620939,
+    "ast_hash": "9df9eeadf4c91d9caa449247a3fc8ef4",
+    "semantic_hash": "9df9eeadf4c91d9caa449247a3fc8ef4"
+  },
+  "skills/pull-request-process/SKILL.md": {
+    "mtime": 1785714190.7730496,
+    "seen": 1787244825.620939,
+    "ast_hash": "b620ab672be96bbce45b28b33474b0f4",
+    "semantic_hash": "b620ab672be96bbce45b28b33474b0f4"
+  },
+  "skills/repo-standard/SKILL.md": {
+    "mtime": 1785714190.7738647,
+    "seen": 1787244825.62094,
+    "ast_hash": "0e23bc52364de8a0dad3b1079de416ea",
+    "semantic_hash": "0e23bc52364de8a0dad3b1079de416ea"
+  },
+  "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md": {
+    "mtime": 1787234811.3322484,
+    "seen": 1787244825.6209412,
+    "ast_hash": "44a4481be02635324ab5248cf7942686",
+    "semantic_hash": "44a4481be02635324ab5248cf7942686"
+  },
+  "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md": {
+    "mtime": 1787140814.4856632,
+    "seen": 1787244825.62094,
+    "ast_hash": "1328092ce72109ebf3eadec8a1bd590b",
+    "semantic_hash": "1328092ce72109ebf3eadec8a1bd590b"
+  },
+  "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md": {
+    "mtime": 1787225813.4654136,
+    "seen": 1787244825.62094,
+    "ast_hash": "aa80627b5bd277545243e634e4418570",
+    "semantic_hash": "aa80627b5bd277545243e634e4418570"
+  },
+  "tasks/issue-9-repo-standard-design-make-repos-agent-agnostic-by.md": {
+    "mtime": 1787234811.335166,
+    "seen": 1787244825.6209412,
+    "ast_hash": "eab9e6d0ad4935d10ca61a698e29d85f",
+    "semantic_hash": "eab9e6d0ad4935d10ca61a698e29d85f"
+  }
+}
