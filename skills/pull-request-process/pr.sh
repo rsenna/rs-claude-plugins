@@ -9,7 +9,7 @@
 #                         (default: ~/.local/share/copilot-worktrees/<repo-name>/<branch>;
 #                         override with PR_WORKTREE_ROOT=<dir>) and print its path —
 #                         cd there for every remaining step.
-#   push <branch>         requires REVIEWED=1 (run pr-review-toolkit:review-pr and fix what it
+#   push <branch>         requires REVIEWED=1 (run a requesting-code-review pass and fix what it
 #                         flags first); then explicit-refspec push + verify branch landed &
 #                         BASE didn't move
 #   open <title> [body]   gh pr create --base BASE (body = path to a markdown file), print URL, STOP
@@ -52,7 +52,7 @@
 #                         mount point. Never set this to a directory under ~/REPO/ME (or
 #                         wherever your personal repo checkouts live) — that defeats the
 #                         whole purpose of this default.
-#   REVIEWED              set to 1 to confirm pr-review-toolkit:review-pr has been run on the
+#   REVIEWED              set to 1 to confirm a requesting-code-review pass has been run on the
 #                         changes and anything it flagged has been addressed. `push` refuses to
 #                         run without it — self-review before push catches what bots would flag
 #                         anyway, just before it's public on the PR instead of after.
@@ -197,7 +197,7 @@ cmd_start() {
 
 cmd_push() {
   local br="${1:?usage: pr.sh push <branch>}"
-  [ "${REVIEWED:-0}" = "1" ] || die "REVIEWED=1 not set — run pr-review-toolkit:review-pr, fix what it flags, then: REVIEWED=1 pr.sh push $br"
+  [ "${REVIEWED:-0}" = "1" ] || die "REVIEWED=1 not set — run a requesting-code-review pass, fix what it flags, then: REVIEWED=1 pr.sh push $br"
   [ "$(git rev-parse --abbrev-ref HEAD)" = "$br" ] || warn "HEAD is not '$br' (pushing HEAD anyway)"
   local base_before; base_before="$(remote_sha "$BASE")"
   log "pushing HEAD -> origin/$br (explicit refspec)"

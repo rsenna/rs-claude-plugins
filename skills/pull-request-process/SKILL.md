@@ -99,18 +99,36 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    it describes is a bug, not polish, and it only gets more misleading the
    longer it's left.
 3. **Gate.** Run the project's quality gate yourself. **Do not push unless
-   green.** Then run `pr-review-toolkit:review-pr` on your changes and fix
-   what it flags — this is a self-review pass, catching what bots
-   (cubic-dev-ai, codacy, etc.) would flag anyway, just before it's public
-   on the PR instead of after. **If the review pass leads to code changes,
-   re-run the quality gate on the updated code before pushing** — `REVIEWED=1`
-   only satisfies the push guard, not the gate.
-4. **Push.** `REVIEWED=1 pr.sh push <branch>` — explicit-refspec push, then
-   verifies the branch landed and `origin/main` did **not** move.
+   green.** Then run an independent review pass via the
+   `requesting-code-review` skill.
+
+   Set `BASE_BRANCH` to the project's documented base branch (shown as
+   `main`), then calculate the complete PR range from committed revisions:
+
+   ```bash
+   BASE_BRANCH=main  # replace when the project's documented base differs
+   BASE_SHA="$(git merge-base HEAD "origin/$BASE_BRANCH")"
+   HEAD_SHA="$(git rev-parse HEAD)"
+   ```
+
+   Dispatch one read-only reviewer subagent using that skill's
+   `code-reviewer.md` template. Fill its description, requirements,
+   `BASE_SHA`, and `HEAD_SHA` fields; reviewer inspects
+   `git diff "$BASE_SHA..$HEAD_SHA"`. This pre-push pass catches what bots
+   (cubic-dev-ai, codacy, etc.) would flag anyway, before the diff becomes
+   public. If review flags changes: fix them, re-run the quality gate, commit
+   them, refresh `HEAD_SHA`, and repeat the review pass. Continue until clean.
+   Review only committed changes; never leave reviewer-driven fixes in the
+   working tree or index before pushing. `REVIEWED=1` only satisfies push
+   guard, not gate.
+4. **Push.** `BASE="$BASE_BRANCH" REVIEWED=1 pr.sh push <branch>` —
+   explicit-refspec push, then verifies the branch landed and the remote base
+   branch did **not** move.
    `REVIEWED=1` is required and attests that step 3's review pass happened
    (the script can only check the flag is set, not that a review actually
    ran); `pr.sh push` refuses to run without it.
-5. **Open.** `pr.sh open "<title>" [body.md]` — `gh pr create --base main`,
+5. **Open.** `BASE="$BASE_BRANCH" pr.sh open "<title>" [body.md]` —
+   `gh pr create --base "$BASE_BRANCH"`,
    prints the URL, then **STOP.** Do not merge, do not mark ready — automated
    review bots and the maintainer review and merge.
 6. **Review loop.** When comments arrive: `pr.sh threads <pr>` lists unresolved
@@ -119,12 +137,13 @@ If the project has no documented gate, run its tests + formatter/linter and say 
    line — these have no thread and can't be replied to with `reply`; the
    command pulls out each bot's "Prompt for AI Agent(s)" block when present).
 
-   **For each unresolved thread:** make the fix if warranted, then re-run
-   `pr-review-toolkit:review-pr` on the updated diff and fix what it flags,
-   re-run the quality gate if any code changed, then re-push (step 4):
+   **For each unresolved thread:** make the fix if warranted, run the project
+   quality gate, commit the fix, then repeat step 3's
+   `requesting-code-review` loop with the same `BASE_BRANCH` and a fresh
+   `HEAD_SHA`. Re-push only after that loop is clean (step 4):
 
    ```bash
-   BASE=main REVIEWED=1 "$P" push <branch>
+   BASE="$BASE_BRANCH" REVIEWED=1 "$P" push <branch>
    ```
 
    Then **reply on that thread** with your conclusion:
@@ -173,7 +192,7 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
 BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
 cd '<path printed by pr.sh start>'         # <-- cd into THAT exact printed path; everything below runs from here
-BASE=main REVIEWED=1 "$P" push my-feature # requires a review-pr run first; safe push + verify main didn't advance
+BASE=main REVIEWED=1 "$P" push my-feature # requires a requesting-code-review pass first; safe push + verify main didn't advance
 BASE=main "$P" open   "feat: my feature" body.md   # gh pr create --base main, then STOP
 BASE=main DRAFT=1 "$P" open "wip: experiment"      # open as draft (bots typically skip drafts)
 BASE=main DRY_RUN=1 "$P" open "feat: foo"          # preview the gh command without creating
@@ -233,7 +252,7 @@ it concerns.
 - Never merge a PR or mark it ready-to-merge.
 - Never resolve review threads — reply, and let the maintainer resolve.
 - Never push unless the project's quality gate is green.
-- Never push without running `pr-review-toolkit:review-pr` first and
+- Never push without running a `requesting-code-review` pass first and
   addressing what it flags (enforced by `pr.sh push` requiring `REVIEWED=1`).
 - Never call `gh` directly for a PR interaction — always through `pr.sh`
   (`open`/`comment`/`comment-delete`/`reply`/`threads`/`reviews`), so the
