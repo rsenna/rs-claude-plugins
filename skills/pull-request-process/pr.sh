@@ -247,6 +247,18 @@ cmd_comment() {
   log "comment posted: $url"
 }
 
+cmd_close() {
+  local pr="${1:?usage: pr.sh close <pr-number> [comment]}"
+  local body="${2:-}"
+  if [ -n "$body" ]; then
+    local body_arg
+    if [ -f "$body" ]; then body_arg="$(cat "$body")"; else body_arg="$body"; fi
+    gh pr comment "$pr" --body "$body_arg" > /dev/null
+  fi
+  gh pr close "$pr"
+  log "PR #$pr closed"
+}
+
 cmd_comment_delete() {
   local id="${1:?usage: pr.sh comment-delete <comment-id>}"
   local nwo owner repo; nwo="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
@@ -415,8 +427,9 @@ case "${1:-}" in
   threads) shift; cmd_threads "$@" ;;
   reviews) shift; cmd_reviews "$@" ;;
   comment) shift; cmd_comment "$@" ;;
+  close)   shift; cmd_close "$@" ;;
   comment-delete) shift; cmd_comment_delete "$@" ;;
   reply)   shift; cmd_reply "$@" ;;
   cleanup) shift; cmd_cleanup "$@" ;;
-  *) die "usage: pr.sh {start|push|open|threads|reviews|comment|comment-delete|reply|cleanup} ...  (BASE=$BASE)" ;;
+  *) die "usage: pr.sh {start|push|open|threads|reviews|comment|close|comment-delete|reply|cleanup} ...  (BASE=$BASE)" ;;
 esac
