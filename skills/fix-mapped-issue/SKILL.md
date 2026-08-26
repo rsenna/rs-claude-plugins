@@ -35,7 +35,8 @@ From the project's `AGENTS.md`/`CLAUDE.md`: the **base branch** and the
    by tests** (behaviour-asserting, not coverage-padding).
 3. **Ship it via the `pull-request-process` skill** — one task ≈ one PR:
    `pr.sh start` (then `cd` into the worktree path it prints) → implement/commit
-   → run the gate → run a `requesting-code-review` pass and fix what it flags
+   → run the gate → run `pull-request-process` step 3's exact
+   `requesting-code-review` pass and fix what it flags
    → **re-run the gate if any code changed** → `REVIEWED=1 pr.sh push` → `pr.sh open` → **STOP** (never merge). Then
    handle review threads per that skill.
 4. **After the maintainer/bots merge**, tick the task's checkbox in
