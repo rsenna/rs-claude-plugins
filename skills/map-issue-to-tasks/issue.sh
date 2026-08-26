@@ -19,7 +19,7 @@
 #   DRY_RUN=1   never write to GitHub; print what would be posted.
 #   LABEL       label used to mark a mapped issue (default: mapped)
 #   PR_BOT_DOPPLER_PROJECT / PR_BOT_DOPPLER_CONFIG  Doppler project/config holding
-#               GHUB_AGENT_PATC (default: common/dev) — every gh call this script
+#               GHUB_AGENT_PATC (default: homelab/dev) — every gh call this script
 #               makes uses that identity, never whatever personal `gh auth` account
 #               happens to be ambient. Fetched fresh on every invocation; dies loudly
 #               if unreachable rather than silently falling back. Same convention as
@@ -35,7 +35,7 @@ die()  { printf '\033[1;31m[issue] %s\033[0m\n' "$*" >&2; exit 1; }
 # GH_TOKEN, once exported, overrides gh's own ambient `gh auth` active
 # account for every `gh` call this script makes — without touching the
 # user's own global `gh auth` state at all.
-PR_BOT_DOPPLER_PROJECT="${PR_BOT_DOPPLER_PROJECT:-common}"
+PR_BOT_DOPPLER_PROJECT="${PR_BOT_DOPPLER_PROJECT:-homelab}"
 PR_BOT_DOPPLER_CONFIG="${PR_BOT_DOPPLER_CONFIG:-dev}"
 # `|| true`: under `set -e`, a failed command substitution here would otherwise
 # kill the script silently, before the `[ -n "$GH_TOKEN" ] || die ...` check below

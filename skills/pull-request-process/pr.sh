@@ -57,7 +57,7 @@
 #                         run without it — self-review before push catches what bots would flag
 #                         anyway, just before it's public on the PR instead of after.
 #   PR_BOT_DOPPLER_PROJECT / PR_BOT_DOPPLER_CONFIG  Doppler project/config holding the agent
-#                         identity secrets below (default: common/dev). Every gh call and every
+#                         identity secrets below (default: homelab/dev). Every gh call and every
 #                         commit this script makes uses this identity, NEVER whatever personal
 #                         `gh auth`/git identity happens to be ambient — that's what silently
 #                         leaked a personal account into commits/PR comments before this existed.
@@ -78,7 +78,7 @@ die()  { printf '\033[1;31m[pr] %s\033[0m\n' "$*" >&2; exit 1; }
 # account for every `gh` call this script (and anything it spawns) makes —
 # without touching the user's own global `gh auth` state at all. Git commit
 # identity is handled separately in cmd_start, scoped to just that worktree.
-PR_BOT_DOPPLER_PROJECT="${PR_BOT_DOPPLER_PROJECT:-common}"
+PR_BOT_DOPPLER_PROJECT="${PR_BOT_DOPPLER_PROJECT:-homelab}"
 PR_BOT_DOPPLER_CONFIG="${PR_BOT_DOPPLER_CONFIG:-dev}"
 
 _bot_secret() {
