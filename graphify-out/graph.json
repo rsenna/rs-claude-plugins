@@ -35,7 +35,8 @@
         "label": "repo.toml stage-tier design, enforcing skill, and rollout task",
         "nodes": [
           "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
-          "skills_repo_standard_skill_document"
+          "skills_repo_standard_skill_document",
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue"
         ],
         "relation": "form",
         "confidence": "EXTRACTED",
@@ -63,8 +64,8 @@
         "id": "repo_standard_design_policy_group",
         "label": "Repo-standard design doc and skill jointly amended by issues #3 and #9",
         "nodes": [
-          "docs_superpowers_specs_2026_08_01_repo_standard_design_doc",
-          "skills_repo_standard_skill_md_doc",
+          "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
+          "skills_repo_standard_skill_document",
           "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
           "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue"
         ],
@@ -2795,8 +2796,8 @@
       "id": "repo_standard_design_policy_group",
       "label": "Repo-standard design doc and skill jointly amended by issues #3 and #9",
       "nodes": [
-        "docs_superpowers_specs_2026_08_01_repo_standard_design_doc",
-        "skills_repo_standard_skill_md_doc",
+        "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
+        "skills_repo_standard_skill_document",
         "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
         "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue"
       ],
