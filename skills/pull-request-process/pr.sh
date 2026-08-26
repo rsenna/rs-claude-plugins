@@ -57,12 +57,12 @@
 #                         run without it — self-review before push catches what bots would flag
 #                         anyway, just before it's public on the PR instead of after.
 #   PR_BOT_DOPPLER_PROJECT / PR_BOT_DOPPLER_CONFIG  Doppler project/config holding the agent
-#                         identity secrets below (default: common/dev). Every gh call and every
+#                         identity secrets below (default: homelab/dev). Every gh call and every
 #                         commit this script makes uses this identity, NEVER whatever personal
 #                         `gh auth`/git identity happens to be ambient — that's what silently
 #                         leaked a personal account into commits/PR comments before this existed.
-#                         Requires GITHUB_AGENT_PATC (a gh token), GITHUB_AGENT_USERNAME, and
-#                         GITHUB_AGENT_EMAIL to exist in that Doppler config. Fetched fresh on
+#                         Requires GHUB_AGENT_PATC (a gh token), GHUB_AGENT_USERNAME, and
+#                         GHUB_AGENT_EMAIL to exist in that Doppler config. Fetched fresh on
 #                         every invocation (never cached to disk); if Doppler/the secrets aren't
 #                         reachable, every subcommand dies loudly rather than falling back to
 #                         the ambient identity.
@@ -78,7 +78,7 @@ die()  { printf '\033[1;31m[pr] %s\033[0m\n' "$*" >&2; exit 1; }
 # account for every `gh` call this script (and anything it spawns) makes —
 # without touching the user's own global `gh auth` state at all. Git commit
 # identity is handled separately in cmd_start, scoped to just that worktree.
-PR_BOT_DOPPLER_PROJECT="${PR_BOT_DOPPLER_PROJECT:-common}"
+PR_BOT_DOPPLER_PROJECT="${PR_BOT_DOPPLER_PROJECT:-homelab}"
 PR_BOT_DOPPLER_CONFIG="${PR_BOT_DOPPLER_CONFIG:-dev}"
 
 _bot_secret() {
@@ -88,12 +88,12 @@ _bot_secret() {
   doppler secrets get "$1" --plain --project "$PR_BOT_DOPPLER_PROJECT" --config "$PR_BOT_DOPPLER_CONFIG" 2>/dev/null || true
 }
 
-GH_TOKEN="$(_bot_secret GITHUB_AGENT_PATC)"
-[ -n "$GH_TOKEN" ] || die "could not fetch GITHUB_AGENT_PATC from Doppler ($PR_BOT_DOPPLER_PROJECT/$PR_BOT_DOPPLER_CONFIG) — refusing to fall back to the ambient 'gh auth' identity. Check Doppler access, or override PR_BOT_DOPPLER_PROJECT/PR_BOT_DOPPLER_CONFIG."
+GH_TOKEN="$(_bot_secret GHUB_AGENT_PATC)"
+[ -n "$GH_TOKEN" ] || die "could not fetch GHUB_AGENT_PATC from Doppler ($PR_BOT_DOPPLER_PROJECT/$PR_BOT_DOPPLER_CONFIG) — refusing to fall back to the ambient 'gh auth' identity. Check Doppler access, or override PR_BOT_DOPPLER_PROJECT/PR_BOT_DOPPLER_CONFIG."
 export GH_TOKEN
-BOT_NAME="$(_bot_secret GITHUB_AGENT_USERNAME)"
-BOT_EMAIL="$(_bot_secret GITHUB_AGENT_EMAIL)"
-[ -n "$BOT_NAME" ] && [ -n "$BOT_EMAIL" ] || die "could not fetch GITHUB_AGENT_USERNAME/GITHUB_AGENT_EMAIL from Doppler ($PR_BOT_DOPPLER_PROJECT/$PR_BOT_DOPPLER_CONFIG) — refusing to guess a commit identity."
+BOT_NAME="$(_bot_secret GHUB_AGENT_USERNAME)"
+BOT_EMAIL="$(_bot_secret GHUB_AGENT_EMAIL)"
+[ -n "$BOT_NAME" ] && [ -n "$BOT_EMAIL" ] || die "could not fetch GHUB_AGENT_USERNAME/GHUB_AGENT_EMAIL from Doppler ($PR_BOT_DOPPLER_PROJECT/$PR_BOT_DOPPLER_CONFIG) — refusing to guess a commit identity."
 
 remote_sha() { git ls-remote --heads origin "$1" 2>/dev/null | awk '{print $1}'; }
 

@@ -17,7 +17,7 @@ It is language-agnostic and **does not run the quality gate** — you do, per th
 ## Agent identity, not the personal one
 
 Every `gh` call and every commit `pr.sh` makes uses a dedicated agent
-identity (`GITHUB_AGENT_PATC`/`GITHUB_AGENT_USERNAME`/`GITHUB_AGENT_EMAIL`,
+identity (`GHUB_AGENT_PATC`/`GHUB_AGENT_USERNAME`/`GHUB_AGENT_EMAIL`,
 sourced fresh from Doppler on every invocation — see `pr.sh`'s own header
 comment for the env vars that control which Doppler project/config), never
 whatever personal `gh auth` account or global git identity happens to be
