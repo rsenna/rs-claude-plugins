@@ -36,14 +36,46 @@
         "nodes": [
           "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
           "skills_repo_standard_skill_document",
-          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_document"
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue"
         ],
         "relation": "form",
         "confidence": "EXTRACTED",
         "confidence_score": 1.0,
         "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md"
+      },
+      {
+        "id": "repo_standard_tier_rollout_group",
+        "label": "Six external repos rolled out under repo-standard stage tiers via issue #3 task 3",
+        "nodes": [
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_roset_sh",
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_iklo",
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_what_about",
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_guiltty",
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_obsidian_hivemind",
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_wawk_js"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
+      },
+      {
+        "id": "repo_standard_design_policy_group",
+        "label": "Repo-standard design doc and skill jointly amended by issues #3 and #9",
+        "nodes": [
+          "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
+          "skills_repo_standard_skill_document",
+          "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+          "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue"
+        ],
+        "relation": "participate_in",
+        "confidence": "INFERRED",
+        "confidence_score": 0.85,
+        "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
       }
-    ]
+    ],
+    "built_at_commit": "b9de69604becf291f98c926c5b78152c3223145e"
   },
   "nodes": [
     {
@@ -58,7 +90,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "pr.sh"
     },
     {
@@ -73,7 +105,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_bot_secret",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "_bot_secret()"
     },
     {
@@ -88,7 +120,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_cleanup",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_cleanup()"
     },
     {
@@ -103,7 +135,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_comment",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_comment()"
     },
     {
@@ -118,7 +150,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_comment_delete",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_comment_delete()"
     },
     {
@@ -133,7 +165,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_open",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_open()"
     },
     {
@@ -148,7 +180,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_push",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_push()"
     },
     {
@@ -163,7 +195,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_reply",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_reply()"
     },
     {
@@ -178,7 +210,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_reviews",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_reviews()"
     },
     {
@@ -193,7 +225,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_start",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_start()"
     },
     {
@@ -208,7 +240,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_cmd_threads",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "cmd_threads()"
     },
     {
@@ -223,7 +255,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_die",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "die()"
     },
     {
@@ -238,7 +270,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_log",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "log()"
     },
     {
@@ -253,7 +285,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_main_checkout_root",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "main_checkout_root()"
     },
     {
@@ -268,7 +300,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_remote_sha",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "remote_sha()"
     },
     {
@@ -283,7 +315,7 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_sh__entry",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "pr.sh script"
     },
     {
@@ -298,405 +330,8 @@
       "_origin": "ast",
       "id": "skills_pull_request_process_pr_warn",
       "community": 0,
-      "community_name": "pr.sh",
+      "community_name": "pr.sh Pull-Request Commands",
       "norm_label": "warn()"
-    },
-    {
-      "label": "issue.sh",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L1",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "issue.sh"
-    },
-    {
-      "label": "cmd_close()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L76",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_cmd_close",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "cmd_close()"
-    },
-    {
-      "label": "cmd_comment()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L67",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_cmd_comment",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "cmd_comment()"
-    },
-    {
-      "label": "cmd_fetch()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L45",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_cmd_fetch",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "cmd_fetch()"
-    },
-    {
-      "label": "cmd_json()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L42",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_cmd_json",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "cmd_json()"
-    },
-    {
-      "label": "cmd_label()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L86",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_cmd_label",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "cmd_label()"
-    },
-    {
-      "label": "cmd_slug()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L56",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_cmd_slug",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "cmd_slug()"
-    },
-    {
-      "label": "cmd_unmapped()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L99",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_cmd_unmapped",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "cmd_unmapped()"
-    },
-    {
-      "label": "die()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L27",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_die",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "die()"
-    },
-    {
-      "label": "log()",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L26",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_log",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "log()"
-    },
-    {
-      "label": "issue.sh script",
-      "file_type": "code",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L1",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "_origin": "ast",
-      "id": "skills_map_issue_to_tasks_issue_sh__entry",
-      "community": 1,
-      "community_name": "issue.sh",
-      "norm_label": "issue.sh script"
-    },
-    {
-      "label": "2026-08-19-graphify-gitignore-standard-design.md",
-      "file_type": "document",
-      "node_kind": "page",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "2026-08-19-graphify-gitignore-standard-design.md"
-    },
-    {
-      "label": "Audit behavior",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L83",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_audit_behavior",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "audit behavior"
-    },
-    {
-      "label": "Change to `repo-standard`",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L56",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_change_to_repo_standard",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "change to `repo-standard`"
-    },
-    {
-      "label": "Context",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_context",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "context"
-    },
-    {
-      "label": "Denylist vs allowlist",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L38",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_denylist_vs_allowlist",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "denylist vs allowlist"
-    },
-    {
-      "label": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_graphify_as_a_standard_dev_process_artifact_gitignore_requirement_design",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "graphify as a standard dev-process artifact: `.gitignore` requirement design"
-    },
-    {
-      "label": "Out of scope",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L172",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_out_of_scope",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "out of scope"
-    },
-    {
-      "label": "Required-paths table",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L58",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_required_paths_table",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "required-paths table"
-    },
-    {
-      "label": "Rollout in this repo",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L157",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_rollout_in_this_repo",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "rollout in this repo"
-    },
-    {
-      "label": "Scaffold behavior",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L150",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_scaffold_behavior",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "scaffold behavior"
-    },
-    {
-      "label": "Starter content",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L65",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_starter_content",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "starter content"
-    },
-    {
-      "label": "What's committed vs ignored in `graphify-out/`",
-      "file_type": "document",
-      "node_kind": "heading",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L20",
-      "_origin": "ast",
-      "id": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_what_s_committed_vs_ignored_in_graphify_out",
-      "community": 12,
-      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
-      "norm_label": "what's committed vs ignored in `graphify-out/`"
-    },
-    {
-      "label": "marketplace.json",
-      "file_type": "code",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "claude_plugin_marketplace",
-      "community": 2,
-      "community_name": "marketplace.json",
-      "norm_label": "marketplace.json"
-    },
-    {
-      "label": "description",
-      "file_type": "code",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L4",
-      "_origin": "ast",
-      "id": "claude_plugin_marketplace_description",
-      "community": 2,
-      "community_name": "marketplace.json",
-      "norm_label": "description"
-    },
-    {
-      "label": "name",
-      "file_type": "code",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "claude_plugin_marketplace_name",
-      "community": 2,
-      "community_name": "marketplace.json",
-      "norm_label": "name"
-    },
-    {
-      "label": "owner",
-      "file_type": "code",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "claude_plugin_marketplace_owner",
-      "community": 2,
-      "community_name": "marketplace.json",
-      "norm_label": "owner"
-    },
-    {
-      "label": "name",
-      "file_type": "code",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L6",
-      "_origin": "ast",
-      "id": "claude_plugin_marketplace_owner_name",
-      "community": 2,
-      "community_name": "marketplace.json",
-      "norm_label": "name"
-    },
-    {
-      "label": "url",
-      "file_type": "code",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L7",
-      "_origin": "ast",
-      "id": "claude_plugin_marketplace_owner_url",
-      "community": 2,
-      "community_name": "marketplace.json",
-      "norm_label": "url"
-    },
-    {
-      "label": "plugins",
-      "file_type": "code",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "claude_plugin_marketplace_plugins",
-      "community": 2,
-      "community_name": "marketplace.json",
-      "norm_label": "plugins"
-    },
-    {
-      "label": "$schema",
-      "file_type": "code",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L2",
-      "_origin": "ast",
-      "id": "claude_plugin_marketplace_schema",
-      "community": 2,
-      "community_name": "marketplace.json",
-      "norm_label": "$schema"
     },
     {
       "label": "opn-api.sh",
@@ -709,8 +344,8 @@
       },
       "_origin": "ast",
       "id": "skills_opnsense_admin_scripts_opn_api",
-      "community": 8,
-      "community_name": "opn-api.sh",
+      "community": 10,
+      "community_name": "opn-api.sh Script",
       "norm_label": "opn-api.sh"
     },
     {
@@ -724,8 +359,8 @@
       },
       "_origin": "ast",
       "id": "skills_opnsense_admin_scripts_opn_api_sh__entry",
-      "community": 8,
-      "community_name": "opn-api.sh",
+      "community": 10,
+      "community_name": "opn-api.sh Script",
       "norm_label": "opn-api.sh script"
     },
     {
@@ -739,8 +374,8 @@
       },
       "_origin": "ast",
       "id": "skills_patchmon_admin_scripts_patchmon_api",
-      "community": 9,
-      "community_name": "patchmon-api.sh",
+      "community": 11,
+      "community_name": "patchmon-api.sh Script",
       "norm_label": "patchmon-api.sh"
     },
     {
@@ -754,24 +389,430 @@
       },
       "_origin": "ast",
       "id": "skills_patchmon_admin_scripts_patchmon_api_sh__entry",
-      "community": 9,
-      "community_name": "patchmon-api.sh",
+      "community": 11,
+      "community_name": "patchmon-api.sh Script",
       "norm_label": "patchmon-api.sh script"
     },
     {
-      "label": "graphify usage rules (project CLAUDE.md)",
+      "label": "issue.sh",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "issue.sh"
+    },
+    {
+      "label": "cmd_close()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L76",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_cmd_close",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "cmd_close()"
+    },
+    {
+      "label": "cmd_comment()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L67",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_cmd_comment",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "cmd_comment()"
+    },
+    {
+      "label": "cmd_fetch()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L45",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_cmd_fetch",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "cmd_fetch()"
+    },
+    {
+      "label": "cmd_json()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L42",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_cmd_json",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "cmd_json()"
+    },
+    {
+      "label": "cmd_label()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L86",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_cmd_label",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "cmd_label()"
+    },
+    {
+      "label": "cmd_slug()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L56",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_cmd_slug",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "cmd_slug()"
+    },
+    {
+      "label": "cmd_unmapped()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L99",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_cmd_unmapped",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "cmd_unmapped()"
+    },
+    {
+      "label": "die()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L27",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_die",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "die()"
+    },
+    {
+      "label": "log()",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L26",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_log",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "log()"
+    },
+    {
+      "label": "issue.sh script",
+      "file_type": "code",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast",
+      "id": "skills_map_issue_to_tasks_issue_sh__entry",
+      "community": 2,
+      "community_name": "issue.sh Issue Commands",
+      "norm_label": "issue.sh script"
+    },
+    {
+      "label": "marketplace.json",
+      "file_type": "code",
+      "source_file": ".claude-plugin/marketplace.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "claude_plugin_marketplace",
+      "community": 3,
+      "community_name": "Claude Plugin Marketplace Manifest",
+      "norm_label": "marketplace.json"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": ".claude-plugin/marketplace.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "claude_plugin_marketplace_description",
+      "community": 3,
+      "community_name": "Claude Plugin Marketplace Manifest",
+      "norm_label": "description"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": ".claude-plugin/marketplace.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "claude_plugin_marketplace_name",
+      "community": 3,
+      "community_name": "Claude Plugin Marketplace Manifest",
+      "norm_label": "name"
+    },
+    {
+      "label": "owner",
+      "file_type": "code",
+      "source_file": ".claude-plugin/marketplace.json",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "claude_plugin_marketplace_owner",
+      "community": 3,
+      "community_name": "Claude Plugin Marketplace Manifest",
+      "norm_label": "owner"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": ".claude-plugin/marketplace.json",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "claude_plugin_marketplace_owner_name",
+      "community": 3,
+      "community_name": "Claude Plugin Marketplace Manifest",
+      "norm_label": "name"
+    },
+    {
+      "label": "url",
+      "file_type": "code",
+      "source_file": ".claude-plugin/marketplace.json",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "claude_plugin_marketplace_owner_url",
+      "community": 3,
+      "community_name": "Claude Plugin Marketplace Manifest",
+      "norm_label": "url"
+    },
+    {
+      "label": "plugins",
+      "file_type": "code",
+      "source_file": ".claude-plugin/marketplace.json",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "claude_plugin_marketplace_plugins",
+      "community": 3,
+      "community_name": "Claude Plugin Marketplace Manifest",
+      "norm_label": "plugins"
+    },
+    {
+      "label": "$schema",
+      "file_type": "code",
+      "source_file": ".claude-plugin/marketplace.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "claude_plugin_marketplace_schema",
+      "community": 3,
+      "community_name": "Claude Plugin Marketplace Manifest",
+      "norm_label": "$schema"
+    },
+    {
+      "label": "guiltty (external repo)",
       "file_type": "concept",
-      "source_file": "CLAUDE.md",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
       "source_location": null,
       "source_url": null,
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 10,
-      "community_name": "graphify usage rules (project CLAUDE.md)",
-      "norm_label": "graphify usage rules (project claude.md)",
-      "_origin": "semantic",
-      "id": "claude_md_graphify_rules"
+      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_guiltty",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "guiltty (external repo)"
+    },
+    {
+      "label": "iklo (external repo, in-progress tier)",
+      "file_type": "concept",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_iklo",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "iklo (external repo, in-progress tier)"
+    },
+    {
+      "label": "obsidian-hivemind (external repo)",
+      "file_type": "concept",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_obsidian_hivemind",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "obsidian-hivemind (external repo)"
+    },
+    {
+      "label": "roset.sh (external repo, prototype tier)",
+      "file_type": "concept",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_roset_sh",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "roset.sh (external repo, prototype tier)"
+    },
+    {
+      "label": "wawk.js (external repo)",
+      "file_type": "concept",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_wawk_js",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "wawk.js (external repo)"
+    },
+    {
+      "label": "what-about (external repo)",
+      "file_type": "concept",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_what_about",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "what-about (external repo)"
+    },
+    {
+      "label": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "file_type": "document",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_doc",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "docs/superpowers/specs/2026-08-01-repo-standard-design.md"
+    },
+    {
+      "label": "skills/repo-standard/SKILL.md",
+      "file_type": "document",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "skills_repo_standard_skill_md_doc",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "skills/repo-standard/skill.md"
+    },
+    {
+      "label": "Issue #3 - Design: cross-repo doc/folder standard (repo.toml stage tiers) + repo-standard skill",
+      "file_type": "document",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "issue #3 - design: cross-repo doc/folder standard (repo.toml stage tiers) + repo-standard skill"
+    },
+    {
+      "label": "Issue #9 - repo-standard-design: make repos agent-agnostic by default (Claude, Copilot, others)",
+      "file_type": "document",
+      "source_file": "tasks/issue-9-repo-standard-design-make-repos-agent-agnostic-by.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "issue #9 - repo-standard-design: make repos agent-agnostic by default (claude, copilot, others)"
+    },
+    {
+      "label": "repo.toml stage field + per-stage doc/folder tier table",
+      "file_type": "rationale",
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_stage_tiers",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "repo.toml stage field + per-stage doc/folder tier table"
+    },
+    {
+      "label": "Agent-agnostic-by-default policy (multi-agent repos, scaffolding must not prune other agents' integrations)",
+      "file_type": "rationale",
+      "source_file": "tasks/issue-9-repo-standard-design-make-repos-agent-agnostic-by.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_agent_agnostic_default",
+      "community": 1,
+      "community_name": "repo-standard Cross-Repo Rollout",
+      "norm_label": "agent-agnostic-by-default policy (multi-agent repos, scaffolding must not prune other agents' integrations)"
     },
     {
       "label": "opencode GitHub Action workflow",
@@ -782,131 +823,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 11,
-      "community_name": "opencode GitHub Action workflow",
-      "norm_label": "opencode github action workflow",
-      "_origin": "semantic",
-      "id": "github_workflows_opencode_workflow"
-    },
-    {
-      "label": "Per-stage doc/folder tier table (prototype/in-progress/released/archived)",
-      "file_type": "concept",
-      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "norm_label": "per-stage doc/folder tier table (prototype/in-progress/released/archived)",
-      "_origin": "semantic",
-      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_stage_tiers"
-    },
-    {
-      "label": "repo-standard audit mode (read-only compliance check)",
-      "file_type": "concept",
-      "source_file": "skills/repo-standard/SKILL.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "norm_label": "repo-standard audit mode (read-only compliance check)",
-      "_origin": "semantic",
-      "id": "skills_repo_standard_skill_audit_mode"
-    },
-    {
-      "label": "repo-standard scaffold mode (non-destructive creation)",
-      "file_type": "concept",
-      "source_file": "skills/repo-standard/SKILL.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "norm_label": "repo-standard scaffold mode (non-destructive creation)",
-      "_origin": "semantic",
-      "id": "skills_repo_standard_skill_scaffold_mode"
-    },
-    {
-      "label": "Cross-repo documentation/folder standard design doc",
-      "file_type": "document",
-      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "norm_label": "cross-repo documentation/folder standard design doc",
-      "_origin": "semantic",
-      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_document"
-    },
-    {
-      "label": "repo-standard SKILL.md",
-      "file_type": "document",
-      "source_file": "skills/repo-standard/SKILL.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "norm_label": "repo-standard skill.md",
-      "_origin": "semantic",
-      "id": "skills_repo_standard_skill_document"
-    },
-    {
-      "label": "Issue #3 task breakdown: cross-repo doc/folder standard",
-      "file_type": "document",
-      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "norm_label": "issue #3 task breakdown: cross-repo doc/folder standard",
-      "_origin": "semantic",
-      "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_document"
-    },
-    {
-      "label": "On-demand (not pre-PR-gated) enforcement decision for repo-standard",
-      "file_type": "rationale",
-      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "norm_label": "on-demand (not pre-pr-gated) enforcement decision for repo-standard",
-      "_origin": "semantic",
-      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_standard_enforcement"
-    },
-    {
-      "label": "repo.toml stage field decision",
-      "file_type": "rationale",
-      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "norm_label": "repo.toml stage field decision",
-      "_origin": "semantic",
-      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_toml_stage"
+      "id": "github_workflows_opencode_workflow",
+      "community": 12,
+      "community_name": "opencode GitHub Action",
+      "norm_label": "opencode github action workflow"
     },
     {
       "label": "rs-claude-plugins README",
@@ -917,11 +837,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "readme_document",
       "community": 4,
-      "community_name": "pull-request-process SKILL.md",
-      "norm_label": "rs-claude-plugins readme",
-      "_origin": "semantic",
-      "id": "readme_document"
+      "community_name": "Workflow Skill Docs & Guardrails",
+      "norm_label": "rs-claude-plugins readme"
     },
     {
       "label": "fix-mapped-issue SKILL.md",
@@ -932,11 +851,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_fix_mapped_issue_skill_document",
       "community": 4,
-      "community_name": "pull-request-process SKILL.md",
-      "norm_label": "fix-mapped-issue skill.md",
-      "_origin": "semantic",
-      "id": "skills_fix_mapped_issue_skill_document"
+      "community_name": "Workflow Skill Docs & Guardrails",
+      "norm_label": "fix-mapped-issue skill.md"
     },
     {
       "label": "map-issue-to-tasks SKILL.md",
@@ -947,11 +865,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_map_issue_to_tasks_skill_document",
       "community": 4,
-      "community_name": "pull-request-process SKILL.md",
-      "norm_label": "map-issue-to-tasks skill.md",
-      "_origin": "semantic",
-      "id": "skills_map_issue_to_tasks_skill_document"
+      "community_name": "Workflow Skill Docs & Guardrails",
+      "norm_label": "map-issue-to-tasks skill.md"
     },
     {
       "label": "issue-enrichment.md template",
@@ -962,11 +879,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_map_issue_to_tasks_templates_issue_enrichment_document",
       "community": 4,
-      "community_name": "pull-request-process SKILL.md",
-      "norm_label": "issue-enrichment.md template",
-      "_origin": "semantic",
-      "id": "skills_map_issue_to_tasks_templates_issue_enrichment_document"
+      "community_name": "Workflow Skill Docs & Guardrails",
+      "norm_label": "issue-enrichment.md template"
     },
     {
       "label": "pull-request-process SKILL.md",
@@ -977,11 +893,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_pull_request_process_skill_document",
       "community": 4,
-      "community_name": "pull-request-process SKILL.md",
-      "norm_label": "pull-request-process skill.md",
-      "_origin": "semantic",
-      "id": "skills_pull_request_process_skill_document"
+      "community_name": "Workflow Skill Docs & Guardrails",
+      "norm_label": "pull-request-process skill.md"
     },
     {
       "label": "Dedicated agent git/gh identity enforcement (rationale)",
@@ -992,11 +907,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_pull_request_process_skill_agent_identity_enforcement",
       "community": 4,
-      "community_name": "pull-request-process SKILL.md",
-      "norm_label": "dedicated agent git/gh identity enforcement (rationale)",
-      "_origin": "semantic",
-      "id": "skills_pull_request_process_skill_agent_identity_enforcement"
+      "community_name": "Workflow Skill Docs & Guardrails",
+      "norm_label": "dedicated agent git/gh identity enforcement (rationale)"
     },
     {
       "label": "Explicit-refspec push guardrail against advancing main (rationale)",
@@ -1007,11 +921,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_pull_request_process_skill_explicit_refspec_push",
       "community": 4,
-      "community_name": "pull-request-process SKILL.md",
-      "norm_label": "explicit-refspec push guardrail against advancing main (rationale)",
-      "_origin": "semantic",
-      "id": "skills_pull_request_process_skill_explicit_refspec_push"
+      "community_name": "Workflow Skill Docs & Guardrails",
+      "norm_label": "explicit-refspec push guardrail against advancing main (rationale)"
     },
     {
       "label": "Git worktree isolation instead of shared checkout (rationale)",
@@ -1022,11 +935,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_pull_request_process_skill_worktree_isolation",
       "community": 4,
-      "community_name": "pull-request-process SKILL.md",
-      "norm_label": "git worktree isolation instead of shared checkout (rationale)",
-      "_origin": "semantic",
-      "id": "skills_pull_request_process_skill_worktree_isolation"
+      "community_name": "Workflow Skill Docs & Guardrails",
+      "norm_label": "git worktree isolation instead of shared checkout (rationale)"
     },
     {
       "label": "doppler-secrets SKILL.md",
@@ -1037,11 +949,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_doppler_secrets_skill_document",
       "community": 5,
-      "community_name": "doppler-secrets SKILL.md",
-      "norm_label": "doppler-secrets skill.md",
-      "_origin": "semantic",
-      "id": "skills_doppler_secrets_skill_document"
+      "community_name": "Infra Admin Skills (OPNsense/PatchMon/Doppler)",
+      "norm_label": "doppler-secrets skill.md"
     },
     {
       "label": "OPNsense API lessons learned",
@@ -1052,11 +963,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_opnsense_admin_references_lessons_learned_document",
       "community": 5,
-      "community_name": "doppler-secrets SKILL.md",
-      "norm_label": "opnsense api lessons learned",
-      "_origin": "semantic",
-      "id": "skills_opnsense_admin_references_lessons_learned_document"
+      "community_name": "Infra Admin Skills (OPNsense/PatchMon/Doppler)",
+      "norm_label": "opnsense api lessons learned"
     },
     {
       "label": "opnsense-admin SKILL.md",
@@ -1067,11 +977,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_opnsense_admin_skill_document",
       "community": 5,
-      "community_name": "doppler-secrets SKILL.md",
-      "norm_label": "opnsense-admin skill.md",
-      "_origin": "semantic",
-      "id": "skills_opnsense_admin_skill_document"
+      "community_name": "Infra Admin Skills (OPNsense/PatchMon/Doppler)",
+      "norm_label": "opnsense-admin skill.md"
     },
     {
       "label": "PatchMon API lessons learned",
@@ -1082,11 +991,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_patchmon_admin_references_lessons_learned_document",
       "community": 5,
-      "community_name": "doppler-secrets SKILL.md",
-      "norm_label": "patchmon api lessons learned",
-      "_origin": "semantic",
-      "id": "skills_patchmon_admin_references_lessons_learned_document"
+      "community_name": "Infra Admin Skills (OPNsense/PatchMon/Doppler)",
+      "norm_label": "patchmon api lessons learned"
     },
     {
       "label": "patchmon-admin SKILL.md",
@@ -1097,11 +1005,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_patchmon_admin_skill_document",
       "community": 5,
-      "community_name": "doppler-secrets SKILL.md",
-      "norm_label": "patchmon-admin skill.md",
-      "_origin": "semantic",
-      "id": "skills_patchmon_admin_skill_document"
+      "community_name": "Infra Admin Skills (OPNsense/PatchMon/Doppler)",
+      "norm_label": "patchmon-admin skill.md"
     },
     {
       "label": "Doppler service-token least-privilege scoping rationale",
@@ -1112,11 +1019,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_doppler_secrets_skill_token_scoping",
       "community": 5,
-      "community_name": "doppler-secrets SKILL.md",
-      "norm_label": "doppler service-token least-privilege scoping rationale",
-      "_origin": "semantic",
-      "id": "skills_doppler_secrets_skill_token_scoping"
+      "community_name": "Infra Admin Skills (OPNsense/PatchMon/Doppler)",
+      "norm_label": "doppler service-token least-privilege scoping rationale"
     },
     {
       "label": "Always pull config backup before nontrivial change (rationale)",
@@ -1127,11 +1033,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_opnsense_admin_skill_config_backup_rationale",
       "community": 5,
-      "community_name": "doppler-secrets SKILL.md",
-      "norm_label": "always pull config backup before nontrivial change (rationale)",
-      "_origin": "semantic",
-      "id": "skills_opnsense_admin_skill_config_backup_rationale"
+      "community_name": "Infra Admin Skills (OPNsense/PatchMon/Doppler)",
+      "norm_label": "always pull config backup before nontrivial change (rationale)"
     },
     {
       "label": "patch_all is a real immediate live-host action (rationale)",
@@ -1142,11 +1047,220 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "skills_patchmon_admin_skill_patch_all_live_action_rationale",
       "community": 5,
-      "community_name": "doppler-secrets SKILL.md",
-      "norm_label": "patch_all is a real immediate live-host action (rationale)",
-      "_origin": "semantic",
-      "id": "skills_patchmon_admin_skill_patch_all_live_action_rationale"
+      "community_name": "Infra Admin Skills (OPNsense/PatchMon/Doppler)",
+      "norm_label": "patch_all is a real immediate live-host action (rationale)"
+    },
+    {
+      "label": "skills/map-issue-to-tasks/issue.sh",
+      "file_type": "code",
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "skills_map_issue_to_tasks_issue_sh_script",
+      "community": 6,
+      "community_name": "Issue-to-Script Mapping (issue.sh/pr.sh Tasks)",
+      "norm_label": "skills/map-issue-to-tasks/issue.sh"
+    },
+    {
+      "label": "skills/pull-request-process/pr.sh",
+      "file_type": "code",
+      "source_file": "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "skills_pull_request_process_pr_sh_script",
+      "community": 6,
+      "community_name": "Issue-to-Script Mapping (issue.sh/pr.sh Tasks)",
+      "norm_label": "skills/pull-request-process/pr.sh"
+    },
+    {
+      "label": "skills/map-issue-to-tasks/SKILL.md",
+      "file_type": "document",
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "skills_map_issue_to_tasks_skill_md_doc",
+      "community": 6,
+      "community_name": "Issue-to-Script Mapping (issue.sh/pr.sh Tasks)",
+      "norm_label": "skills/map-issue-to-tasks/skill.md"
+    },
+    {
+      "label": "skills/pull-request-process/SKILL.md",
+      "file_type": "document",
+      "source_file": "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "skills_pull_request_process_skill_md_doc",
+      "community": 6,
+      "community_name": "Issue-to-Script Mapping (issue.sh/pr.sh Tasks)",
+      "norm_label": "skills/pull-request-process/skill.md"
+    },
+    {
+      "label": "Issue #10 - issue.sh/pr.sh: no sanctioned way to create a new issue under the bot identity",
+      "file_type": "document",
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_10_issue_sh_pr_sh_no_sanctioned_way_to_create_a_new_issue",
+      "community": 6,
+      "community_name": "Issue-to-Script Mapping (issue.sh/pr.sh Tasks)",
+      "norm_label": "issue #10 - issue.sh/pr.sh: no sanctioned way to create a new issue under the bot identity"
+    },
+    {
+      "label": "Issue #14 - pr.sh worktrees should not live alongside personal repos under ~/REPO/ME",
+      "file_type": "document",
+      "source_file": "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_14_pr_sh_worktrees_should_not_live_alongside_issue",
+      "community": 6,
+      "community_name": "Issue-to-Script Mapping (issue.sh/pr.sh Tasks)",
+      "norm_label": "issue #14 - pr.sh worktrees should not live alongside personal repos under ~/repo/me"
+    },
+    {
+      "label": "Sanctioned 'create' subcommand with bot-identity enforcement",
+      "file_type": "rationale",
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_10_issue_sh_pr_sh_no_sanctioned_way_to_create_a_new_create_subcommand",
+      "community": 6,
+      "community_name": "Issue-to-Script Mapping (issue.sh/pr.sh Tasks)",
+      "norm_label": "sanctioned 'create' subcommand with bot-identity enforcement"
+    },
+    {
+      "label": "Centralized worktree-root strategy (not sibling of main checkout)",
+      "file_type": "rationale",
+      "source_file": "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "tasks_issue_14_pr_sh_worktrees_should_not_live_alongside_centralized_worktree_root",
+      "community": 6,
+      "community_name": "Issue-to-Script Mapping (issue.sh/pr.sh Tasks)",
+      "norm_label": "centralized worktree-root strategy (not sibling of main checkout)"
+    },
+    {
+      "label": "Per-stage doc/folder tier table (prototype/in-progress/released/archived)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_stage_tiers",
+      "community": 7,
+      "community_name": "repo-standard Design & Stage Tiers",
+      "norm_label": "per-stage doc/folder tier table (prototype/in-progress/released/archived)"
+    },
+    {
+      "label": "repo-standard audit mode (read-only compliance check)",
+      "file_type": "concept",
+      "source_file": "skills/repo-standard/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "skills_repo_standard_skill_audit_mode",
+      "community": 7,
+      "community_name": "repo-standard Design & Stage Tiers",
+      "norm_label": "repo-standard audit mode (read-only compliance check)"
+    },
+    {
+      "label": "repo-standard scaffold mode (non-destructive creation)",
+      "file_type": "concept",
+      "source_file": "skills/repo-standard/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "skills_repo_standard_skill_scaffold_mode",
+      "community": 7,
+      "community_name": "repo-standard Design & Stage Tiers",
+      "norm_label": "repo-standard scaffold mode (non-destructive creation)"
+    },
+    {
+      "label": "Cross-repo documentation/folder standard design doc",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
+      "community": 7,
+      "community_name": "repo-standard Design & Stage Tiers",
+      "norm_label": "cross-repo documentation/folder standard design doc"
+    },
+    {
+      "label": "repo-standard SKILL.md",
+      "file_type": "document",
+      "source_file": "skills/repo-standard/SKILL.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "skills_repo_standard_skill_document",
+      "community": 7,
+      "community_name": "repo-standard Design & Stage Tiers",
+      "norm_label": "repo-standard skill.md"
+    },
+    {
+      "label": "On-demand (not pre-PR-gated) enforcement decision for repo-standard",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_standard_enforcement",
+      "community": 7,
+      "community_name": "repo-standard Design & Stage Tiers",
+      "norm_label": "on-demand (not pre-pr-gated) enforcement decision for repo-standard"
+    },
+    {
+      "label": "repo.toml stage field decision",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_toml_stage",
+      "community": 7,
+      "community_name": "repo-standard Design & Stage Tiers",
+      "norm_label": "repo.toml stage field decision"
     },
     {
       "label": "obsidian-official-cli skill-card (top-level)",
@@ -1157,11 +1271,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
-      "community_name": "obsidian-official-cli skill-card (top-level)",
-      "norm_label": "obsidian-official-cli skill-card (top-level)",
-      "_origin": "semantic",
-      "id": "skills_clawhub_obsidian_cli_skill_card_document"
+      "id": "skills_clawhub_obsidian_cli_skill_card_document",
+      "community": 8,
+      "community_name": "Obsidian CLI Skill (Duplicated)",
+      "norm_label": "obsidian-official-cli skill-card (top-level)"
     },
     {
       "label": "obsidian-official-cli SKILL.md (top-level)",
@@ -1172,11 +1285,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
-      "community_name": "obsidian-official-cli skill-card (top-level)",
-      "norm_label": "obsidian-official-cli skill.md (top-level)",
-      "_origin": "semantic",
-      "id": "skills_clawhub_obsidian_cli_skill_document"
+      "id": "skills_clawhub_obsidian_cli_skill_document",
+      "community": 8,
+      "community_name": "Obsidian CLI Skill (Duplicated)",
+      "norm_label": "obsidian-official-cli skill.md (top-level)"
     },
     {
       "label": "obsidian-official-cli skill-card (nested duplicate)",
@@ -1187,11 +1299,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
-      "community_name": "obsidian-official-cli skill-card (top-level)",
-      "norm_label": "obsidian-official-cli skill-card (nested duplicate)",
-      "_origin": "semantic",
-      "id": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_card_document"
+      "id": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_card_document",
+      "community": 8,
+      "community_name": "Obsidian CLI Skill (Duplicated)",
+      "norm_label": "obsidian-official-cli skill-card (nested duplicate)"
     },
     {
       "label": "obsidian-official-cli SKILL.md (nested duplicate)",
@@ -1202,11 +1313,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
-      "community_name": "obsidian-official-cli skill-card (top-level)",
-      "norm_label": "obsidian-official-cli skill.md (nested duplicate)",
-      "_origin": "semantic",
-      "id": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_document"
+      "id": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_document",
+      "community": 8,
+      "community_name": "Obsidian CLI Skill (Duplicated)",
+      "norm_label": "obsidian-official-cli skill.md (nested duplicate)"
     },
     {
       "label": "Obsidian Bases Functions Reference",
@@ -1217,11 +1327,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
-      "community_name": "Obsidian Bases Functions Reference",
-      "norm_label": "obsidian bases functions reference",
-      "_origin": "semantic",
-      "id": "skills_clawhub_obsidian_bases_references_functions_reference_document"
+      "id": "skills_clawhub_obsidian_bases_references_functions_reference_document",
+      "community": 9,
+      "community_name": "Obsidian Bases Skill",
+      "norm_label": "obsidian bases functions reference"
     },
     {
       "label": "obsidian-bases skill-card",
@@ -1232,11 +1341,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
-      "community_name": "Obsidian Bases Functions Reference",
-      "norm_label": "obsidian-bases skill-card",
-      "_origin": "semantic",
-      "id": "skills_clawhub_obsidian_bases_skill_card_document"
+      "id": "skills_clawhub_obsidian_bases_skill_card_document",
+      "community": 9,
+      "community_name": "Obsidian Bases Skill",
+      "norm_label": "obsidian-bases skill-card"
     },
     {
       "label": "obsidian-bases SKILL.md",
@@ -1247,11 +1355,10 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
-      "community_name": "Obsidian Bases Functions Reference",
-      "norm_label": "obsidian-bases skill.md",
-      "_origin": "semantic",
-      "id": "skills_clawhub_obsidian_bases_skill_document"
+      "id": "skills_clawhub_obsidian_bases_skill_document",
+      "community": 9,
+      "community_name": "Obsidian Bases Skill",
+      "norm_label": "obsidian-bases skill.md"
     }
   ],
   "links": [
@@ -1791,127 +1898,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_graphify_as_a_standard_dev_process_artifact_gitignore_requirement_design",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L150",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_change_to_repo_standard",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_scaffold_behavior",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L58",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_change_to_repo_standard",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_required_paths_table",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L65",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_change_to_repo_standard",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_starter_content",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L83",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_change_to_repo_standard",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_audit_behavior",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L157",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_graphify_as_a_standard_dev_process_artifact_gitignore_requirement_design",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_rollout_in_this_repo",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L172",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_graphify_as_a_standard_dev_process_artifact_gitignore_requirement_design",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_out_of_scope",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L20",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_graphify_as_a_standard_dev_process_artifact_gitignore_requirement_design",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_what_s_committed_vs_ignored_in_graphify_out",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_graphify_as_a_standard_dev_process_artifact_gitignore_requirement_design",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_context",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L56",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_graphify_as_a_standard_dev_process_artifact_gitignore_requirement_design",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_change_to_repo_standard",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/superpowers/specs/2026-08-19-graphify-gitignore-standard-design.md",
-      "source_location": "L38",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_what_s_committed_vs_ignored_in_graphify_out",
-      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_denylist_vs_allowlist",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
       "source_location": "L1",
       "weight": 1.0,
@@ -2224,7 +2210,6 @@
       "source_file": "skills/repo-standard/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_repo_standard_skill_audit_mode",
       "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_stage_tiers"
     },
@@ -2235,9 +2220,18 @@
       "source_file": "skills/repo-standard/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_repo_standard_skill_scaffold_mode",
       "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_stage_tiers"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "skills_repo_standard_skill_md_doc",
+      "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_doc"
     },
     {
       "relation": "rationale_for",
@@ -2246,7 +2240,6 @@
       "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
       "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_standard_enforcement"
     },
@@ -2257,7 +2250,6 @@
       "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
       "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_toml_stage"
     },
@@ -2268,7 +2260,6 @@
       "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
       "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_stage_tiers"
     },
@@ -2279,7 +2270,6 @@
       "source_file": "skills/doppler-secrets/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_doppler_secrets_skill_document",
       "target": "skills_doppler_secrets_skill_token_scoping"
     },
@@ -2290,7 +2280,6 @@
       "source_file": "skills/opnsense-admin/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_opnsense_admin_skill_document",
       "target": "skills_opnsense_admin_skill_config_backup_rationale"
     },
@@ -2301,7 +2290,6 @@
       "source_file": "skills/patchmon-admin/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_patchmon_admin_skill_document",
       "target": "skills_patchmon_admin_skill_patch_all_live_action_rationale"
     },
@@ -2312,7 +2300,6 @@
       "source_file": "skills/pull-request-process/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_pull_request_process_skill_document",
       "target": "skills_pull_request_process_skill_agent_identity_enforcement"
     },
@@ -2323,7 +2310,6 @@
       "source_file": "skills/pull-request-process/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_pull_request_process_skill_document",
       "target": "skills_pull_request_process_skill_explicit_refspec_push"
     },
@@ -2334,9 +2320,78 @@
       "source_file": "skills/pull-request-process/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_pull_request_process_skill_document",
       "target": "skills_pull_request_process_skill_worktree_isolation"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_10_issue_sh_pr_sh_no_sanctioned_way_to_create_a_new_create_subcommand",
+      "target": "skills_map_issue_to_tasks_issue_sh_script"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_10_issue_sh_pr_sh_no_sanctioned_way_to_create_a_new_create_subcommand",
+      "target": "skills_map_issue_to_tasks_skill_md_doc"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_14_pr_sh_worktrees_should_not_live_alongside_centralized_worktree_root",
+      "target": "skills_pull_request_process_pr_sh_script"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_14_pr_sh_worktrees_should_not_live_alongside_centralized_worktree_root",
+      "target": "skills_pull_request_process_skill_md_doc"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_stage_tiers",
+      "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_doc"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-9-repo-standard-design-make-repos-agent-agnostic-by.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_agent_agnostic_default",
+      "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_doc"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-9-repo-standard-design-make-repos-agent-agnostic-by.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_agent_agnostic_default",
+      "target": "skills_repo_standard_skill_md_doc"
     },
     {
       "relation": "references",
@@ -2345,7 +2400,6 @@
       "source_file": "README.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "readme_document",
       "target": "skills_fix_mapped_issue_skill_document"
     },
@@ -2356,7 +2410,6 @@
       "source_file": "README.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "readme_document",
       "target": "skills_map_issue_to_tasks_skill_document"
     },
@@ -2367,7 +2420,6 @@
       "source_file": "README.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "readme_document",
       "target": "skills_pull_request_process_skill_document"
     },
@@ -2378,7 +2430,6 @@
       "source_file": "skills/clawhub.obsidian-bases/skill-card.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_clawhub_obsidian_bases_skill_card_document",
       "target": "skills_clawhub_obsidian_bases_references_functions_reference_document"
     },
@@ -2389,7 +2440,6 @@
       "source_file": "skills/clawhub.obsidian-bases/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_clawhub_obsidian_bases_skill_document",
       "target": "skills_clawhub_obsidian_bases_references_functions_reference_document"
     },
@@ -2400,7 +2450,6 @@
       "source_file": "skills/doppler-secrets/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_doppler_secrets_skill_document",
       "target": "skills_opnsense_admin_references_lessons_learned_document"
     },
@@ -2411,7 +2460,6 @@
       "source_file": "skills/doppler-secrets/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_doppler_secrets_skill_document",
       "target": "skills_patchmon_admin_references_lessons_learned_document"
     },
@@ -2422,7 +2470,6 @@
       "source_file": "skills/fix-mapped-issue/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_fix_mapped_issue_skill_document",
       "target": "skills_map_issue_to_tasks_skill_document"
     },
@@ -2433,7 +2480,6 @@
       "source_file": "skills/fix-mapped-issue/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_fix_mapped_issue_skill_document",
       "target": "skills_pull_request_process_skill_document"
     },
@@ -2444,7 +2490,6 @@
       "source_file": "skills/map-issue-to-tasks/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_map_issue_to_tasks_skill_document",
       "target": "skills_map_issue_to_tasks_templates_issue_enrichment_document"
     },
@@ -2455,7 +2500,6 @@
       "source_file": "skills/opnsense-admin/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_opnsense_admin_skill_document",
       "target": "skills_opnsense_admin_references_lessons_learned_document"
     },
@@ -2466,7 +2510,6 @@
       "source_file": "skills/patchmon-admin/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_patchmon_admin_skill_document",
       "target": "skills_doppler_secrets_skill_document"
     },
@@ -2477,7 +2520,6 @@
       "source_file": "skills/patchmon-admin/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_patchmon_admin_skill_document",
       "target": "skills_patchmon_admin_references_lessons_learned_document"
     },
@@ -2488,7 +2530,6 @@
       "source_file": "skills/repo-standard/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_repo_standard_skill_document",
       "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_document"
     },
@@ -2496,12 +2537,41 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
-      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_document",
-      "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_document"
+      "source": "tasks_issue_10_issue_sh_pr_sh_no_sanctioned_way_to_create_a_new_issue",
+      "target": "skills_map_issue_to_tasks_issue_sh_script"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_10_issue_sh_pr_sh_no_sanctioned_way_to_create_a_new_issue",
+      "target": "skills_map_issue_to_tasks_skill_md_doc"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_14_pr_sh_worktrees_should_not_live_alongside_issue",
+      "target": "skills_pull_request_process_pr_sh_script"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_14_pr_sh_worktrees_should_not_live_alongside_issue",
+      "target": "skills_pull_request_process_skill_md_doc"
     },
     {
       "relation": "references",
@@ -2510,9 +2580,98 @@
       "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
-      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_document",
-      "target": "skills_repo_standard_skill_document"
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_doc"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "target": "skills_repo_standard_skill_md_doc"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "target": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_guiltty"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "target": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_iklo"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "target": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_obsidian_hivemind"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "target": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_roset_sh"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "target": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_wawk_js"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+      "target": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_what_about"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-9-repo-standard-design-make-repos-agent-agnostic-by.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue",
+      "target": "docs_superpowers_specs_2026_08_01_repo_standard_design_doc"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-9-repo-standard-design-make-repos-agent-agnostic-by.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue",
+      "target": "skills_repo_standard_skill_md_doc"
     },
     {
       "relation": "semantically_similar_to",
@@ -2521,9 +2680,18 @@
       "source_file": "skills/pull-request-process/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_pull_request_process_skill_worktree_isolation",
       "target": "skills_pull_request_process_skill_explicit_refspec_push"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "tasks_issue_10_issue_sh_pr_sh_no_sanctioned_way_to_create_a_new_create_subcommand",
+      "target": "tasks_issue_14_pr_sh_worktrees_should_not_live_alongside_centralized_worktree_root"
     },
     {
       "relation": "semantically_similar_to",
@@ -2532,7 +2700,6 @@
       "source_file": "skills/clawhub.obsidian-cli/skills/clawhub.obsidian-cli/skill-card.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_clawhub_obsidian_cli_skill_card_document",
       "target": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_card_document"
     },
@@ -2543,7 +2710,6 @@
       "source_file": "skills/clawhub.obsidian-bases/skill-card.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_clawhub_obsidian_bases_skill_document",
       "target": "skills_clawhub_obsidian_bases_skill_card_document"
     },
@@ -2554,7 +2720,6 @@
       "source_file": "skills/clawhub.obsidian-cli/skill-card.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_clawhub_obsidian_cli_skill_document",
       "target": "skills_clawhub_obsidian_cli_skill_card_document"
     },
@@ -2565,7 +2730,6 @@
       "source_file": "skills/clawhub.obsidian-cli/skills/clawhub.obsidian-cli/SKILL.md",
       "source_location": null,
       "weight": 1.0,
-      "_origin": "semantic",
       "source": "skills_clawhub_obsidian_cli_skill_document",
       "target": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_document"
     }
@@ -2604,13 +2768,43 @@
       "nodes": [
         "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
         "skills_repo_standard_skill_document",
-        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_document"
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue"
       ],
       "relation": "form",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md"
+    },
+    {
+      "id": "repo_standard_tier_rollout_group",
+      "label": "Six external repos rolled out under repo-standard stage tiers via issue #3 task 3",
+      "nodes": [
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_roset_sh",
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_iklo",
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_what_about",
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_guiltty",
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_obsidian_hivemind",
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_wawk_js"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
+    },
+    {
+      "id": "repo_standard_design_policy_group",
+      "label": "Repo-standard design doc and skill jointly amended by issues #3 and #9",
+      "nodes": [
+        "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
+        "skills_repo_standard_skill_document",
+        "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue",
+        "tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
     }
-  ],
-  "built_at_commit": "9e16cd26fd7764853330edc025e936f5f6be4a10"
+  ]
 }
