@@ -12,7 +12,7 @@ https://github.com/rsenna/rs-claude-plugins/issues/3
     code gate applies (docs-only change in a skills/docs repo).
   - Files: `docs/superpowers/specs/2026-08-01-repo-standard-design.md`
 
-- [ ] **2 — Implement the `repo-standard` skill** 🔓
+- [x] **2 — Implement the `repo-standard` skill** ✅ merged (#16)
   - Acceptance: `skills/repo-standard/SKILL.md` implements `audit` (read-only
     diff against the declared stage's tier) and `scaffold` (non-destructive
     creation of what's missing), matching the design doc's Section 3.
