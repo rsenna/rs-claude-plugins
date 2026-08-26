@@ -23,3 +23,4 @@ https://github.com/rsenna/rs-claude-plugins/issues/14
   - Acceptance: final behavior guarantees that for checkouts under `~/REPO/ME/<repo>`, generated worktrees are not created under `~/REPO/ME/`; log output still provides an easy `cd` target for ongoing work.
   - Verify: no project-wide quality gate is documented for this repo; manual smoke check confirms the printed worktree path is outside `~/REPO/ME/` and cleanup still returns to the main checkout path.
   - Files: `skills/pull-request-process/pr.sh`
+  - Note: the guarantee above holds for the default centralized root. An explicit `PR_WORKTREE_ROOT` override is validated (must be absolute, must not be inside the main checkout) but is otherwise unrestricted — an operator can point it anywhere, including under `~/REPO/ME/`. That is deliberate: overrides target non-standard layouts (e.g. a second disk), and policing the operator's chosen mount was out of scope for this issue.
