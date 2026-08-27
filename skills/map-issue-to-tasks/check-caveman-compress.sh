@@ -22,21 +22,33 @@ set -euo pipefail
 log()  { printf '\033[1;34m[check-caveman-compress]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[check-caveman-compress] %s\033[0m\n' "$*" >&2; }
 
-FIX_MARKER='--strict-mcp-config'
+# Both flags together are the fix (see the upstream PR) — checking only one
+# would report "patched" if a future edit ever dropped just the other half.
+FIX_MARKERS=('--strict-mcp-config' '--setting-sources')
 
 find_compress_py() {
+  # ${HOME:-} rather than $HOME: some minimal/sandboxed subprocess environments
+  # run with HOME unset, and under `set -u` that would abort the script with a
+  # raw "HOME: unbound variable" instead of falling into the "not installed,
+  # skip compression" (exit 1) path this case should take.
+  local home="${HOME:-}"
   local candidates=(
     "${CAVEMAN_COMPRESS_SCRIPT:-}"
-    "$HOME/.claude/skills/caveman-compress/scripts/compress.py"
-    "$HOME/.agents/skills/caveman-compress/scripts/compress.py"
   )
+  if [ -n "$home" ]; then
+    candidates+=(
+      "$home/.claude/skills/caveman-compress/scripts/compress.py"
+      "$home/.agents/skills/caveman-compress/scripts/compress.py"
+    )
+  fi
   local c
   for c in "${candidates[@]}"; do
     [ -n "$c" ] && [ -f "$c" ] && { printf '%s\n' "$c"; return 0; }
   done
+  [ -n "$home" ] || return 0
   # Last resort: shallow search under common skill roots, for hosts laid out
   # differently than this one.
-  find "$HOME/.claude/skills" "$HOME/.agents/skills" "$HOME/.codex/skills" \
+  find "$home/.claude/skills" "$home/.agents/skills" "$home/.codex/skills" \
     -maxdepth 4 -path "*caveman-compress/scripts/compress.py" 2>/dev/null \
     | head -n1
 }
@@ -48,12 +60,17 @@ if [ -z "$compress_py" ]; then
   exit 1
 fi
 
-if grep -q -- "$FIX_MARKER" "$compress_py" 2>/dev/null; then
+all_markers_present=1
+for marker in "${FIX_MARKERS[@]}"; do
+  grep -q -- "$marker" "$compress_py" 2>/dev/null || all_markers_present=0
+done
+
+if [ "$all_markers_present" = 1 ]; then
   log "caveman-compress at $compress_py carries the subprocess isolation fix."
   exit 0
 fi
 
-warn "caveman-compress at $compress_py is UNPATCHED (missing '$FIX_MARKER')."
+warn "caveman-compress at $compress_py is UNPATCHED (missing ${FIX_MARKERS[*]})."
 warn "Its 'claude --print' fallback can leak this host's hooks/MCP context into"
 warn "whatever file it compresses instead of shrinking it — do not run it as-is."
 warn ""
