@@ -87,18 +87,35 @@ if len(call_claude_defs) != 1:
     raise SystemExit(1)
 call_claude = call_claude_defs[0]
 
-subprocess_calls = []
-for node in ast.walk(call_claude):
-    if not isinstance(node, ast.Call) or not node.args:
-        continue
-    func = node.func
-    if (
-        isinstance(func, ast.Attribute)
-        and func.attr == "run"
-        and isinstance(func.value, ast.Name)
-        and func.value.id == "subprocess"
-    ):
-        subprocess_calls.append(node)
+class OwnScopeCalls(ast.NodeVisitor):
+    def __init__(self):
+        self.subprocess_calls = []
+
+    def visit_Call(self, node):
+        func = node.func
+        if (
+            node.args
+            and isinstance(func, ast.Attribute)
+            and func.attr == "run"
+            and isinstance(func.value, ast.Name)
+            and func.value.id == "subprocess"
+        ):
+            self.subprocess_calls.append(node)
+        self.generic_visit(node)
+
+    # Nested scopes are not executed as call_claude's subprocess invocation.
+    def visit_FunctionDef(self, node):
+        pass
+
+    visit_AsyncFunctionDef = visit_FunctionDef
+    visit_Lambda = visit_FunctionDef
+    visit_ClassDef = visit_FunctionDef
+
+
+visitor = OwnScopeCalls()
+for statement in call_claude.body:
+    visitor.visit(statement)
+subprocess_calls = visitor.subprocess_calls
 
 # Fail closed on refactors or decoy/dead calls. The known-safe implementation
 # has exactly one direct subprocess.run call with a literal argv list.

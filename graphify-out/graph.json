@@ -2114,7 +2114,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L120",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -2126,7 +2126,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L121",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -2138,7 +2138,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L125",
+      "source_location": "L142",
       "weight": 1.0
     },
     {
@@ -4771,5 +4771,5 @@
       "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
     }
   ],
-  "built_at_commit": "c35e9f4f99e7499c8e72712042db76c472688536"
+  "built_at_commit": "98e5c567ca914085dc3571e223e6c50c02fedc93"
 }
