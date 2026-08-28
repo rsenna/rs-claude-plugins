@@ -87,38 +87,33 @@ if len(call_claude_defs) != 1:
     raise SystemExit(1)
 call_claude = call_claude_defs[0]
 
-class OwnScopeCalls(ast.NodeVisitor):
-    def __init__(self):
-        self.subprocess_calls = []
-
-    def visit_Call(self, node):
-        func = node.func
-        if (
-            node.args
-            and isinstance(func, ast.Attribute)
-            and func.attr == "run"
-            and isinstance(func.value, ast.Name)
-            and func.value.id == "subprocess"
-        ):
-            self.subprocess_calls.append(node)
-        self.generic_visit(node)
-
-    # Nested scopes are not executed as call_claude's subprocess invocation.
-    def visit_FunctionDef(self, node):
-        pass
-
-    visit_AsyncFunctionDef = visit_FunctionDef
-    visit_Lambda = visit_FunctionDef
-    visit_ClassDef = visit_FunctionDef
+def assigned_subprocess_run(statement):
+    if not isinstance(statement, (ast.Assign, ast.AnnAssign)):
+        return None
+    value = statement.value
+    if not isinstance(value, ast.Call) or not value.args:
+        return None
+    func = value.func
+    if (
+        isinstance(func, ast.Attribute)
+        and func.attr == "run"
+        and isinstance(func.value, ast.Name)
+        and func.value.id == "subprocess"
+    ):
+        return value
+    return None
 
 
-visitor = OwnScopeCalls()
-for statement in call_claude.body:
-    visitor.visit(statement)
-subprocess_calls = visitor.subprocess_calls
-
-# Fail closed on refactors or decoy/dead calls. The known-safe implementation
-# has exactly one direct subprocess.run call with a literal argv list.
+# The upstream fix's active CLI fallback starts a top-level try block with
+# `result = subprocess.run([...])`. Accept only that exact executable shape:
+# broad AST walks can be fooled by nested scopes or statically dead branches.
+subprocess_calls = [
+    call
+    for statement in call_claude.body
+    if isinstance(statement, ast.Try) and statement.body
+    for call in [assigned_subprocess_run(statement.body[0])]
+    if call is not None
+]
 if len(subprocess_calls) != 1:
     raise SystemExit(1)
 
