@@ -77,12 +77,15 @@ try:
 except (OSError, SyntaxError):
     raise SystemExit(1)
 
-call_claude = next(
-    (node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == "call_claude"),
-    None,
-)
-if call_claude is None:
+call_claude_defs = [
+    node
+    for node in tree.body
+    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+    and node.name == "call_claude"
+]
+if len(call_claude_defs) != 1:
     raise SystemExit(1)
+call_claude = call_claude_defs[0]
 
 subprocess_calls = []
 for node in ast.walk(call_claude):

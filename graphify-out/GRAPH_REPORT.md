@@ -1,7 +1,7 @@
 # Graph Report - caveman-compress-guardrail  (2026-08-28)
 
 ## Corpus Check
-- 34 files · ~27,221 words
+- 34 files · ~27,319 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,9 +10,8 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ed2bbe05`
-- Run `git rev-parse HEAD` and compare to check if the graph is stale.
-- Run `graphify update .` after code changes (no API cost).
+- Built from the working tree based on commit: `c35e9f4f`
+- Run `graphify update .` after code changes. A `No code-graph topology changes detected` result confirms the committed graph still represents the current tree; otherwise commit the regenerated outputs.
 
 ## Community Hubs (Navigation)
 - pr.sh
