@@ -22,8 +22,9 @@ set -euo pipefail
 log()  { printf '\033[1;34m[check-caveman-compress]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[check-caveman-compress] %s\033[0m\n' "$*" >&2; }
 
-# Both flags together are the fix (see the upstream PR) — checking only one
-# would report "patched" if a future edit ever dropped just the other half.
+# The fix is only present when both flags are arguments to the subprocess.run
+# call inside call_claude(). File-wide text checks are unsafe: comments or dead
+# code can mention both flags while the active fallback remains unisolated.
 FIX_MARKERS=('--strict-mcp-config' '--setting-sources')
 
 find_compress_py() {
@@ -46,26 +47,74 @@ find_compress_py() {
     [ -n "$c" ] && [ -f "$c" ] && { printf '%s\n' "$c"; return 0; }
   done
   [ -n "$home" ] || return 0
-  # Last resort: shallow search under common skill roots, for hosts laid out
-  # differently than this one.
-  find "$home/.claude/skills" "$home/.agents/skills" "$home/.codex/skills" \
-    -maxdepth 4 -path "*caveman-compress/scripts/compress.py" 2>/dev/null \
-    | head -n1
+  # Last resort: shallow searches under existing common skill roots. Search
+  # one root at a time so a missing/inaccessible sibling cannot poison the
+  # documented exit status, and use -print -quit to avoid SIGPIPE under
+  # pipefail.
+  local root found
+  for root in "$home/.claude/skills" "$home/.agents/skills" "$home/.codex/skills"; do
+    [ -d "$root" ] || continue
+    found="$(find "$root" -maxdepth 4 -path "*caveman-compress/scripts/compress.py" -print -quit 2>/dev/null || true)"
+    [ -n "$found" ] && { printf '%s\n' "$found"; return 0; }
+  done
 }
 
 compress_py="$(find_compress_py)"
 
 if [ -z "$compress_py" ]; then
-  warn "caveman-compress not found on this host — skipping compression, not failing."
   exit 1
 fi
 
-all_markers_present=1
-for marker in "${FIX_MARKERS[@]}"; do
-  grep -q -- "$marker" "$compress_py" 2>/dev/null || all_markers_present=0
-done
+has_isolated_claude_invocation() {
+  python3 - "$1" <<'PY'
+import ast
+import sys
 
-if [ "$all_markers_present" = 1 ]; then
+required = {"--strict-mcp-config", "--setting-sources"}
+
+try:
+    tree = ast.parse(open(sys.argv[1], encoding="utf-8").read())
+except (OSError, SyntaxError):
+    raise SystemExit(1)
+
+call_claude = next(
+    (node for node in tree.body if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.name == "call_claude"),
+    None,
+)
+if call_claude is None:
+    raise SystemExit(1)
+
+subprocess_calls = []
+for node in ast.walk(call_claude):
+    if not isinstance(node, ast.Call) or not node.args:
+        continue
+    func = node.func
+    if (
+        isinstance(func, ast.Attribute)
+        and func.attr == "run"
+        and isinstance(func.value, ast.Name)
+        and func.value.id == "subprocess"
+    ):
+        subprocess_calls.append(node)
+
+# Fail closed on refactors or decoy/dead calls. The known-safe implementation
+# has exactly one direct subprocess.run call with a literal argv list.
+if len(subprocess_calls) != 1:
+    raise SystemExit(1)
+
+argv = subprocess_calls[0].args[0]
+if not isinstance(argv, (ast.List, ast.Tuple)):
+    raise SystemExit(1)
+literal_args = {
+    item.value
+    for item in argv.elts
+    if isinstance(item, ast.Constant) and isinstance(item.value, str)
+}
+raise SystemExit(0 if required <= literal_args else 1)
+PY
+}
+
+if has_isolated_claude_invocation "$compress_py"; then
   log "caveman-compress at $compress_py carries the subprocess isolation fix."
   exit 0
 fi

@@ -48,7 +48,7 @@ The enrichment template is `${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/temp
    - **Compress the tasks file with `caveman-compress`.** It's read every
      time an agent picks up this issue, so a leaner file pays off repeatedly.
      Before invoking it, run
-     `${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/check-caveman-compress.sh`:
+     `"${CLAUDE_PLUGIN_ROOT}/skills/map-issue-to-tasks/check-caveman-compress.sh"`:
      - exit 0 → invoke `caveman-compress` on `tasks/issue-<n>-<slug>.md` —
        trigger it the same way as `/caveman-compress <filepath>` (see that
        skill's own `SKILL.md` for the exact process)
