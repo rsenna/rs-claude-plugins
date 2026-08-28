@@ -126,21 +126,40 @@ visitor = OwnScopeRuns()
 for statement in call_claude.body:
     visitor.visit(statement)
 
-# The upstream fix's active CLI fallback starts a top-level try block with
-# `result = subprocess.run([...])`. Require that exact executable shape and
-# exactly one direct run in call_claude's own scope; nested and dead decoys,
-# extra unguarded runs, and refactors all fail closed.
-accepted_calls = [
-    call
-    for statement in call_claude.body
-    if isinstance(statement, ast.Try) and statement.body
-    for call in [assigned_subprocess_run(statement.body[0])]
-    if call is not None
-]
-if len(visitor.calls) != 1 or accepted_calls != visitor.calls:
+# The known-safe upstream call_claude layout is: docstring, api_key assignment,
+# conditional SDK path, claude_bin assignment, then the CLI Try as the final
+# statement. Pinning that layout proves the guarded call is reachable when the
+# SDK path is unavailable; broader matching admits unreachable decoys.
+body = call_claude.body
+layout_ok = (
+    len(body) == 5
+    and isinstance(body[0], ast.Expr)
+    and isinstance(body[0].value, ast.Constant)
+    and isinstance(body[0].value.value, str)
+    and isinstance(body[1], ast.Assign)
+    and len(body[1].targets) == 1
+    and isinstance(body[1].targets[0], ast.Name)
+    and body[1].targets[0].id == "api_key"
+    and isinstance(body[2], ast.If)
+    and isinstance(body[2].test, ast.Name)
+    and body[2].test.id == "api_key"
+    and not body[2].orelse
+    and isinstance(body[3], ast.Assign)
+    and len(body[3].targets) == 1
+    and isinstance(body[3].targets[0], ast.Name)
+    and body[3].targets[0].id == "claude_bin"
+    and isinstance(body[4], ast.Try)
+    and body[4].body
+)
+accepted_call = assigned_subprocess_run(body[4].body[0]) if layout_ok else None
+if (
+    accepted_call is None
+    or len(visitor.calls) != 1
+    or visitor.calls[0] is not accepted_call
+):
     raise SystemExit(1)
 
-subprocess_calls = accepted_calls
+subprocess_calls = [accepted_call]
 
 argv = subprocess_calls[0].args[0]
 if not isinstance(argv, (ast.List, ast.Tuple)):
