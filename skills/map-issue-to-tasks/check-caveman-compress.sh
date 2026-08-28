@@ -87,35 +87,60 @@ if len(call_claude_defs) != 1:
     raise SystemExit(1)
 call_claude = call_claude_defs[0]
 
-def assigned_subprocess_run(statement):
-    if not isinstance(statement, (ast.Assign, ast.AnnAssign)):
-        return None
-    value = statement.value
-    if not isinstance(value, ast.Call) or not value.args:
-        return None
-    func = value.func
-    if (
+def is_subprocess_run(node):
+    if not isinstance(node, ast.Call) or not node.args:
+        return False
+    func = node.func
+    return (
         isinstance(func, ast.Attribute)
         and func.attr == "run"
         and isinstance(func.value, ast.Name)
         and func.value.id == "subprocess"
-    ):
-        return value
-    return None
+    )
 
+
+def assigned_subprocess_run(statement):
+    if not isinstance(statement, (ast.Assign, ast.AnnAssign)):
+        return None
+    return statement.value if is_subprocess_run(statement.value) else None
+
+
+class OwnScopeRuns(ast.NodeVisitor):
+    def __init__(self):
+        self.calls = []
+
+    def visit_Call(self, node):
+        if is_subprocess_run(node):
+            self.calls.append(node)
+        self.generic_visit(node)
+
+    def visit_FunctionDef(self, node):
+        pass
+
+    visit_AsyncFunctionDef = visit_FunctionDef
+    visit_Lambda = visit_FunctionDef
+    visit_ClassDef = visit_FunctionDef
+
+
+visitor = OwnScopeRuns()
+for statement in call_claude.body:
+    visitor.visit(statement)
 
 # The upstream fix's active CLI fallback starts a top-level try block with
-# `result = subprocess.run([...])`. Accept only that exact executable shape:
-# broad AST walks can be fooled by nested scopes or statically dead branches.
-subprocess_calls = [
+# `result = subprocess.run([...])`. Require that exact executable shape and
+# exactly one direct run in call_claude's own scope; nested and dead decoys,
+# extra unguarded runs, and refactors all fail closed.
+accepted_calls = [
     call
     for statement in call_claude.body
     if isinstance(statement, ast.Try) and statement.body
     for call in [assigned_subprocess_run(statement.body[0])]
     if call is not None
 ]
-if len(subprocess_calls) != 1:
+if len(visitor.calls) != 1 or accepted_calls != visitor.calls:
     raise SystemExit(1)
+
+subprocess_calls = accepted_calls
 
 argv = subprocess_calls[0].args[0]
 if not isinstance(argv, (ast.List, ast.Tuple)):
