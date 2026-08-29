@@ -16,6 +16,5 @@ https://github.com/rsenna/rs-claude-plugins/issues/9
 
 - [x] **3 — Align `repo-standard` skill wording with the new policy**
   - Acceptance: `skills/repo-standard/SKILL.md` reflects the agent-agnostic principle in scaffold guidance and does not imply that the active session agent is the only supported integration surface.
-  - Verify: no project-wide quality gate is documented for this repo; run `bash -n skills/repo-standard/SKILL.md` is not applicable (docs only); perform docs self-review for consistency with the agent-agnostic policy from tasks 1 and 2.
+  - Verify: no project-wide quality gate is documented for this repo; `bash -n skills/repo-standard/SKILL.md` is not applicable (docs only); perform docs self-review for consistency with the agent-agnostic policy from tasks 1 and 2.
   - Files: `skills/repo-standard/SKILL.md`
-
