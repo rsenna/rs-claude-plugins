@@ -105,12 +105,17 @@ def assigned_subprocess_run(statement):
     return statement.value if is_subprocess_run(statement.value) else None
 
 
-class OwnScopeRuns(ast.NodeVisitor):
+class OwnScopeSubprocessCalls(ast.NodeVisitor):
     def __init__(self):
         self.calls = []
 
     def visit_Call(self, node):
-        if is_subprocess_run(node):
+        func = node.func
+        if (
+            isinstance(func, ast.Attribute)
+            and isinstance(func.value, ast.Name)
+            and func.value.id == "subprocess"
+        ):
             self.calls.append(node)
         self.generic_visit(node)
 
@@ -122,7 +127,7 @@ class OwnScopeRuns(ast.NodeVisitor):
     visit_ClassDef = visit_FunctionDef
 
 
-visitor = OwnScopeRuns()
+visitor = OwnScopeSubprocessCalls()
 for statement in call_claude.body:
     visitor.visit(statement)
 
