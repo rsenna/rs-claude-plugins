@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "rs-agent-plugin",
-  "description": "Roger Senna's personal agent-agnostic plugins",
+  "description": "Roger Senna's personal, agent-agnostic plugins",
   "owner": {
     "name": "Roger Senna",
     "url": "https://github.com/rsenna"
@@ -12,7 +12,9 @@
       "source": "./",
       "description": "GitHub issue → PR workflow: map-issue-to-tasks, fix-mapped-issue, pull-request-process",
       "category": "development",
-      "author": { "name": "Roger Senna" },
+      "author": {
+        "name": "Roger Senna"
+      },
       "homepage": "https://github.com/rsenna/rsenna-agent-plugin"
     }
   ]

@@ -32,7 +32,7 @@
 - graphify as a standard dev-process artifact: `.gitignore` requirement design
 - check-caveman-compress.sh
 - test-repo-standard.sh
-- CLAUDE.md
+- AGENTS.md
 
 ## God Nodes (most connected - your core abstractions)
 1. `pr.sh script` - 13 edges
@@ -47,11 +47,11 @@
 10. `run_audit()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `rs-claude-plugins README` --references--> `fix-mapped-issue SKILL.md`  [EXTRACTED]
+- `rs-agent-plugin README` --references--> `fix-mapped-issue SKILL.md`  [EXTRACTED]
   README.md → skills/fix-mapped-issue/SKILL.md
-- `rs-claude-plugins README` --references--> `map-issue-to-tasks SKILL.md`  [EXTRACTED]
+- `rs-agent-plugin README` --references--> `map-issue-to-tasks SKILL.md`  [EXTRACTED]
   README.md → skills/map-issue-to-tasks/SKILL.md
-- `rs-claude-plugins README` --references--> `pull-request-process SKILL.md`  [EXTRACTED]
+- `rs-agent-plugin README` --references--> `pull-request-process SKILL.md`  [EXTRACTED]
   README.md → skills/pull-request-process/SKILL.md
 - `Sanctioned 'create' subcommand with bot-identity enforcement` --semantically_similar_to--> `Centralized worktree-root strategy (not sibling of main checkout)`  [INFERRED] [semantically similar]
   tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md → tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md
@@ -88,7 +88,7 @@ Nodes (7): description, name, owner, name, url, plugins, $schema
 
 ### Community 4 - "pull-request-process SKILL.md"
 Cohesion: 0.36
-Nodes (8): rs-claude-plugins README, fix-mapped-issue SKILL.md, map-issue-to-tasks SKILL.md, issue-enrichment.md template, Dedicated agent git/gh identity enforcement (rationale), pull-request-process SKILL.md, Explicit-refspec push guardrail against advancing main (rationale), Git worktree isolation instead of shared checkout (rationale)
+Nodes (8): rs-agent-plugin README, fix-mapped-issue SKILL.md, map-issue-to-tasks SKILL.md, issue-enrichment.md template, Dedicated agent git/gh identity enforcement (rationale), pull-request-process SKILL.md, Explicit-refspec push guardrail against advancing main (rationale), Git worktree isolation instead of shared checkout (rationale)
 
 ### Community 5 - "doppler-secrets SKILL.md"
 Cohesion: 0.29

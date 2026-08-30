@@ -1,6 +1,6 @@
 # Issue #3 — Design: cross-repo doc/folder standard (repo.toml stage tiers) + repo-standard skill
 
-https://github.com/rsenna/rs-claude-plugins/issues/3
+https://github.com/rsenna/rs-agent-plugin/issues/3
 
 ## Tasks
 

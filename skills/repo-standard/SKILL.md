@@ -203,7 +203,7 @@ This skill is a **GitHub Copilot CLI slash command** — invoke it by typing `/r
 Equivalent direct script usage (from this plugin repo checkout, not from the target repo):
 
 ```bash
-PLUGIN_REPO=~/REPO/ME/rs-claude-plugins
+PLUGIN_REPO=~/REPO/ME/rs-agent-plugin
 "$PLUGIN_REPO"/skills/repo-standard/repo-standard.sh audit
 "$PLUGIN_REPO"/skills/repo-standard/repo-standard.sh scaffold
 ```

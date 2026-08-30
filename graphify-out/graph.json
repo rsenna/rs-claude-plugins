@@ -1047,27 +1047,27 @@
       "source_location": "L1"
     },
     {
-      "id": "claude",
-      "label": "CLAUDE.md",
+      "id": "agents",
+      "label": "AGENTS.md",
       "_origin": "ast",
       "community": 17,
-      "community_name": "CLAUDE.md",
+      "community_name": "AGENTS.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "claude.md",
-      "source_file": "CLAUDE.md",
+      "norm_label": "agents.md",
+      "source_file": "AGENTS.md",
       "source_location": "L1"
     },
     {
-      "id": "claude_graphify",
+      "id": "agents_graphify",
       "label": "graphify",
       "_origin": "ast",
       "community": 17,
-      "community_name": "CLAUDE.md",
+      "community_name": "AGENTS.md",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "graphify",
-      "source_file": "CLAUDE.md",
+      "source_file": "AGENTS.md",
       "source_location": "L1"
     },
     {
@@ -1535,7 +1535,7 @@
     },
     {
       "id": "readme_document",
-      "label": "rs-claude-plugins README",
+      "label": "rs-agent-plugin README",
       "_origin": "semantic",
       "author": null,
       "captured_at": null,
@@ -1543,7 +1543,7 @@
       "community_name": "pull-request-process SKILL.md",
       "contributor": null,
       "file_type": "document",
-      "norm_label": "rs-claude-plugins readme",
+      "norm_label": "rs-agent-plugin readme",
       "source_file": "README.md",
       "source_location": null,
       "source_url": null
@@ -3246,13 +3246,13 @@
       "weight": 1.0
     },
     {
-      "source": "claude",
-      "target": "claude_graphify",
+      "source": "agents",
+      "target": "agents_graphify",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "CLAUDE.md",
+      "source_file": "AGENTS.md",
       "source_location": "L1",
       "weight": 1.0
     },

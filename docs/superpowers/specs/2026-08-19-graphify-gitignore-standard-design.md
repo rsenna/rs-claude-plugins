@@ -2,10 +2,10 @@
 
 ## Context
 
-The `graphify` skill (external, `~/.claude/skills/graphify`) turns any repo into a
-queryable knowledge graph under `graphify-out/`. It is being adopted across all of
-Rogério's repos as a standing part of the development process — Claude Code should
-consult the graph before broad codebase exploration, and rebuild it after code changes.
+The `graphify` skill (externa) turns any repo into a queryable knowledge graph under
+`graphify-out/`. It is being adopted across all of Roger's repos as a standing part
+of the development process — agents such as Claude Code should consult the graph
+before broad codebase exploration, and rebuild it after code changes.
 
 Because `graphify-out/` mixes real outputs (the graph itself, the audit report) with
 local bookkeeping (interpreter cache paths, cost tracking, incremental-update
@@ -13,7 +13,7 @@ manifests), each repo needs a `.gitignore` that draws that line consistently. Ra
 than solving this once per repo, this change makes `.gitignore` — with a standard
 graphify block — part of what `repo-standard` scaffolds and audits everywhere.
 
-This repo (`rs-claude-plugins`) is the source of the `repo-standard` skill
+This repo (`rs-agent-plugin`) is the source of the `repo-standard` skill
 (`skills/repo-standard/SKILL.md`), so the change lands here and ships to every repo
 that installs the plugin.
 
@@ -44,7 +44,7 @@ was already incomplete against graphify's actual output surface — it missed
 `graphify-out/wiki/`, `graphify-out/obsidian/`, `graphify-out/needs_update`
 (no leading dot), `graphify-out/.vocab.txt`, and several other export/bookkeeping
 paths — and would keep drifting every time graphify adds a new export flag.
-`CLAUDE.md`'s own graphify block already tells Claude to check
+`AGENTS.md`'s own graphify block already tells agents to check
 `graphify-out/wiki/index.md` when present, so an incomplete denylist would let a
 `--wiki` run's full export tree land in git by default.
 
@@ -129,7 +129,7 @@ didn't cover: all four original probes are flat files directly under
 `graphify-out/`, so a pattern set that only matches flat files (e.g.
 `graphify-out/*.html` plus a literal filename, instead of the real
 `graphify-out/*` deny-all) would pass all four while leaving an entire nested
-export tree — including the `graphify-out/wiki/index.md` file `CLAUDE.md`
+export tree — including the `graphify-out/wiki/index.md` file `AGENTS.md`
 tells agents to read — committable.
 
 Exit code `128` (not a git repo, unsupported flag, git version too old) is an
@@ -157,7 +157,7 @@ if it looks wrong" — report and move on, same as every other required path).
 
 ## Rollout in this repo
 
-`rs-claude-plugins` adopts the new standard as part of this same change:
+`rs-agent-plugin` adopts the new standard as part of this same change:
 
 - New `.gitignore` at repo root, using the starter content above.
 - `graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md` committed for the
@@ -165,10 +165,10 @@ if it looks wrong" — report and move on, same as every other required path).
 - `README.md` gains a short "Development" section pointing at `graphify query`
   as the first step for codebase questions, and documenting the commit/ignore
   split above so future contributors don't have to rediscover it.
-- `CLAUDE.md` (auto-written by the `/graphify` run that produced this repo's
+- `AGENTS.md` (auto-written by the `/graphify` run that produced this repo's
   graph) is committed as-is — no edits needed, but it is new to version control
   as of this change (the README's "Development" section now depends on it
-  being tracked, since it points readers at `CLAUDE.md` for details).
+  being tracked, since it points readers at `AGENTS.md` for details).
 
 ## Out of scope
 
@@ -177,7 +177,7 @@ if it looks wrong" — report and move on, same as every other required path).
   Fixing that is a separate, unrelated gap — not addressed by this PR.
 - No git post-commit hook (`graphify hook install`) is being wired in; it's local
   machine state that a PR can't install for other clones. Manual
-  `graphify update .` (already documented in `CLAUDE.md`) is the update path for
+  `graphify update .` (already documented in `AGENTS.md`) is the update path for
   now.
 - `graph.html` is not offered as an optional-commit choice — it's unconditionally
   ignored, per the allowlist above.
