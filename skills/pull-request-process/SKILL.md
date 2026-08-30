@@ -12,7 +12,7 @@ thread. This is a **building block** other skills call (`fix-mapped-issue`
 follows it for "till the issue is fixed").
 
 The git/gh plumbing is in **`pr.sh`**, at `$HOME/.agents/skills/pull-request-process/pr.sh`.
-Adjust the `$HOME/.agents/skills` root if your agent installs skills elsewhere (for example `$HOME/.claude/skills`).
+Set `AGENT_SKILLS_ROOT` if your agent stores installed skills somewhere other than `$HOME/.agents/skills`.
 `pr.sh` is language-agnostic and **does not run the project's quality gate** — run the gate yourself per the project's `AGENTS.md` before calling `pr.sh push`.
 ## Agent identity, not the personal one
 

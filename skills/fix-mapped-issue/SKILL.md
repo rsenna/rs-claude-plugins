@@ -13,13 +13,14 @@ doesn't exist, run `map-issue-to-tasks` first.
 Reuses the sibling skills' scripts (this plugin's other skills):
 - `$HOME/.agents/skills/pull-request-process/pr.sh` (branch/push/PR/threads)
 - `$HOME/.agents/skills/map-issue-to-tasks/issue.sh` (`close` for the final comment)
-Adjust the `$HOME/.agents/skills` root if your agent installs skills elsewhere (for example `$HOME/.claude/skills`).
+
+Set `AGENT_SKILLS_ROOT` if your agent stores installed skills somewhere other than `$HOME/.agents/skills`.
 
 ## Portability — read the project's specifics first
 From the project's `AGENTS.md`: the **base branch** and the
 **quality gate command + coverage bar** (e.g. `what-about`:
 `mix precommit --cover`, ≥ 90% — see AGENTS.md:23–30). Pass the base branch as
-`BASE=` to `pr.sh`. 
+`BASE=` to `pr.sh`.
 
 ## Do this (per task, until the issue is done)
 
@@ -80,3 +81,18 @@ DRY_RUN=1 "$I" close 24 solution.md      # preview
 - Never push unless the project's quality gate is green.
 - Never push without running a `requesting-code-review` pass first and
   addressing what it flags (enforced by `pr.sh push` requiring `REVIEWED=1`).
+
+## Close-out comment template
+
+After every task merged, draft this before handing off:
+
+```
+# Summary
+- (what shipped)
+
+# PRs merged
+- #<n>
+
+# Follow-ups
+- (next steps or “none”)
+```

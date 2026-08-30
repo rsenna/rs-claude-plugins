@@ -1,16 +1,16 @@
 # Graph Report - rs-agent-plugin  (2026-08-30)
 
 ## Corpus Check
-- 33 files · ~26,434 words
+- 32 files · ~26,575 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 138 nodes · 226 edges · 17 communities (12 shown, 5 thin omitted)
+- 130 nodes · 219 edges · 16 communities (11 shown, 5 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `699269ab`
+- Built from commit: `6f07d8b5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -18,7 +18,6 @@
 - pr.sh
 - Issue #3 - Design: cross-repo doc/folder standard (repo.toml stage tiers) + repo-standard skill
 - issue.sh
-- marketplace.json
 - pull-request-process SKILL.md
 - doppler-secrets SKILL.md
 - Sanctioned 'create' subcommand with bot-identity enforcement
@@ -48,14 +47,14 @@
 ## Surprising Connections (you probably didn't know these)
 - `repo-standard SKILL.md` --references--> `Cross-repo documentation/folder standard design doc`  [EXTRACTED]
   skills/repo-standard/SKILL.md → docs/superpowers/specs/2026-08-01-repo-standard-design.md
+- `repo-standard audit mode (read-only compliance check)` --conceptually_related_to--> `Per-stage doc/folder tier table (prototype/in-progress/released/archived)`  [EXTRACTED]
+  skills/repo-standard/SKILL.md → docs/superpowers/specs/2026-08-01-repo-standard-design.md
+- `repo-standard scaffold mode (non-destructive creation)` --conceptually_related_to--> `Per-stage doc/folder tier table (prototype/in-progress/released/archived)`  [EXTRACTED]
+  skills/repo-standard/SKILL.md → docs/superpowers/specs/2026-08-01-repo-standard-design.md
 - `rs-agent-plugin README` --references--> `fix-mapped-issue SKILL.md`  [EXTRACTED]
   README.md → skills/fix-mapped-issue/SKILL.md
 - `rs-agent-plugin README` --references--> `map-issue-to-tasks SKILL.md`  [EXTRACTED]
   README.md → skills/map-issue-to-tasks/SKILL.md
-- `rs-agent-plugin README` --references--> `pull-request-process SKILL.md`  [EXTRACTED]
-  README.md → skills/pull-request-process/SKILL.md
-- `Sanctioned 'create' subcommand with bot-identity enforcement` --semantically_similar_to--> `Centralized worktree-root strategy (not sibling of main checkout)`  [INFERRED] [semantically similar]
-  tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md → tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md
 
 ## Import Cycles
 - None detected.
@@ -67,7 +66,7 @@
 - **Six external repos rolled out under repo-standard stage tiers via issue #3 task 3** — tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_roset_sh, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_iklo, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_what_about, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_guiltty, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_obsidian_hivemind, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_wawk_js [EXTRACTED 1.00]
 - **Repo-standard design doc and skill jointly amended by issues #3 and #9** — docs_superpowers_specs_2026_08_01_repo_standard_design_document, skills_repo_standard_skill_document, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue, tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue [INFERRED 0.85]
 
-## Communities (17 total, 5 thin omitted)
+## Communities (16 total, 5 thin omitted)
 
 ### Community 0 - "pr.sh"
 Cohesion: 0.30
@@ -80,10 +79,6 @@ Nodes (12): docs/superpowers/specs/2026-08-01-repo-standard-design.md, skills/re
 ### Community 2 - "issue.sh"
 Cohesion: 0.41
 Nodes (11): cmd_close(), cmd_comment(), cmd_create(), cmd_fetch(), cmd_json(), cmd_label(), cmd_slug(), cmd_unmapped() (+3 more)
-
-### Community 3 - "marketplace.json"
-Cohesion: 0.25
-Nodes (7): description, name, owner, name, url, plugins, $schema
 
 ### Community 4 - "pull-request-process SKILL.md"
 Cohesion: 0.36
@@ -118,14 +113,14 @@ Cohesion: 0.73
 Nodes (5): assert_contains(), fail(), run_expect_fail(), run_expect_ok(), test-repo-standard.sh script
 
 ## Knowledge Gaps
-- **30 isolated node(s):** `$schema`, `name`, `description`, `name`, `url` (+25 more)
+- **24 isolated node(s):** `opn-api.sh script`, `patchmon-api.sh script`, `graphify`, `Context`, `Denylist vs allowlist` (+19 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **What connects `$schema`, `name`, `description` to the rest of the system?**
-  _30 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `opn-api.sh script`, `patchmon-api.sh script`, `graphify` to the rest of the system?**
+  _24 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `graphify as a standard dev-process artifact: `.gitignore` requirement design` be split into smaller, more focused modules?**
   _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._

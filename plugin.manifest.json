@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "name": "rs-agent-plugin",
+  "description": "Roger Senna's personal collection of agent-agnostic operational skills.",
+  "repository": "https://github.com/rsenna/rs-agent-plugin",
+  "skills": [
+    { "name": "map-issue-to-tasks", "entry": "skills/map-issue-to-tasks/SKILL.md" },
+    { "name": "fix-mapped-issue", "entry": "skills/fix-mapped-issue/SKILL.md" },
+    { "name": "pull-request-process", "entry": "skills/pull-request-process/SKILL.md" },
+    { "name": "repo-standard", "entry": "skills/repo-standard/SKILL.md" },
+    { "name": "doppler-secrets", "entry": "skills/doppler-secrets/SKILL.md" },
+    { "name": "patchmon-admin", "entry": "skills/patchmon-admin/SKILL.md" },
+    { "name": "opnsense-admin", "entry": "skills/opnsense-admin/SKILL.md" },
+    { "name": "clawhub.obsidian-cli", "entry": "skills/clawhub.obsidian-cli/SKILL.md" },
+    { "name": "clawhub.obsidian-bases", "entry": "skills/clawhub.obsidian-bases/SKILL.md" }
+  ],
+  "install": {
+    "default_install_root": "$HOME/.agents/skills",
+    "instructions": [
+      "PLUGIN_ROOT=$(pwd)",
+      "INSTALL_ROOT=${AGENT_SKILLS_ROOT:-$HOME/.agents/skills}",
+      "mkdir -p \"$INSTALL_ROOT\"",
+      "jq -r '.skills[] | [.name, .entry] | @tsv' \"$PLUGIN_ROOT/plugin.manifest.json\" | while IFS=$'\t' read -r name entry; do skill_dir=${entry%/SKILL.md}; ln -sfn \"$PLUGIN_ROOT/$skill_dir\" \"$INSTALL_ROOT/$name\"; done"
+    ]
+  }
+}

@@ -1251,94 +1251,6 @@
       "source_location": "L1"
     },
     {
-      "id": "claude_plugin_marketplace",
-      "label": "marketplace.json",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "marketplace.json",
-      "file_type": "code",
-      "norm_label": "marketplace.json",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L1"
-    },
-    {
-      "id": "claude_plugin_marketplace_description",
-      "label": "description",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "marketplace.json",
-      "file_type": "code",
-      "norm_label": "description",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L4"
-    },
-    {
-      "id": "claude_plugin_marketplace_name",
-      "label": "name",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "marketplace.json",
-      "file_type": "code",
-      "norm_label": "name",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L3"
-    },
-    {
-      "id": "claude_plugin_marketplace_owner",
-      "label": "owner",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "marketplace.json",
-      "file_type": "code",
-      "norm_label": "owner",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L5"
-    },
-    {
-      "id": "claude_plugin_marketplace_owner_name",
-      "label": "name",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "marketplace.json",
-      "file_type": "code",
-      "norm_label": "name",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L6"
-    },
-    {
-      "id": "claude_plugin_marketplace_owner_url",
-      "label": "url",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "marketplace.json",
-      "file_type": "code",
-      "norm_label": "url",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L7"
-    },
-    {
-      "id": "claude_plugin_marketplace_plugins",
-      "label": "plugins",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "marketplace.json",
-      "file_type": "code",
-      "norm_label": "plugins",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L9"
-    },
-    {
-      "id": "claude_plugin_marketplace_schema",
-      "label": "$schema",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "marketplace.json",
-      "file_type": "code",
-      "norm_label": "$schema",
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L2"
-    },
-    {
       "id": "tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_guiltty",
       "label": "guiltty (external repo)",
       "_origin": "semantic",
@@ -3227,83 +3139,6 @@
       "weight": 1.0
     },
     {
-      "source": "claude_plugin_marketplace",
-      "target": "claude_plugin_marketplace_schema",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L2",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_plugin_marketplace",
-      "target": "claude_plugin_marketplace_name",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L3",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_plugin_marketplace",
-      "target": "claude_plugin_marketplace_description",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L4",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_plugin_marketplace",
-      "target": "claude_plugin_marketplace_owner",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L5",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_plugin_marketplace",
-      "target": "claude_plugin_marketplace_plugins",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_plugin_marketplace_owner",
-      "target": "claude_plugin_marketplace_owner_name",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_plugin_marketplace_owner",
-      "target": "claude_plugin_marketplace_owner_url",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude-plugin/marketplace.json",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
       "source": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design",
       "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design_graphify_as_a_standard_dev_process_artifact_gitignore_requirement_design",
       "relation": "contains",
@@ -4730,5 +4565,5 @@
       "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
     }
   ],
-  "built_at_commit": "699269ab5482864fdd6231d02509f1462023e035"
+  "built_at_commit": "6f07d8b5d2fa0cfd77411a0b0a5c534daa2abd15"
 }

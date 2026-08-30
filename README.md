@@ -9,28 +9,46 @@ _Personal AI agent plugin: a collection of agent-agnostic skills_.
 
 ## Install
 
+Download the repo (or add it as a git submodule) and wire the skills into your agent runtime:
+
 ```
-/plugin marketplace add rsenna/rs-agent-plugin
-/plugin install rs-workflow-skills@rs-agent-plugin
+git clone https://github.com/rsenna/rs-agent-plugin.git
+cd rs-agent-plugin
+# install under $HOME/.agents/skills by default
+python3 - <<'PY'
+import json, os, pathlib
+root = pathlib.Path.cwd()
+install_root = pathlib.Path(os.environ.get("AGENT_SKILLS_ROOT", pathlib.Path.home() / ".agents" / "skills"))
+install_root.mkdir(parents=True, exist_ok=True)
+manifest = json.loads((root / "plugin.manifest.json").read_text())
+for skill in manifest["skills"]:
+    skill_dir = (root / skill["entry"]).parent
+    target = install_root / skill["name"]
+    if target.exists() or target.is_symlink():
+        target.unlink()
+    target.symlink_to(skill_dir)
+PY
 ```
+
+Override `AGENT_SKILLS_ROOT` if your agent looks elsewhere.
 
 ## PR-related Skills
 
 - **`map-issue-to-tasks`**:
   1. Analyse a GitHub issue.
   2. Enrich it against a template.
-  3. And finally break it into a dependency-ordered task list (`tasks/issue-<n>-<slug>.md`).
+  3. Break it into a dependency-ordered task list (`tasks/issue-<n>-<slug>.md`).
 - **`fix-mapped-issue`**:
   1. Implement the mapped tasks.
   2. Ship each through `pull-request-process`.
-  3. Then close the issue once everything is merged.
-- **`pull-request-process`** - the safe way to ship a change:
-  1. Create local feature-branch.
-  2. Run local quality gate.
-  3. Push feature-branch to `origin`.
-  4. Open a new PR.
-  5. Stop and wait for code review (done by humans, or other agents).
-  6. In case of code review issues, fix each review thread.
+  3. Close the issue once everything is merged.
+- **`pull-request-process`** — the safe way to ship a change:
+  1. Create a feature branch in its own worktree.
+  2. Run the project's quality gate.
+  3. Push the branch to `origin`.
+  4. Open a PR.
+  5. Stop and wait for review.
+  6. Fix each review thread through the same flow.
 
 The `pull-request-process` skill is called by the other two skills, as a building block.
 
@@ -53,27 +71,18 @@ Each skill's `SKILL.md` documents its own commands and guardrails in full.
 
 #### Summary
 
-This repo uses the `graphify` skill to build a queryable knowledge graph of its
-own codebase: god nodes, community structure, cross-file relationships.
+This repo uses the `graphify` skill to build a queryable knowledge graph of its own codebase: god nodes, community structure, cross-file relationships.
 
-After code changes, run `graphify update .` (or `/graphify . --update`) to keep
-the committed graph current, before it ships into a PR.
+After code changes, run `graphify update .` (or `/graphify . --update`) to keep the committed graph current, before it ships into a PR.
 
 #### Queries
 
-For codebase questions, run `graphify query "<question>"` before falling back to
-raw grep or file browsing (see `AGENTS.md`).
-`graphify path "<A>" "<B>"` and `graphify explain "<concept>"` work the same way
-for narrower lookups.
+For codebase questions, run `graphify query "<question>"` before falling back to raw grep or file browsing (see `AGENTS.md`).
+
+`graphify path "<A>" "<B>"` and `graphify explain "<concept>"` work the same way for narrower lookups.
 
 #### Files
 
-`graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md` are committed: the
-graph and its audit report are real outputs worth having on a fresh clone and
-worth tracking in history.
+`graphify-out/graph.json` and `graphify-out/GRAPH_REPORT.md` are committed: the graph and its audit report are real outputs worth having on a fresh clone and worth tracking in history.
 
-Everything else under `graphify-out/` (`graph.html`, `manifest.json`,
-`cost.json`, `cache/`, `.graphify_*`) is local bookkeeping and stays gitignored.
-Those artifacts can be regenerated, but semantic extraction from a fresh clone
-can redo non-trivial LLM work/cost.
-
+Everything else under `graphify-out/` (`graph.html`, `manifest.json`, `cost.json`, `cache/`, `.graphify_*`) is local bookkeeping and stays gitignored. Those artifacts can be regenerated, but semantic extraction from a fresh clone can redo non-trivial LLM work/cost.
