@@ -2,7 +2,7 @@
 # pr.sh — safe git/gh plumbing for the pull-request-process skill.
 #
 # Language-agnostic: it does NOT run any project quality gate. Run the gate
-# yourself (per the project's AGENTS.md/CLAUDE.md) BEFORE `pr.sh push`.
+# yourself (per the project's AGENTS.md) BEFORE `pr.sh push`.
 #
 # Subcommands:
 #   start <branch>        create <branch> in a FRESH git worktree under a centralized root

@@ -909,7 +909,7 @@
       },
       "norm_label": "has_isolated_claude_invocation()",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L68"
+      "source_location": "L74"
     },
     {
       "id": "skills_map_issue_to_tasks_check_caveman_compress_log",
@@ -1098,7 +1098,7 @@
       },
       "norm_label": "cmd_close()",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L93"
+      "source_location": "L109"
     },
     {
       "id": "skills_map_issue_to_tasks_issue_cmd_comment",
@@ -1113,7 +1113,7 @@
       },
       "norm_label": "cmd_comment()",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L84"
+      "source_location": "L94"
     },
     {
       "id": "skills_map_issue_to_tasks_issue_cmd_create",
@@ -1128,7 +1128,7 @@
       },
       "norm_label": "cmd_create()",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L47"
+      "source_location": "L50"
     },
     {
       "id": "skills_map_issue_to_tasks_issue_cmd_fetch",
@@ -1143,7 +1143,7 @@
       },
       "norm_label": "cmd_fetch()",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L62"
+      "source_location": "L70"
     },
     {
       "id": "skills_map_issue_to_tasks_issue_cmd_json",
@@ -1158,7 +1158,7 @@
       },
       "norm_label": "cmd_json()",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L59"
+      "source_location": "L67"
     },
     {
       "id": "skills_map_issue_to_tasks_issue_cmd_label",
@@ -1173,7 +1173,7 @@
       },
       "norm_label": "cmd_label()",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L103"
+      "source_location": "L125"
     },
     {
       "id": "skills_map_issue_to_tasks_issue_cmd_slug",
@@ -1188,7 +1188,7 @@
       },
       "norm_label": "cmd_slug()",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L73"
+      "source_location": "L81"
     },
     {
       "id": "skills_map_issue_to_tasks_issue_cmd_unmapped",
@@ -1203,7 +1203,7 @@
       },
       "norm_label": "cmd_unmapped()",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L116"
+      "source_location": "L139"
     },
     {
       "id": "skills_map_issue_to_tasks_issue_die",
@@ -1530,6 +1530,111 @@
       "file_type": "code",
       "norm_label": "opencode github action workflow",
       "source_file": ".github/workflows/opencode.yml",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_stage_tiers",
+      "label": "Per-stage doc/folder tier table (prototype/in-progress/released/archived)",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 14,
+      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "per-stage doc/folder tier table (prototype/in-progress/released/archived)",
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "skills_repo_standard_skill_audit_mode",
+      "label": "repo-standard audit mode (read-only compliance check)",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 14,
+      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "repo-standard audit mode (read-only compliance check)",
+      "source_file": "skills/repo-standard/SKILL.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "skills_repo_standard_skill_scaffold_mode",
+      "label": "repo-standard scaffold mode (non-destructive creation)",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 14,
+      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "repo-standard scaffold mode (non-destructive creation)",
+      "source_file": "skills/repo-standard/SKILL.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
+      "label": "Cross-repo documentation/folder standard design doc",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 14,
+      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "cross-repo documentation/folder standard design doc",
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "skills_repo_standard_skill_document",
+      "label": "repo-standard SKILL.md",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 14,
+      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "repo-standard skill.md",
+      "source_file": "skills/repo-standard/SKILL.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_standard_enforcement",
+      "label": "On-demand (not pre-PR-gated) enforcement decision for repo-standard",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 14,
+      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
+      "contributor": null,
+      "file_type": "rationale",
+      "norm_label": "on-demand (not pre-pr-gated) enforcement decision for repo-standard",
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_toml_stage",
+      "label": "repo.toml stage field decision",
+      "_origin": "semantic",
+      "author": null,
+      "captured_at": null,
+      "community": 14,
+      "community_name": "graphify as a standard dev-process artifact: `.gitignore` requirement design",
+      "contributor": null,
+      "file_type": "rationale",
+      "norm_label": "repo.toml stage field decision",
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
       "source_location": null,
       "source_url": null
     },
@@ -1894,111 +1999,6 @@
       "source_url": null
     },
     {
-      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_stage_tiers",
-      "label": "Per-stage doc/folder tier table (prototype/in-progress/released/archived)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 7,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "per-stage doc/folder tier table (prototype/in-progress/released/archived)",
-      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "skills_repo_standard_skill_audit_mode",
-      "label": "repo-standard audit mode (read-only compliance check)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 7,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "repo-standard audit mode (read-only compliance check)",
-      "source_file": "skills/repo-standard/SKILL.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "skills_repo_standard_skill_scaffold_mode",
-      "label": "repo-standard scaffold mode (non-destructive creation)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 7,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "repo-standard scaffold mode (non-destructive creation)",
-      "source_file": "skills/repo-standard/SKILL.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
-      "label": "Cross-repo documentation/folder standard design doc",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 7,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "contributor": null,
-      "file_type": "document",
-      "norm_label": "cross-repo documentation/folder standard design doc",
-      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "skills_repo_standard_skill_document",
-      "label": "repo-standard SKILL.md",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 7,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "contributor": null,
-      "file_type": "document",
-      "norm_label": "repo-standard skill.md",
-      "source_file": "skills/repo-standard/SKILL.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_standard_enforcement",
-      "label": "On-demand (not pre-PR-gated) enforcement decision for repo-standard",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 7,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "contributor": null,
-      "file_type": "rationale",
-      "norm_label": "on-demand (not pre-pr-gated) enforcement decision for repo-standard",
-      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "docs_superpowers_specs_2026_08_01_repo_standard_design_repo_toml_stage",
-      "label": "repo.toml stage field decision",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 7,
-      "community_name": "Cross-repo documentation/folder standard design doc",
-      "contributor": null,
-      "file_type": "rationale",
-      "norm_label": "repo.toml stage field decision",
-      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
       "id": "skills_clawhub_obsidian_cli_skill_card_document",
       "label": "obsidian-official-cli skill-card (top-level)",
       "_origin": "semantic",
@@ -2025,36 +2025,6 @@
       "file_type": "document",
       "norm_label": "obsidian-official-cli skill.md (top-level)",
       "source_file": "skills/clawhub.obsidian-cli/SKILL.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_card_document",
-      "label": "obsidian-official-cli skill-card (nested duplicate)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 8,
-      "community_name": "obsidian-official-cli skill-card (top-level)",
-      "contributor": null,
-      "file_type": "document",
-      "norm_label": "obsidian-official-cli skill-card (nested duplicate)",
-      "source_file": "skills/clawhub.obsidian-cli/skills/clawhub.obsidian-cli/skill-card.md",
-      "source_location": null,
-      "source_url": null
-    },
-    {
-      "id": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_document",
-      "label": "obsidian-official-cli SKILL.md (nested duplicate)",
-      "_origin": "semantic",
-      "author": null,
-      "captured_at": null,
-      "community": 8,
-      "community_name": "obsidian-official-cli skill-card (top-level)",
-      "contributor": null,
-      "file_type": "document",
-      "norm_label": "obsidian-official-cli skill.md (nested duplicate)",
-      "source_file": "skills/clawhub.obsidian-cli/skills/clawhub.obsidian-cli/SKILL.md",
       "source_location": null,
       "source_url": null
     },
@@ -2114,7 +2084,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L181",
+      "source_location": "L187",
       "weight": 1.0
     },
     {
@@ -2126,7 +2096,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L182",
+      "source_location": "L188",
       "weight": 1.0
     },
     {
@@ -2138,7 +2108,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L186",
+      "source_location": "L192",
       "weight": 1.0
     },
     {
@@ -2150,7 +2120,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L62",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -2162,12 +2132,24 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L95",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
       "source": "skills_map_issue_to_tasks_issue_cmd_close",
       "target": "skills_map_issue_to_tasks_issue_log",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_map_issue_to_tasks_issue_cmd_comment",
+      "target": "skills_map_issue_to_tasks_issue_die",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -2179,18 +2161,6 @@
     },
     {
       "source": "skills_map_issue_to_tasks_issue_cmd_comment",
-      "target": "skills_map_issue_to_tasks_issue_die",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L86",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_map_issue_to_tasks_issue_cmd_comment",
       "target": "skills_map_issue_to_tasks_issue_log",
       "relation": "calls",
       "_origin": "ast",
@@ -2198,7 +2168,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L88",
+      "source_location": "L99",
       "weight": 1.0
     },
     {
@@ -2210,7 +2180,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -2222,7 +2192,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L53",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -2234,7 +2204,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L106",
+      "source_location": "L128",
       "weight": 1.0
     },
     {
@@ -2246,7 +2216,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L122",
+      "source_location": "L147",
       "weight": 1.0
     },
     {
@@ -2258,7 +2228,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L123",
+      "source_location": "L151",
       "weight": 1.0
     },
     {
@@ -2270,7 +2240,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L124",
+      "source_location": "L155",
       "weight": 1.0
     },
     {
@@ -2282,7 +2252,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L125",
+      "source_location": "L159",
       "weight": 1.0
     },
     {
@@ -2294,7 +2264,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L126",
+      "source_location": "L163",
       "weight": 1.0
     },
     {
@@ -2306,7 +2276,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L127",
+      "source_location": "L167",
       "weight": 1.0
     },
     {
@@ -2318,7 +2288,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L128",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -2330,7 +2300,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L129",
+      "source_location": "L175",
       "weight": 1.0
     },
     {
@@ -2342,7 +2312,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L44",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -3572,7 +3542,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L68",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_map_issue_to_tasks_issue",
+      "target": "skills_map_issue_to_tasks_issue_cmd_close",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "skills/map-issue-to-tasks/issue.sh",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -3583,7 +3564,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L103",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -3594,7 +3575,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L116",
+      "source_location": "L139",
       "weight": 1.0
     },
     {
@@ -3627,7 +3608,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L47",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -3638,7 +3619,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L59",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -3649,7 +3630,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L62",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -3660,7 +3641,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L73",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -3671,18 +3652,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L84",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_map_issue_to_tasks_issue",
-      "target": "skills_map_issue_to_tasks_issue_cmd_close",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "skills/map-issue-to-tasks/issue.sh",
-      "source_location": "L93",
+      "source_location": "L94",
       "weight": 1.0
     },
     {
@@ -4112,6 +4082,17 @@
       "confidence_score": 1.0,
       "source_file": "skills/repo-standard/test-repo-standard.sh",
       "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_specs_2026_08_01_repo_standard_design_document",
+      "target": "docs_superpowers_specs_2026_08_19_graphify_gitignore_standard_design",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-08-01-repo-standard-design.md",
+      "source_location": "L101",
       "weight": 1.0
     },
     {
@@ -4654,17 +4635,6 @@
       "weight": 1.0
     },
     {
-      "source": "skills_clawhub_obsidian_cli_skill_card_document",
-      "target": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_card_document",
-      "relation": "semantically_similar_to",
-      "_origin": "semantic",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "skills/clawhub.obsidian-cli/skills/clawhub.obsidian-cli/skill-card.md",
-      "source_location": null,
-      "weight": 1.0
-    },
-    {
       "source": "skills_clawhub_obsidian_bases_skill_document",
       "target": "skills_clawhub_obsidian_bases_skill_card_document",
       "relation": "conceptually_related_to",
@@ -4683,17 +4653,6 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "skills/clawhub.obsidian-cli/skill-card.md",
-      "source_location": null,
-      "weight": 1.0
-    },
-    {
-      "source": "skills_clawhub_obsidian_cli_skill_document",
-      "target": "skills_clawhub_obsidian_cli_skills_clawhub_obsidian_cli_skill_document",
-      "relation": "semantically_similar_to",
-      "_origin": "semantic",
-      "confidence": "INFERRED",
-      "confidence_score": 0.95,
-      "source_file": "skills/clawhub.obsidian-cli/skills/clawhub.obsidian-cli/SKILL.md",
       "source_location": null,
       "weight": 1.0
     }
@@ -4771,5 +4730,5 @@
       "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
     }
   ],
-  "built_at_commit": "089aa2e3d8c62064f2de391583fab830282bbe77"
+  "built_at_commit": "699269ab5482864fdd6231d02509f1462023e035"
 }

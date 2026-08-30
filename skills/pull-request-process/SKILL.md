@@ -11,9 +11,9 @@ ever touching `main` → open a PR → **stop** (never merge) → work each revi
 thread. This is a **building block** other skills call (`fix-mapped-issue`
 follows it for "till the issue is fixed").
 
-The git/gh plumbing is in **`pr.sh`**, at `${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh`.
-It is language-agnostic and **does not run the quality gate** — you do, per the project's docs.
-
+The git/gh plumbing is in **`pr.sh`**, at `$HOME/.agents/skills/pull-request-process/pr.sh`.
+Adjust the `$HOME/.agents/skills` root if your agent installs skills elsewhere (for example `$HOME/.claude/skills`).
+`pr.sh` is language-agnostic and **does not run the project's quality gate** — run the gate yourself per the project's `AGENTS.md` before calling `pr.sh push`.
 ## Agent identity, not the personal one
 
 Every `gh` call and every commit `pr.sh` makes uses a dedicated agent
@@ -73,11 +73,11 @@ or abandoned.
 
 ## Portability — read the project's specifics first
 
-This skill hardcodes nothing project-specific. Before shipping, read from the
-project's `AGENTS.md`/`CLAUDE.md`:
+This skill hardcodes nothing project-specific. Before shipping, read the project's
+`AGENTS.md`:
 - **Base branch** (usually `main`) → pass as `BASE=<branch>` to `pr.sh`.
 - **The quality gate command** and any coverage bar (e.g. `cargo test` for
-  Rust, `mix precommit --cover` for Elixir — read AGENTS.md for the exact
+  Rust, `mix precommit --cover` for Elixir — see AGENTS.md for the exact
   command and thresholds).
 
 If the project has no documented gate, run its tests + formatter/linter and say so.
@@ -189,7 +189,7 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 ## Commands (verified)
 
 ```bash
-P=${CLAUDE_PLUGIN_ROOT}/skills/pull-request-process/pr.sh
+P=$HOME/.agents/skills/pull-request-process/pr.sh
 BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
 cd '<path printed by pr.sh start>'         # <-- cd into THAT exact printed path; everything below runs from here
 BASE=main REVIEWED=1 "$P" push my-feature # requires a requesting-code-review pass first; safe push + verify main didn't advance

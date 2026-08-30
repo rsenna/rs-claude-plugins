@@ -62,8 +62,7 @@ the committed graph current, before it ships into a PR.
 #### Queries
 
 For codebase questions, run `graphify query "<question>"` before falling back to
-raw grep or file browsing (see `CLAUDE.md`).
-
+raw grep or file browsing (see `AGENTS.md`).
 `graphify path "<A>" "<B>"` and `graphify explain "<concept>"` work the same way
 for narrower lookups.
 

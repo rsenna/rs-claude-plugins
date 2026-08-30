@@ -95,8 +95,8 @@ one the agent is currently sitting in.
 
 ```bash
 I=$HOME/.agents/skills/map-issue-to-tasks/issue.sh
-DRY_RUN=1 "$I" create rsenna/rs-claude-plugins "Title" body.md   # preview
-"$I" create rsenna/rs-claude-plugins "Title" body.md             # post it for real
+DRY_RUN=1 "$I" create rsenna/rs-agent-plugin "Title" body.md   # preview
+"$I" create rsenna/rs-agent-plugin "Title" body.md             # post it for real
 ```
 
 This is not part of the numbered workflow above — it's a standalone
