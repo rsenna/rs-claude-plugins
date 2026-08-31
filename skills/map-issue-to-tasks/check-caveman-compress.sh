@@ -39,7 +39,6 @@ find_compress_py() {
   if [[ -n "$home" ]]; then
     candidates+=(
       "$home/.agents/skills/caveman-compress/scripts/compress.py"
-      "$home/.agents/skills/caveman-compress/scripts/compress.py"
     )
   fi
   local c

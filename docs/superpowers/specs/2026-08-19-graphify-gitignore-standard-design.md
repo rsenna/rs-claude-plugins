@@ -2,10 +2,10 @@
 
 ## Context
 
-The `graphify` skill (externa) turns any repo into a queryable knowledge graph under
-`graphify-out/`. It is being adopted across all of Roger's repos as a standing part
-of the development process — agents such as Claude Code should consult the graph
-before broad codebase exploration, and rebuild it after code changes.
+The `graphify` skill (external, `$HOME/.agents/skills/graphify`) turns any repo into
+a queryable knowledge graph under `graphify-out/`. It is being adopted across all of
+Roger's repos as a standing part of the development process — agents should consult
+the graph before broad codebase exploration, and rebuild it after code changes.
 
 Because `graphify-out/` mixes real outputs (the graph itself, the audit report) with
 local bookkeeping (interpreter cache paths, cost tracking, incremental-update

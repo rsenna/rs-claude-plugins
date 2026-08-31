@@ -11,21 +11,24 @@ _Personal AI agent plugin: a collection of agent-agnostic skills_.
 
 Download the repo (or add it as a git submodule) and wire the skills into your agent runtime:
 
-```
+```bash
 git clone https://github.com/rsenna/rs-agent-plugin.git
 cd rs-agent-plugin
 # install under $HOME/.agents/skills by default
 python3 - <<'PY'
 import json, os, pathlib
 root = pathlib.Path.cwd()
-install_root = pathlib.Path(os.environ.get("AGENT_SKILLS_ROOT", pathlib.Path.home() / ".agents" / "skills"))
+default_root = pathlib.Path.home() / ".agents" / "skills"
+install_root = pathlib.Path(os.environ.get("AGENT_SKILLS_ROOT") or default_root)
 install_root.mkdir(parents=True, exist_ok=True)
 manifest = json.loads((root / "plugin.manifest.json").read_text())
 for skill in manifest["skills"]:
     skill_dir = (root / skill["entry"]).parent
     target = install_root / skill["name"]
-    if target.exists() or target.is_symlink():
+    if target.is_symlink():
         target.unlink()
+    elif target.exists():
+        raise SystemExit(f"Refusing to overwrite existing directory {target}")
     target.symlink_to(skill_dir)
 PY
 ```

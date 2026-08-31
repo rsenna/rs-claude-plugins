@@ -1,16 +1,16 @@
-# Graph Report - rs-agent-plugin  (2026-08-30)
+# Graph Report - chore-rename-repo-cont  (2026-08-31)
 
 ## Corpus Check
-- 32 files · ~26,575 words
+- 31 files · ~26,786 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 130 nodes · 219 edges · 16 communities (11 shown, 5 thin omitted)
+- 136 nodes · 225 edges · 16 communities (12 shown, 4 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6f07d8b5`
+- Built from commit: `74cbb409`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -30,7 +30,7 @@
 - graphify as a standard dev-process artifact: `.gitignore` requirement design
 - check-caveman-compress.sh
 - test-repo-standard.sh
-- AGENTS.md
+- Agent Operations Guide
 
 ## God Nodes (most connected - your core abstractions)
 1. `pr.sh script` - 13 edges
@@ -66,7 +66,7 @@
 - **Six external repos rolled out under repo-standard stage tiers via issue #3 task 3** — tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_roset_sh, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_iklo, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_what_about, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_guiltty, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_obsidian_hivemind, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_wawk_js [EXTRACTED 1.00]
 - **Repo-standard design doc and skill jointly amended by issues #3 and #9** — docs_superpowers_specs_2026_08_01_repo_standard_design_document, skills_repo_standard_skill_document, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue, tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue [INFERRED 0.85]
 
-## Communities (16 total, 5 thin omitted)
+## Communities (16 total, 4 thin omitted)
 
 ### Community 0 - "pr.sh"
 Cohesion: 0.30
@@ -112,15 +112,19 @@ Nodes (5): find_compress_py(), has_isolated_claude_invocation(), log(), check-ca
 Cohesion: 0.73
 Nodes (5): assert_contains(), fail(), run_expect_fail(), run_expect_ok(), test-repo-standard.sh script
 
+### Community 17 - "Agent Operations Guide"
+Cohesion: 0.25
+Nodes (7): Agent Operations Guide, Branch, Code Review Workflow, Documentation Expectations, Identity & Secrets, Quality Gate, Repo Notes
+
 ## Knowledge Gaps
-- **24 isolated node(s):** `opn-api.sh script`, `patchmon-api.sh script`, `graphify`, `Context`, `Denylist vs allowlist` (+19 more)
+- **29 isolated node(s):** `opn-api.sh script`, `patchmon-api.sh script`, `Branch`, `Quality Gate`, `Identity & Secrets` (+24 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **5 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **What connects `opn-api.sh script`, `patchmon-api.sh script`, `graphify` to the rest of the system?**
-  _24 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `opn-api.sh script`, `patchmon-api.sh script`, `Branch` to the rest of the system?**
+  _29 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `graphify as a standard dev-process artifact: `.gitignore` requirement design` be split into smaller, more focused modules?**
   _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._

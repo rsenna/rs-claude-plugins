@@ -909,7 +909,7 @@
       },
       "norm_label": "has_isolated_claude_invocation()",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L74"
+      "source_location": "L73"
     },
     {
       "id": "skills_map_issue_to_tasks_check_caveman_compress_log",
@@ -1051,7 +1051,7 @@
       "label": "AGENTS.md",
       "_origin": "ast",
       "community": 17,
-      "community_name": "AGENTS.md",
+      "community_name": "Agent Operations Guide",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "agents.md",
@@ -1059,16 +1059,88 @@
       "source_location": "L1"
     },
     {
-      "id": "agents_graphify",
-      "label": "graphify",
+      "id": "agents_agent_operations_guide",
+      "label": "Agent Operations Guide",
       "_origin": "ast",
       "community": 17,
-      "community_name": "AGENTS.md",
+      "community_name": "Agent Operations Guide",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "graphify",
+      "norm_label": "agent operations guide",
       "source_file": "AGENTS.md",
       "source_location": "L1"
+    },
+    {
+      "id": "agents_branch",
+      "label": "Branch",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "Agent Operations Guide",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "branch",
+      "source_file": "AGENTS.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "agents_code_review_workflow",
+      "label": "Code Review Workflow",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "Agent Operations Guide",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "code review workflow",
+      "source_file": "AGENTS.md",
+      "source_location": "L18"
+    },
+    {
+      "id": "agents_documentation_expectations",
+      "label": "Documentation Expectations",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "Agent Operations Guide",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "documentation expectations",
+      "source_file": "AGENTS.md",
+      "source_location": "L33"
+    },
+    {
+      "id": "agents_identity_secrets",
+      "label": "Identity & Secrets",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "Agent Operations Guide",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "identity & secrets",
+      "source_file": "AGENTS.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "agents_quality_gate",
+      "label": "Quality Gate",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "Agent Operations Guide",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "quality gate",
+      "source_file": "AGENTS.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "agents_repo_notes",
+      "label": "Repo Notes",
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "Agent Operations Guide",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "repo notes",
+      "source_file": "AGENTS.md",
+      "source_location": "L28"
     },
     {
       "id": "skills_map_issue_to_tasks_issue",
@@ -1996,7 +2068,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L187",
+      "source_location": "L186",
       "weight": 1.0
     },
     {
@@ -2008,7 +2080,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L188",
+      "source_location": "L187",
       "weight": 1.0
     },
     {
@@ -2020,7 +2092,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L192",
+      "source_location": "L191",
       "weight": 1.0
     },
     {
@@ -2032,7 +2104,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L68",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -3129,13 +3201,79 @@
     },
     {
       "source": "agents",
-      "target": "agents_graphify",
+      "target": "agents_agent_operations_guide",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
       "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agent_operations_guide",
+      "target": "agents_identity_secrets",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agent_operations_guide",
+      "target": "agents_code_review_workflow",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agent_operations_guide",
+      "target": "agents_repo_notes",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agent_operations_guide",
+      "target": "agents_branch",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agent_operations_guide",
+      "target": "agents_documentation_expectations",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_agent_operations_guide",
+      "target": "agents_quality_gate",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -3377,7 +3515,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L74",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -4565,5 +4703,5 @@
       "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
     }
   ],
-  "built_at_commit": "6f07d8b5d2fa0cfd77411a0b0a5c534daa2abd15"
+  "built_at_commit": "74cbb4098dc0a4deeabac43194c9186d56462daf"
 }

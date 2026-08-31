@@ -107,7 +107,7 @@ valid, declared stage before creating any files.
 
 ### 3. Enforcement: on-demand `repo-standard` skill
 
-A new skill in this repo (`rsenna-agent-plugin`), alongside
+A new skill in this repo (`rs-agent-plugin`), alongside
 `pull-request-process` / `map-issue-to-tasks` / `fix-mapped-issue`:
 
 - **`audit`** — read `repo.toml`'s `stage`, diff the repo's actual

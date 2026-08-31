@@ -17,10 +17,22 @@
   "install": {
     "default_install_root": "$HOME/.agents/skills",
     "instructions": [
-      "PLUGIN_ROOT=$(pwd)",
-      "INSTALL_ROOT=${AGENT_SKILLS_ROOT:-$HOME/.agents/skills}",
-      "mkdir -p \"$INSTALL_ROOT\"",
-      "jq -r '.skills[] | [.name, .entry] | @tsv' \"$PLUGIN_ROOT/plugin.manifest.json\" | while IFS=$'\t' read -r name entry; do skill_dir=${entry%/SKILL.md}; ln -sfn \"$PLUGIN_ROOT/$skill_dir\" \"$INSTALL_ROOT/$name\"; done"
+      "python3 - <<'PY'",
+      "import json, os, pathlib",
+      "root = pathlib.Path.cwd()",
+      "default_root = pathlib.Path.home() / '.agents' / 'skills'",
+      "install_root = pathlib.Path(os.environ.get('AGENT_SKILLS_ROOT') or default_root)",
+      "install_root.mkdir(parents=True, exist_ok=True)",
+      "manifest = json.loads((root / 'plugin.manifest.json').read_text())",
+      "for skill in manifest['skills']:",
+      "    skill_dir = (root / skill['entry']).parent",
+      "    target = install_root / skill['name']",
+      "    if target.is_symlink():",
+      "        target.unlink()",
+      "    elif target.exists():",
+      "        raise SystemExit(f'Refusing to overwrite existing directory {target}')",
+      "    target.symlink_to(skill_dir)",
+      "PY"
     ]
   }
 }
