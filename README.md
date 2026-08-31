@@ -16,15 +16,14 @@ git clone https://github.com/rsenna/rs-agent-plugin.git
 cd rs-agent-plugin
 # install under $HOME/.agents/skills by default
 python3 - <<'PY'
-import json, os, pathlib
+import os, pathlib
 root = pathlib.Path.cwd()
 default_root = pathlib.Path.home() / ".agents" / "skills"
 install_root = pathlib.Path(os.environ.get("AGENT_SKILLS_ROOT") or default_root)
 install_root.mkdir(parents=True, exist_ok=True)
-manifest = json.loads((root / "plugin.manifest.json").read_text())
-for skill in manifest["skills"]:
-    skill_dir = (root / skill["entry"]).parent
-    target = install_root / skill["name"]
+for skill_md in sorted((root / "skills").glob("*/SKILL.md")):
+    skill_dir = skill_md.parent
+    target = install_root / skill_dir.name
     if target.is_symlink():
         target.unlink()
     elif target.exists():
@@ -34,6 +33,32 @@ PY
 ```
 
 Override `AGENT_SKILLS_ROOT` if your agent looks elsewhere.
+
+### Alternate install: vercel-labs/skills
+
+This repo is also installable via [vercel-labs/skills](https://github.com/vercel-labs/skills)
+(`bunx skills`, or `npx skills` if you don't have Bun), which discovers skills
+the same way (`skills/<name>/SKILL.md` with `name`/`description` frontmatter)
+and installs across dozens of agents:
+
+```bash
+bunx skills add rsenna/rs-agent-plugin --all -a claude-code -a opencode -g
+```
+
+A global install (`-g`) lands the "universal" copy at `~/.agents/skills/<name>/`
+and symlinks it into each other target agent's own skills folder (e.g.
+`~/.claude/skills/<name>` → `~/.agents/skills/<name>`) — no duplication, and the
+`~/.agents/skills` root matches the python recipe above's own default. Note
+`<name>` there is each `SKILL.md`'s **frontmatter** `name:`, not its directory
+name — identical for 7 of these 9 skills, but `clawhub.obsidian-cli` and
+`clawhub.obsidian-bases` install under `obsidian-official-cli` and
+`obsidian-bases` respectively via `bunx`/`npx skills` (their frontmatter
+names), vs. their directory names via the python recipe above. Either way
+works standalone; installing the *same* skill through both methods just gets
+you two separately-named copies for those two, not a conflict. A project-local
+install (no `-g`) roots the same layout at `./.agents/skills/` instead. Either
+way, every `SKILL.md` in this plugin resolves its own plumbing scripts relative to
+wherever it was actually installed, so both install paths work.
 
 ## PR-related Skills
 

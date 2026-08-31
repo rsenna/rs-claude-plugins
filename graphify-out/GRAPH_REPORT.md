@@ -1,7 +1,7 @@
-# Graph Report - chore-rename-repo-cont  (2026-08-31)
+# Graph Report - vercel-skills-compat  (2026-08-31)
 
 ## Corpus Check
-- 31 files · ~26,786 words
+- 30 files · ~27,392 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `74cbb409`
+- Built from commit: `48e01cb3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
