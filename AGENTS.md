@@ -26,9 +26,9 @@ If a new language/tooling shows up, extend this list rather than skipping the ga
 8. Cleanup once merged/abandoned: run `pr.sh cleanup` from the worktree.
 
 ## Repo Notes
-- Plugin manifest: `plugin.manifest.json` lists every shipped skill and provides a Python-only install recipe; README mirrors it. Keep both in sync.
-- Skill docs reference `$HOME/.agents/skills` as the default install root. Honour `AGENT_SKILLS_ROOT` for alternate layouts.
-- Caveman compressor guard: `skills/map-issue-to-tasks/check-caveman-compress.sh` checks `AGENT_SKILLS_ROOT` first; keep it agent-neutral.
+- Plugin manifest: `plugin.manifest.json` lists every shipped skill and provides a Python-only install recipe (default root `$HOME/.agents/skills`, override via `AGENT_SKILLS_ROOT`); README mirrors it. Keep both in sync.
+- Also installable via [vercel-labs/skills](https://github.com/vercel-labs/skills) (`npx skills add rsenna/rs-agent-plugin ...`) — verified against the real repo: it discovers all skills correctly, and a global install already de-duplicates via symlinks back to `~/.agents/skills` (project-local installs root at `./.agents/skills` instead). Each `SKILL.md` resolves its own plumbing scripts relative to wherever it was actually loaded from, rather than hardcoding an install root, so both installers (and any other that follows the same `skills/<name>/SKILL.md` layout) work without edits.
+- Caveman compressor guard: `skills/map-issue-to-tasks/check-caveman-compress.sh` checks `AGENT_SKILLS_ROOT` first; keep it agent-neutral. (This one's own root reference is legitimate — it's locating a *different*, separately-installed skill, not itself.)
 
 ## Documentation Expectations
 - README stays tool-agnostic; for deeper operational detail update this file.

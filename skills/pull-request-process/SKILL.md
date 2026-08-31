@@ -11,8 +11,12 @@ ever touching `main` → open a PR → **stop** (never merge) → work each revi
 thread. This is a **building block** other skills call (`fix-mapped-issue`
 follows it for "till the issue is fixed").
 
-The git/gh plumbing is in **`pr.sh`**, at `$HOME/.agents/skills/pull-request-process/pr.sh`.
-Set `AGENT_SKILLS_ROOT` if your agent stores installed skills somewhere other than `$HOME/.agents/skills`.
+The git/gh plumbing is in **`pr.sh`**, next to this file — whatever directory
+this `SKILL.md` was loaded from, `pr.sh` is a sibling in that same directory.
+Resolve it there rather than assuming a fixed install root: different
+installers place skills differently (e.g. `~/.claude/skills/pull-request-process/`,
+`~/.agents/skills/pull-request-process/`, or a project-local
+`.agents/skills/pull-request-process/`).
 `pr.sh` is language-agnostic and **does not run the project's quality gate** — run the gate yourself per the project's `AGENTS.md` before calling `pr.sh push`.
 ## Agent identity, not the personal one
 
@@ -189,7 +193,9 @@ If the project has no documented gate, run its tests + formatter/linter and say 
 ## Commands (verified)
 
 ```bash
-P=$HOME/.agents/skills/pull-request-process/pr.sh
+P=<this-skill's-own-directory>/pr.sh   # e.g. ~/.claude/skills/pull-request-process/pr.sh,
+                                        # or ~/.agents/skills/pull-request-process/pr.sh —
+                                        # wherever your installer put this skill
 BASE=main "$P" start  my-feature          # new worktree off up-to-date origin/main, prints its path
 cd '<path printed by pr.sh start>'         # <-- cd into THAT exact printed path; everything below runs from here
 BASE=main REVIEWED=1 "$P" push my-feature # requires a requesting-code-review pass first; safe push + verify main didn't advance

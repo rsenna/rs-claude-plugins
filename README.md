@@ -35,6 +35,24 @@ PY
 
 Override `AGENT_SKILLS_ROOT` if your agent looks elsewhere.
 
+### Alternate install: vercel-labs/skills
+
+This repo is also installable via [vercel-labs/skills](https://github.com/vercel-labs/skills)
+(`npx skills`), which discovers skills the same way (`skills/<name>/SKILL.md`
+with `name`/`description` frontmatter) and installs across 40+ agents:
+
+```bash
+npx skills add rsenna/rs-agent-plugin --all -a claude-code -a opencode -g
+```
+
+A global install (`-g`) lands the "universal" copy at `~/.agents/skills/<name>/`
+and symlinks it into each other target agent's own skills folder (e.g.
+`~/.claude/skills/<name>` → `~/.agents/skills/<name>`) — no duplication, and it
+matches this repo's own `$HOME/.agents/skills` default. A project-local install
+(no `-g`) roots the same layout at `./.agents/skills/` instead. Either way,
+every `SKILL.md` in this plugin resolves its own plumbing scripts relative to
+wherever it was actually installed, so both install paths work.
+
 ## PR-related Skills
 
 - **`map-issue-to-tasks`**:

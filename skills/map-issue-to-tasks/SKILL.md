@@ -9,8 +9,10 @@ Steps 1–3 of the issue lifecycle: **analyse an open issue, enrich it against a
 template, and break it into a dependency-ordered task list.** Implementation is
 a separate skill (`fix-mapped-issue`).
 
-Plumbing is in **`issue.sh`**, at `$HOME/.agents/skills/map-issue-to-tasks/issue.sh`.
-The enrichment template is `$HOME/.agents/skills/map-issue-to-tasks/templates/issue-enrichment.md`.
+Plumbing is in **`issue.sh`**, next to this file (a sibling of this `SKILL.md`,
+wherever your installer placed this skill — e.g. `~/.claude/skills/map-issue-to-tasks/`
+or `~/.agents/skills/map-issue-to-tasks/`).
+The enrichment template is at `templates/issue-enrichment.md`, relative to that same directory.
 
 ## Do this
 
@@ -48,7 +50,7 @@ The enrichment template is `$HOME/.agents/skills/map-issue-to-tasks/templates/is
    - **Compress the tasks file with `caveman-compress`.** It's read every
      time an agent picks up this issue, so a leaner file pays off repeatedly.
      Before invoking it, run
-     `"$HOME/.agents/skills/map-issue-to-tasks/check-caveman-compress.sh"`:
+     the `check-caveman-compress.sh` next to this file (same directory as this `SKILL.md`):
      - exit 0 → invoke `caveman-compress` on `tasks/issue-<n>-<slug>.md` —
        trigger it the same way as `/caveman-compress <filepath>` (see that
        skill's own `SKILL.md` for the exact process)
@@ -73,7 +75,7 @@ instead of posting, so you (and the user) can check it. Post for real only once
 it reads well.
 
 ```bash
-I=$HOME/.agents/skills/map-issue-to-tasks/issue.sh
+I=<this-skill's-own-directory>/issue.sh   # wherever your installer put this skill
 "$I" unmapped                          # which open issues still need mapping
 "$I" fetch 24                          # read the issue
 "$I" slug  24                          # -> 24-show-a-notification-when-a-profile-is-re-published
@@ -94,7 +96,7 @@ prevent). `<repo>` is `owner/name`, so it can target any repo, not just the
 one the agent is currently sitting in.
 
 ```bash
-I=$HOME/.agents/skills/map-issue-to-tasks/issue.sh
+I=<this-skill's-own-directory>/issue.sh   # wherever your installer put this skill
 DRY_RUN=1 "$I" create rsenna/rs-agent-plugin "Title" body.md   # preview
 "$I" create rsenna/rs-agent-plugin "Title" body.md             # post it for real
 ```

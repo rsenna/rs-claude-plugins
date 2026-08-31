@@ -10,11 +10,11 @@ pull-request process, then update and close the issue.** Assumes
 `map-issue-to-tasks` already produced `tasks/issue-<n>-<slug>.md`. If that file
 doesn't exist, run `map-issue-to-tasks` first.
 
-Reuses the sibling skills' scripts (this plugin's other skills):
-- `$HOME/.agents/skills/pull-request-process/pr.sh` (branch/push/PR/threads)
-- `$HOME/.agents/skills/map-issue-to-tasks/issue.sh` (`close` for the final comment)
-
-Set `AGENT_SKILLS_ROOT` if your agent stores installed skills somewhere other than `$HOME/.agents/skills`.
+Reuses the sibling skills' scripts (this plugin's other skills, installed as
+siblings of this one under the same skills root — resolve these relative to
+wherever this `fix-mapped-issue` skill itself was loaded from):
+- `../pull-request-process/pr.sh` (branch/push/PR/threads)
+- `../map-issue-to-tasks/issue.sh` (`close` for the final comment)
 
 ## Portability — read the project's specifics first
 From the project's `AGENTS.md`: the **base branch** and the
@@ -61,8 +61,8 @@ Once **all** tasks are merged:
    (`DRY_RUN=1` previews without posting/closing.)
 
 ```bash
-P=$HOME/.agents/skills/pull-request-process/pr.sh
-I=$HOME/.agents/skills/map-issue-to-tasks/issue.sh
+P=<this-skill's-own-directory>/../pull-request-process/pr.sh
+I=<this-skill's-own-directory>/../map-issue-to-tasks/issue.sh
 BASE=main "$P" start fix/issue-24-notify
 cd <printed-worktree-path>
 # …implement + test…  then run the project gate…
