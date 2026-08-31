@@ -13,9 +13,15 @@
 # earning its keep.
 #
 # Usage: check-caveman-compress.sh
+# Looks for caveman-compress in order: $CAVEMAN_COMPRESS_SCRIPT (exact path),
+# $AGENT_SKILLS_ROOT/caveman-compress/..., this script's own skills root
+# (caveman-compress installed as a sibling of this skill), then
+# $HOME/.agents/skills/caveman-compress/... — self-locating rather than
+# assuming a fixed root, since different installers place skills differently.
 # Exit codes:
 #   0  patched — safe to invoke caveman-compress
-#   1  not installed on this host — caller should skip compression, not fail
+#   1  not installed anywhere above — caller should skip compression, not fail
+#      (this script only warns; it never treats "not installed" as an error)
 #   2  installed but NOT patched — caller must stop and surface the message below
 set -euo pipefail
 
@@ -33,8 +39,26 @@ find_compress_py() {
   # raw "HOME: unbound variable" instead of falling into the "not installed,
   # skip compression" (exit 1) path this case should take.
   local home="${HOME:-}"
+
+  # Self-locate: caveman-compress, if installed, is a SIBLING of this script's
+  # own skill directory under whatever skills root installed this plugin —
+  # same rationale as this plugin's own SKILL.md docs (see
+  # pull-request-process/SKILL.md et al.): don't assume a fixed install root,
+  # derive it from where this script itself actually lives.
+  local self_dir skills_root
+  self_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  skills_root="$(dirname "$self_dir")"
+
   local candidates=(
     "${CAVEMAN_COMPRESS_SCRIPT:-}"
+  )
+  if [[ -n "${AGENT_SKILLS_ROOT:-}" ]]; then
+    candidates+=(
+      "$AGENT_SKILLS_ROOT/caveman-compress/scripts/compress.py"
+    )
+  fi
+  candidates+=(
+    "$skills_root/caveman-compress/scripts/compress.py"
   )
   if [[ -n "$home" ]]; then
     candidates+=(
@@ -48,13 +72,17 @@ find_compress_py() {
       return 0
     }
   done
-  [[ -n "$home" ]] || return 0
-  # Last resort: shallow searches under existing common skill roots. Search
-  # one root at a time so a missing/inaccessible sibling cannot poison the
+  # Last resort: shallow searches under every root we know about. Search one
+  # root at a time so a missing/inaccessible sibling cannot poison the
   # documented exit status, and use -print -quit to avoid SIGPIPE under
   # pipefail.
+  local -a search_roots=("$skills_root")
+  [[ -n "${AGENT_SKILLS_ROOT:-}" ]] && search_roots+=("$AGENT_SKILLS_ROOT")
+  if [[ -n "$home" ]]; then
+    search_roots+=("$home/.agents/skills" "$home/.claude/skills" "$home/.codex/skills")
+  fi
   local root found
-  for root in "$home/.claude/skills" "$home/.agents/skills" "$home/.codex/skills"; do
+  for root in "${search_roots[@]}"; do
     [[ -d "$root" ]] || continue
     found="$(find "$root" -maxdepth 4 -path "*caveman-compress/scripts/compress.py" -print -quit 2>/dev/null || true)"
     [[ -n "$found" ]] && {
@@ -67,6 +95,9 @@ find_compress_py() {
 compress_py="$(find_compress_py)"
 
 if [[ -z "$compress_py" ]]; then
+  warn "caveman-compress not found (checked \$CAVEMAN_COMPRESS_SCRIPT, \$AGENT_SKILLS_ROOT," \
+       "this skill's own skills root, and \$HOME/.agents/skills) — skipping compression," \
+       "proceeding uncompressed. This is not a failure."
   exit 1
 fi
 

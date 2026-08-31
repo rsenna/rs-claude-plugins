@@ -894,7 +894,7 @@
       },
       "norm_label": "find_compress_py()",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L30"
+      "source_location": "L36"
     },
     {
       "id": "skills_map_issue_to_tasks_check_caveman_compress_has_isolated_claude_invocation",
@@ -909,7 +909,7 @@
       },
       "norm_label": "has_isolated_claude_invocation()",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L73"
+      "source_location": "L104"
     },
     {
       "id": "skills_map_issue_to_tasks_check_caveman_compress_log",
@@ -924,7 +924,7 @@
       },
       "norm_label": "log()",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L22"
+      "source_location": "L28"
     },
     {
       "id": "skills_map_issue_to_tasks_check_caveman_compress_sh__entry",
@@ -954,7 +954,7 @@
       },
       "norm_label": "warn()",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L23"
+      "source_location": "L29"
     },
     {
       "id": "skills_repo_standard_test_repo_standard",
@@ -2068,7 +2068,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L186",
+      "source_location": "L217",
       "weight": 1.0
     },
     {
@@ -2080,19 +2080,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L187",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_map_issue_to_tasks_check_caveman_compress_sh__entry",
-      "target": "skills_map_issue_to_tasks_check_caveman_compress_warn",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L191",
+      "source_location": "L218",
       "weight": 1.0
     },
     {
@@ -2104,7 +2092,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L67",
+      "source_location": "L95",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_map_issue_to_tasks_check_caveman_compress_sh__entry",
+      "target": "skills_map_issue_to_tasks_check_caveman_compress_warn",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -3476,13 +3476,24 @@
     },
     {
       "source": "skills_map_issue_to_tasks_check_caveman_compress",
+      "target": "skills_map_issue_to_tasks_check_caveman_compress_has_isolated_claude_invocation",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "skills_map_issue_to_tasks_check_caveman_compress",
       "target": "skills_map_issue_to_tasks_check_caveman_compress_log",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L22",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -3493,7 +3504,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L23",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -3504,18 +3515,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L30",
-      "weight": 1.0
-    },
-    {
-      "source": "skills_map_issue_to_tasks_check_caveman_compress",
-      "target": "skills_map_issue_to_tasks_check_caveman_compress_has_isolated_claude_invocation",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "skills/map-issue-to-tasks/check-caveman-compress.sh",
-      "source_location": "L73",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -4703,5 +4703,5 @@
       "source_file": "tasks/issue-3-design-cross-repo-doc-folder-standard-repo-toml.md"
     }
   ],
-  "built_at_commit": "74cbb4098dc0a4deeabac43194c9186d56462daf"
+  "built_at_commit": "cfb829064d034876ba5301a0de68e314a7f917ff"
 }

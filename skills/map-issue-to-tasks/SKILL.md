@@ -54,7 +54,8 @@ The enrichment template is at `templates/issue-enrichment.md`, relative to that 
      - exit 0 → invoke `caveman-compress` on `tasks/issue-<n>-<slug>.md` —
        trigger it the same way as `/caveman-compress <filepath>` (see that
        skill's own `SKILL.md` for the exact process)
-     - exit 1 → not installed on this host; skip compression, proceed uncompressed
+     - exit 1 → not installed anywhere it looked; **not a failure** — it already
+       printed a warning, skip compression and proceed uncompressed
      - exit 2 → installed but **unpatched** (its `claude --print` fallback can
        leak this host's hooks/MCP context into the file it's compressing —
        [JuliusBrussee/caveman#920](https://github.com/JuliusBrussee/caveman/issues/920),

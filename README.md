@@ -16,15 +16,14 @@ git clone https://github.com/rsenna/rs-agent-plugin.git
 cd rs-agent-plugin
 # install under $HOME/.agents/skills by default
 python3 - <<'PY'
-import json, os, pathlib
+import os, pathlib
 root = pathlib.Path.cwd()
 default_root = pathlib.Path.home() / ".agents" / "skills"
 install_root = pathlib.Path(os.environ.get("AGENT_SKILLS_ROOT") or default_root)
 install_root.mkdir(parents=True, exist_ok=True)
-manifest = json.loads((root / "plugin.manifest.json").read_text())
-for skill in manifest["skills"]:
-    skill_dir = (root / skill["entry"]).parent
-    target = install_root / skill["name"]
+for skill_md in sorted((root / "skills").glob("*/SKILL.md")):
+    skill_dir = skill_md.parent
+    target = install_root / skill_dir.name
     if target.is_symlink():
         target.unlink()
     elif target.exists():
@@ -38,11 +37,12 @@ Override `AGENT_SKILLS_ROOT` if your agent looks elsewhere.
 ### Alternate install: vercel-labs/skills
 
 This repo is also installable via [vercel-labs/skills](https://github.com/vercel-labs/skills)
-(`npx skills`), which discovers skills the same way (`skills/<name>/SKILL.md`
-with `name`/`description` frontmatter) and installs across 40+ agents:
+(`bunx skills`, or `npx skills` if you don't have Bun), which discovers skills
+the same way (`skills/<name>/SKILL.md` with `name`/`description` frontmatter)
+and installs across dozens of agents:
 
 ```bash
-npx skills add rsenna/rs-agent-plugin --all -a claude-code -a opencode -g
+bunx skills add rsenna/rs-agent-plugin --all -a claude-code -a opencode -g
 ```
 
 A global install (`-g`) lands the "universal" copy at `~/.agents/skills/<name>/`
