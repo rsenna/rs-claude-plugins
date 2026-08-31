@@ -19,7 +19,7 @@
 #   2  installed but NOT patched — caller must stop and surface the message below
 set -euo pipefail
 
-log()  { printf '\033[1;34m[check-caveman-compress]\033[0m %s\n' "$*"; }
+log() { printf '\033[1;34m[check-caveman-compress]\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m[check-caveman-compress] %s\033[0m\n' "$*" >&2; }
 
 # The fix is only present when both flags are arguments to the subprocess.run
@@ -36,32 +36,37 @@ find_compress_py() {
   local candidates=(
     "${CAVEMAN_COMPRESS_SCRIPT:-}"
   )
-  if [ -n "$home" ]; then
+  if [[ -n "$home" ]]; then
     candidates+=(
-      "$home/.claude/skills/caveman-compress/scripts/compress.py"
       "$home/.agents/skills/caveman-compress/scripts/compress.py"
     )
   fi
   local c
   for c in "${candidates[@]}"; do
-    [ -n "$c" ] && [ -f "$c" ] && { printf '%s\n' "$c"; return 0; }
+    [[ -n "$c" && -f "$c" ]] && {
+      printf '%s\n' "$c"
+      return 0
+    }
   done
-  [ -n "$home" ] || return 0
+  [[ -n "$home" ]] || return 0
   # Last resort: shallow searches under existing common skill roots. Search
   # one root at a time so a missing/inaccessible sibling cannot poison the
   # documented exit status, and use -print -quit to avoid SIGPIPE under
   # pipefail.
   local root found
   for root in "$home/.claude/skills" "$home/.agents/skills" "$home/.codex/skills"; do
-    [ -d "$root" ] || continue
+    [[ -d "$root" ]] || continue
     found="$(find "$root" -maxdepth 4 -path "*caveman-compress/scripts/compress.py" -print -quit 2>/dev/null || true)"
-    [ -n "$found" ] && { printf '%s\n' "$found"; return 0; }
+    [[ -n "$found" ]] && {
+      printf '%s\n' "$found"
+      return 0
+    }
   done
 }
 
 compress_py="$(find_compress_py)"
 
-if [ -z "$compress_py" ]; then
+if [[ -z "$compress_py" ]]; then
   exit 1
 fi
 

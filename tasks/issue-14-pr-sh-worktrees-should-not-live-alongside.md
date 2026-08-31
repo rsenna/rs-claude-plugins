@@ -1,6 +1,6 @@
 # Issue #14 — pr.sh worktrees should not live alongside personal repos under ~/REPO/ME
 
-https://github.com/rsenna/rs-claude-plugins/issues/14
+https://github.com/rsenna/rs-agent-plugin/issues/14
 
 ## Tasks
 

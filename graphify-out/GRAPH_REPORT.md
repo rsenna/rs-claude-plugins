@@ -1,28 +1,26 @@
-# Graph Report - caveman-compress-guardrail  (2026-08-30)
+# Graph Report - chore-rename-repo-cont  (2026-08-31)
 
 ## Corpus Check
-- 34 files · ~27,486 words
+- 31 files · ~26,786 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 140 nodes · 227 edges · 18 communities (14 shown, 4 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.87)
+- 136 nodes · 225 edges · 16 communities (12 shown, 4 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `089aa2e3`
-- Run `git rev-parse --short=8 HEAD` and compare to check if the graph is stale.
+- Built from commit: `74cbb409`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - pr.sh
 - Issue #3 - Design: cross-repo doc/folder standard (repo.toml stage tiers) + repo-standard skill
 - issue.sh
-- marketplace.json
 - pull-request-process SKILL.md
 - doppler-secrets SKILL.md
 - Sanctioned 'create' subcommand with bot-identity enforcement
-- Cross-repo documentation/folder standard design doc
 - obsidian-official-cli skill-card (top-level)
 - Obsidian Bases Functions Reference
 - opn-api.sh
@@ -32,7 +30,7 @@
 - graphify as a standard dev-process artifact: `.gitignore` requirement design
 - check-caveman-compress.sh
 - test-repo-standard.sh
-- CLAUDE.md
+- Agent Operations Guide
 
 ## God Nodes (most connected - your core abstractions)
 1. `pr.sh script` - 13 edges
@@ -47,16 +45,16 @@
 10. `run_audit()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `rs-claude-plugins README` --references--> `fix-mapped-issue SKILL.md`  [EXTRACTED]
-  README.md → skills/fix-mapped-issue/SKILL.md
-- `rs-claude-plugins README` --references--> `map-issue-to-tasks SKILL.md`  [EXTRACTED]
-  README.md → skills/map-issue-to-tasks/SKILL.md
-- `rs-claude-plugins README` --references--> `pull-request-process SKILL.md`  [EXTRACTED]
-  README.md → skills/pull-request-process/SKILL.md
-- `Sanctioned 'create' subcommand with bot-identity enforcement` --semantically_similar_to--> `Centralized worktree-root strategy (not sibling of main checkout)`  [INFERRED] [semantically similar]
-  tasks/issue-10-issue-sh-pr-sh-no-sanctioned-way-to-create-a-new.md → tasks/issue-14-pr-sh-worktrees-should-not-live-alongside.md
+- `repo-standard SKILL.md` --references--> `Cross-repo documentation/folder standard design doc`  [EXTRACTED]
+  skills/repo-standard/SKILL.md → docs/superpowers/specs/2026-08-01-repo-standard-design.md
 - `repo-standard audit mode (read-only compliance check)` --conceptually_related_to--> `Per-stage doc/folder tier table (prototype/in-progress/released/archived)`  [EXTRACTED]
   skills/repo-standard/SKILL.md → docs/superpowers/specs/2026-08-01-repo-standard-design.md
+- `repo-standard scaffold mode (non-destructive creation)` --conceptually_related_to--> `Per-stage doc/folder tier table (prototype/in-progress/released/archived)`  [EXTRACTED]
+  skills/repo-standard/SKILL.md → docs/superpowers/specs/2026-08-01-repo-standard-design.md
+- `rs-agent-plugin README` --references--> `fix-mapped-issue SKILL.md`  [EXTRACTED]
+  README.md → skills/fix-mapped-issue/SKILL.md
+- `rs-agent-plugin README` --references--> `map-issue-to-tasks SKILL.md`  [EXTRACTED]
+  README.md → skills/map-issue-to-tasks/SKILL.md
 
 ## Import Cycles
 - None detected.
@@ -68,7 +66,7 @@
 - **Six external repos rolled out under repo-standard stage tiers via issue #3 task 3** — tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_roset_sh, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_iklo, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_what_about, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_guiltty, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_obsidian_hivemind, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_wawk_js [EXTRACTED 1.00]
 - **Repo-standard design doc and skill jointly amended by issues #3 and #9** — docs_superpowers_specs_2026_08_01_repo_standard_design_document, skills_repo_standard_skill_document, tasks_issue_3_design_cross_repo_doc_folder_standard_repo_toml_issue, tasks_issue_9_repo_standard_design_make_repos_agent_agnostic_by_issue [INFERRED 0.85]
 
-## Communities (18 total, 4 thin omitted)
+## Communities (16 total, 4 thin omitted)
 
 ### Community 0 - "pr.sh"
 Cohesion: 0.30
@@ -82,13 +80,9 @@ Nodes (12): docs/superpowers/specs/2026-08-01-repo-standard-design.md, skills/re
 Cohesion: 0.41
 Nodes (11): cmd_close(), cmd_comment(), cmd_create(), cmd_fetch(), cmd_json(), cmd_label(), cmd_slug(), cmd_unmapped() (+3 more)
 
-### Community 3 - "marketplace.json"
-Cohesion: 0.25
-Nodes (7): description, name, owner, name, url, plugins, $schema
-
 ### Community 4 - "pull-request-process SKILL.md"
 Cohesion: 0.36
-Nodes (8): rs-claude-plugins README, fix-mapped-issue SKILL.md, map-issue-to-tasks SKILL.md, issue-enrichment.md template, Dedicated agent git/gh identity enforcement (rationale), pull-request-process SKILL.md, Explicit-refspec push guardrail against advancing main (rationale), Git worktree isolation instead of shared checkout (rationale)
+Nodes (8): rs-agent-plugin README, fix-mapped-issue SKILL.md, map-issue-to-tasks SKILL.md, issue-enrichment.md template, Dedicated agent git/gh identity enforcement (rationale), pull-request-process SKILL.md, Explicit-refspec push guardrail against advancing main (rationale), Git worktree isolation instead of shared checkout (rationale)
 
 ### Community 5 - "doppler-secrets SKILL.md"
 Cohesion: 0.29
@@ -97,14 +91,6 @@ Nodes (8): doppler-secrets SKILL.md, Doppler service-token least-privilege scopi
 ### Community 6 - "Sanctioned 'create' subcommand with bot-identity enforcement"
 Cohesion: 0.32
 Nodes (8): skills/map-issue-to-tasks/issue.sh, skills/map-issue-to-tasks/SKILL.md, skills/pull-request-process/pr.sh, skills/pull-request-process/SKILL.md, Sanctioned 'create' subcommand with bot-identity enforcement, Issue #10 - issue.sh/pr.sh: no sanctioned way to create a new issue under the bot identity, Centralized worktree-root strategy (not sibling of main checkout), Issue #14 - pr.sh worktrees should not live alongside personal repos under ~/REPO/ME
-
-### Community 7 - "Cross-repo documentation/folder standard design doc"
-Cohesion: 0.29
-Nodes (7): Cross-repo documentation/folder standard design doc, On-demand (not pre-PR-gated) enforcement decision for repo-standard, repo.toml stage field decision, Per-stage doc/folder tier table (prototype/in-progress/released/archived), repo-standard audit mode (read-only compliance check), repo-standard SKILL.md, repo-standard scaffold mode (non-destructive creation)
-
-### Community 8 - "obsidian-official-cli skill-card (top-level)"
-Cohesion: 0.50
-Nodes (4): obsidian-official-cli skill-card (top-level), obsidian-official-cli SKILL.md (top-level), obsidian-official-cli skill-card (nested duplicate), obsidian-official-cli SKILL.md (nested duplicate)
 
 ### Community 9 - "Obsidian Bases Functions Reference"
 Cohesion: 1.00
@@ -115,8 +101,8 @@ Cohesion: 0.28
 Nodes (19): check_graphify_gitignore_behavior(), copy_specify_from_reference(), create_agents(), create_changelog(), create_dir_with_gitkeep_if_missing(), create_dot_gitignore(), create_readme(), create_required_path() (+11 more)
 
 ### Community 14 - "graphify as a standard dev-process artifact: `.gitignore` requirement design"
-Cohesion: 0.17
-Nodes (11): Audit behavior, Change to `repo-standard`, Context, Denylist vs allowlist, graphify as a standard dev-process artifact: `.gitignore` requirement design, Out of scope, Required-paths table, Rollout in this repo (+3 more)
+Cohesion: 0.11
+Nodes (18): Cross-repo documentation/folder standard design doc, On-demand (not pre-PR-gated) enforcement decision for repo-standard, repo.toml stage field decision, Per-stage doc/folder tier table (prototype/in-progress/released/archived), Audit behavior, Change to `repo-standard`, Context, Denylist vs allowlist (+10 more)
 
 ### Community 15 - "check-caveman-compress.sh"
 Cohesion: 0.60
@@ -126,13 +112,19 @@ Nodes (5): find_compress_py(), has_isolated_claude_invocation(), log(), check-ca
 Cohesion: 0.73
 Nodes (5): assert_contains(), fail(), run_expect_fail(), run_expect_ok(), test-repo-standard.sh script
 
+### Community 17 - "Agent Operations Guide"
+Cohesion: 0.25
+Nodes (7): Agent Operations Guide, Branch, Code Review Workflow, Documentation Expectations, Identity & Secrets, Quality Gate, Repo Notes
+
 ## Knowledge Gaps
-- **30 isolated node(s):** `$schema`, `name`, `description`, `name`, `url` (+25 more)
+- **29 isolated node(s):** `opn-api.sh script`, `patchmon-api.sh script`, `Branch`, `Quality Gate`, `Identity & Secrets` (+24 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **What connects `$schema`, `name`, `description` to the rest of the system?**
-  _30 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `opn-api.sh script`, `patchmon-api.sh script`, `Branch` to the rest of the system?**
+  _29 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `graphify as a standard dev-process artifact: `.gitignore` requirement design` be split into smaller, more focused modules?**
+  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._

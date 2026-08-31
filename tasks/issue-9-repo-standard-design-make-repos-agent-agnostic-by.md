@@ -1,6 +1,6 @@
 # Issue #9 — repo-standard-design: make repos agent-agnostic by default (Claude, Copilot, others)
 
-https://github.com/rsenna/rs-claude-plugins/issues/9
+https://github.com/rsenna/rs-agent-plugin/issues/9
 
 ## Tasks
 

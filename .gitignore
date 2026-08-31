@@ -2,6 +2,12 @@
 .DS_Store
 *.swp
 
+# AGENTS.md is committed here on purpose (README points readers at it for
+# operational detail) even though it's excluded by many contributors' global
+# gitignore (agent-tooling files are usually local-only) — un-ignore it for
+# this repo specifically so it stays tracked regardless of that global rule.
+!AGENTS.md
+
 # graphify (knowledge graph) — allowlist: commit only graph.json + GRAPH_REPORT.md,
 # ignore everything else graphify-out/ produces (exports, caches, bookkeeping)
 graphify-out/*

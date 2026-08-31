@@ -4,7 +4,7 @@
 # Subcommands:
 #   create <repo> <title> <file>  open a new issue in <repo> (owner/name — so an agent
 #                                  can file a follow-up in a DIFFERENT repo than the one
-#                                  it's sitting in, e.g. a rs-claude-plugins tooling gap
+#                                  it's sitting in, e.g. a rs-agent-plugin tooling gap
 #                                  found while working in another repo): <title> + <file>
 #                                  as the body (DRY_RUN=1 prints instead of posting)
 #   fetch <n>                     print a readable digest of issue #n (title, state, labels, body, comments)
@@ -28,8 +28,11 @@ set -euo pipefail
 
 LABEL="${LABEL:-mapped}"
 
-log()  { printf '\033[1;34m[issue]\033[0m %s\n' "$*"; }
-die()  { printf '\033[1;31m[issue] %s\033[0m\n' "$*" >&2; exit 1; }
+log() { printf '\033[1;34m[issue]\033[0m %s\n' "$*"; }
+die() {
+  printf '\033[1;31m[issue] %s\033[0m\n' "$*" >&2
+  exit 1
+}
 
 # --- Agent identity enforcement -----------------------------------------
 # GH_TOKEN, once exported, overrides gh's own ambient `gh auth` active
@@ -50,9 +53,14 @@ cmd_create() {
   local f="${3:?usage: issue.sh create <repo> <title> <file>}"
   [ -f "$f" ] || die "file not found: $f"
   if [ "${DRY_RUN:-0}" = "1" ]; then
-    log "DRY_RUN — would create issue in '$repo' titled '$title':"; echo "-----"; cat "$f"; echo "-----"; return 0
+    log "DRY_RUN — would create issue in '$repo' titled '$title':"
+    echo "-----"
+    cat "$f"
+    echo "-----"
+    return 0
   fi
-  local url; url="$(gh issue create --repo "$repo" --title "$title" --body-file "$f")"
+  local url
+  url="$(gh issue create --repo "$repo" --title "$title" --body-file "$f")"
   log "created: $url"
 }
 
@@ -72,38 +80,53 @@ cmd_fetch() {
 
 cmd_slug() {
   local n="${1:?usage: issue.sh slug <n>}"
-  local title; title="$(gh issue view "$n" --json title --jq .title)"
-  local slug; slug="$(printf '%s' "$title" \
-    | tr '[:upper:]' '[:lower:]' \
-    | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')"
+  local title
+  title="$(gh issue view "$n" --json title --jq .title)"
+  local slug
+  slug="$(printf '%s' "$title" |
+    tr '[:upper:]' '[:lower:]' |
+    sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')"
   # Cap length without cutting a word in half: if truncating, drop the last token.
   if [ "${#slug}" -gt 50 ]; then slug="$(printf '%s' "$slug" | cut -c1-50 | sed -E 's/-[^-]*$//')"; fi
   printf '%s-%s\n' "$n" "$slug"
 }
 
 cmd_comment() {
-  local n="${1:?usage: issue.sh comment <n> <file>}"; local f="${2:?usage: issue.sh comment <n> <file>}"
+  local n="${1:?usage: issue.sh comment <n> <file>}"
+  local f="${2:?usage: issue.sh comment <n> <file>}"
   [ -f "$f" ] || die "file not found: $f"
   if [ "${DRY_RUN:-0}" = "1" ]; then
-    log "DRY_RUN — would post to #$n:"; echo "-----"; cat "$f"; echo "-----"; return 0
+    log "DRY_RUN — would post to #$n:"
+    echo "-----"
+    cat "$f"
+    echo "-----"
+    return 0
   fi
-  gh issue comment "$n" --body-file "$f"; log "commented on #$n"
+  gh issue comment "$n" --body-file "$f"
+  log "commented on #$n"
 }
 
 cmd_close() {
-  local n="${1:?usage: issue.sh close <n> <file>}"; local f="${2:?usage: issue.sh close <n> <file>}"
+  local n="${1:?usage: issue.sh close <n> <file>}"
+  local f="${2:?usage: issue.sh close <n> <file>}"
   [ -f "$f" ] || die "file not found: $f"
   if [ "${DRY_RUN:-0}" = "1" ]; then
-    log "DRY_RUN — would comment then close #$n:"; echo "-----"; cat "$f"; echo "-----"; return 0
+    log "DRY_RUN — would comment then close #$n:"
+    echo "-----"
+    cat "$f"
+    echo "-----"
+    return 0
   fi
   gh issue comment "$n" --body-file "$f"
-  gh issue close "$n"; log "commented on and closed #$n"
+  gh issue close "$n"
+  log "commented on and closed #$n"
 }
 
 cmd_label() {
   local n="${1:?usage: issue.sh label <n>}"
   if [ "${DRY_RUN:-0}" = "1" ]; then
-    log "DRY_RUN — would ensure label '$LABEL' exists and apply it to #$n"; return 0
+    log "DRY_RUN — would ensure label '$LABEL' exists and apply it to #$n"
+    return 0
   fi
   # Idempotent: create-if-missing (--force updates color/description if it already
   # exists rather than failing), then add — gh issue edit --add-label is a no-op
@@ -119,13 +142,37 @@ cmd_unmapped() {
 }
 
 case "${1:-}" in
-  create)   shift; cmd_create "$@" ;;
-  fetch)    shift; cmd_fetch "$@" ;;
-  json)     shift; cmd_json "$@" ;;
-  slug)     shift; cmd_slug "$@" ;;
-  comment)  shift; cmd_comment "$@" ;;
-  close)    shift; cmd_close "$@" ;;
-  label)    shift; cmd_label "$@" ;;
-  unmapped) shift; cmd_unmapped "$@" ;;
-  *) die "usage: issue.sh {create|fetch|json|slug|comment|close|label|unmapped} ..." ;;
+create)
+  shift
+  cmd_create "$@"
+  ;;
+fetch)
+  shift
+  cmd_fetch "$@"
+  ;;
+json)
+  shift
+  cmd_json "$@"
+  ;;
+slug)
+  shift
+  cmd_slug "$@"
+  ;;
+comment)
+  shift
+  cmd_comment "$@"
+  ;;
+close)
+  shift
+  cmd_close "$@"
+  ;;
+label)
+  shift
+  cmd_label "$@"
+  ;;
+unmapped)
+  shift
+  cmd_unmapped "$@"
+  ;;
+*) die "usage: issue.sh {create|fetch|json|slug|comment|close|label|unmapped} ..." ;;
 esac

@@ -1,6 +1,6 @@
 # Issue #10 — issue.sh/pr.sh: no sanctioned way to create a new issue under the bot identity
 
-https://github.com/rsenna/rs-claude-plugins/issues/10
+https://github.com/rsenna/rs-agent-plugin/issues/10
 
 ## Tasks
 
