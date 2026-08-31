@@ -77,7 +77,9 @@ find_compress_py() {
   # documented exit status, and use -print -quit to avoid SIGPIPE under
   # pipefail.
   local -a search_roots=("$skills_root")
-  [[ -n "${AGENT_SKILLS_ROOT:-}" ]] && search_roots+=("$AGENT_SKILLS_ROOT")
+  if [[ -n "${AGENT_SKILLS_ROOT:-}" ]]; then
+    search_roots+=("$AGENT_SKILLS_ROOT")
+  fi
   if [[ -n "$home" ]]; then
     search_roots+=("$home/.agents/skills" "$home/.claude/skills" "$home/.codex/skills")
   fi
@@ -92,12 +94,20 @@ find_compress_py() {
   done
 }
 
-compress_py="$(find_compress_py)"
+# `|| true`: when find_compress_py finds nothing, its own final statement
+# (the last-resort search loop) legitimately evaluates false as its very last
+# executed command, which — under `set -e`, with no exempting context —
+# would otherwise abort THIS script right here, at the assignment, before
+# the "not found, warn and skip" handling below ever runs. `|| true` makes
+# "nothing found" the expected, handled outcome it already is (checked by
+# the very next line), not a script-ending error.
+compress_py="$(find_compress_py)" || true
 
 if [[ -z "$compress_py" ]]; then
   warn "caveman-compress not found (checked \$CAVEMAN_COMPRESS_SCRIPT, \$AGENT_SKILLS_ROOT," \
-       "this skill's own skills root, and \$HOME/.agents/skills) — skipping compression," \
-       "proceeding uncompressed. This is not a failure."
+       "this skill's own skills root, \$HOME/.agents/skills, \$HOME/.claude/skills," \
+       "and \$HOME/.codex/skills) — skipping compression, proceeding uncompressed." \
+       "This is not a failure."
   exit 1
 fi
 

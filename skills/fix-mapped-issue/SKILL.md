@@ -61,7 +61,9 @@ Once **all** tasks are merged:
    (`DRY_RUN=1` previews without posting/closing.)
 
 ```bash
-P=<this-skill's-own-directory>/../pull-request-process/pr.sh
+P=<this-skill's-own-directory>/../pull-request-process/pr.sh   # e.g. ~/.claude/skills/fix-mapped-issue/../pull-request-process/pr.sh,
+                                                                 # or ~/.agents/skills/fix-mapped-issue/../pull-request-process/pr.sh —
+                                                                 # wherever your installer put this plugin's skills, as siblings
 I=<this-skill's-own-directory>/../map-issue-to-tasks/issue.sh
 BASE=main "$P" start fix/issue-24-notify
 cd <printed-worktree-path>

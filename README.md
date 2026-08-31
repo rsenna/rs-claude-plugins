@@ -47,10 +47,17 @@ bunx skills add rsenna/rs-agent-plugin --all -a claude-code -a opencode -g
 
 A global install (`-g`) lands the "universal" copy at `~/.agents/skills/<name>/`
 and symlinks it into each other target agent's own skills folder (e.g.
-`~/.claude/skills/<name>` → `~/.agents/skills/<name>`) — no duplication, and it
-matches this repo's own `$HOME/.agents/skills` default. A project-local install
-(no `-g`) roots the same layout at `./.agents/skills/` instead. Either way,
-every `SKILL.md` in this plugin resolves its own plumbing scripts relative to
+`~/.claude/skills/<name>` → `~/.agents/skills/<name>`) — no duplication, and the
+`~/.agents/skills` root matches the python recipe above's own default. Note
+`<name>` there is each `SKILL.md`'s **frontmatter** `name:`, not its directory
+name — identical for 7 of these 9 skills, but `clawhub.obsidian-cli` and
+`clawhub.obsidian-bases` install under `obsidian-official-cli` and
+`obsidian-bases` respectively via `bunx`/`npx skills` (their frontmatter
+names), vs. their directory names via the python recipe above. Either way
+works standalone; installing the *same* skill through both methods just gets
+you two separately-named copies for those two, not a conflict. A project-local
+install (no `-g`) roots the same layout at `./.agents/skills/` instead. Either
+way, every `SKILL.md` in this plugin resolves its own plumbing scripts relative to
 wherever it was actually installed, so both install paths work.
 
 ## PR-related Skills

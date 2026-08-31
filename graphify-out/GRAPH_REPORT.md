@@ -1,7 +1,7 @@
 # Graph Report - vercel-skills-compat  (2026-08-31)
 
 ## Corpus Check
-- 30 files · ~27,214 words
+- 30 files · ~27,392 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cfb82906`
+- Built from commit: `48e01cb3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
